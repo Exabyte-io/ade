@@ -13,7 +13,9 @@ export type FlavorMixin = {
     supportedApplicationVersions?: string[];
     getInputAsRenderedTemplates: (context: Record<string, unknown>) => Record<string, unknown>[];
 };
-export declare function flavorMixin(item: Base): FlavorMixin & InMemoryEntity & NamedInMemoryEntity;
+export declare function flavorMixin(item: Base): FlavorMixin & InMemoryEntity & import("@mat3ra/esse/dist/js/types").NameEntitySchema & {
+    setName: (name: string) => void;
+};
 export declare function flavorStaticMixin(Flavor: Constructor<Base>): void;
 export type FlavorStaticMixin = {
     jsonSchema: FlavorSchema;

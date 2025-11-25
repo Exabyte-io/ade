@@ -12,13 +12,13 @@ describe("Flavor", () => {
             },
         );
         expect(pwscfFlavor?.results).to.deep.equal([
-            { name: "atomic_forces" },
-            { name: "fermi_energy" },
-            { name: "pressure" },
-            { name: "stress_tensor" },
-            { name: "total_energy" },
-            { name: "total_energy_contributions" },
-            { name: "total_force" },
+            "atomic_forces",
+            "fermi_energy",
+            "pressure",
+            "stress_tensor",
+            "total_energy",
+            "total_energy_contributions",
+            "total_force",
         ]);
     });
 
@@ -82,7 +82,7 @@ describe("Flavor", () => {
             flavor.setProp("supportedApplicationVersions", ["6.3", "7.0"]);
             expect(flavor.supportedApplicationVersions).to.deep.equal(["6.3", "7.0"]);
         });
-        
+
         // Added with LLM to help with coverage
         it("should handle getInputAsRenderedTemplates with different template types", () => {
             const mockTemplate = { getRenderedJSON: () => ({ rendered: true }) };

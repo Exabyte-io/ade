@@ -25,7 +25,9 @@ export type TemplateMixin = {
     getDataFromProvidersForPersistentContext: (providerContext?: Record<string, unknown>) => Record<string, unknown>;
     getRenderingContext: (externalContext?: Record<string, unknown>) => Record<string, unknown>;
 };
-export declare function templateMixin(item: TemplateBase): TemplateMixin & InMemoryEntity & NamedInMemoryEntity;
+export declare function templateMixin(item: TemplateBase): TemplateMixin & InMemoryEntity & import("@mat3ra/esse/dist/js/types").NameEntitySchema & {
+    setName: (name: string) => void;
+};
 export type ContextProviderConfigMapEntry = {
     providerCls: typeof ContextProvider;
     config: ContextProviderConfig;
@@ -36,4 +38,6 @@ export type TemplateStaticMixin = {
     setContextProvidersConfig: (classConfigMap: ContextProviderConfigMap) => void;
     jsonSchema: TemplateSchema;
 };
-export declare function templateStaticMixin(item: Constructor<TemplateBase & TemplateMixin>): TemplateStaticMixin & Constructor<InMemoryEntity & NamedInMemoryEntity & TemplateMixin>;
+export declare function templateStaticMixin(item: Constructor<TemplateBase & TemplateMixin>): TemplateStaticMixin & Constructor<InMemoryEntity & import("@mat3ra/esse/dist/js/types").NameEntitySchema & {
+    setName: (name: string) => void;
+} & TemplateMixin>;

@@ -1,12 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const entity_1 = require("@mat3ra/code/dist/js/entity");
-const RuntimeItemsMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin");
+const DefaultableMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/DefaultableMixin");
+const NamedEntityMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin");
+const RuntimeItemsStringMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeItemsStringMixin");
 const flavorMixin_1 = require("./flavorMixin");
-class Flavor extends entity_1.NamedDefaultableInMemoryEntity {
+class Flavor extends entity_1.InMemoryEntity {
+    constructor(data = {}) {
+        super({
+            monitors: [],
+            results: [],
+            postProcessors: [],
+            preProcessors: [],
+            ...data,
+        });
+    }
 }
 exports.default = Flavor;
 // Apply mixins
 (0, flavorMixin_1.flavorMixin)(Flavor.prototype);
-(0, RuntimeItemsMixin_1.runtimeItemsMixin)(Flavor.prototype);
+(0, RuntimeItemsStringMixin_1.runtimeItemsStringMixin)(Flavor.prototype);
+(0, NamedEntityMixin_1.namedEntityMixin)(Flavor.prototype);
+(0, DefaultableMixin_1.defaultableEntityMixin)(Flavor);
 (0, flavorMixin_1.flavorStaticMixin)(Flavor);
