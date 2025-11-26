@@ -12,6 +12,7 @@ class Executable extends entity_1.InMemoryEntity {
             results: [],
             postProcessors: [],
             preProcessors: [],
+            applicationId: [],
             ...data,
         });
     }
@@ -19,7 +20,6 @@ class Executable extends entity_1.InMemoryEntity {
 exports.default = Executable;
 // Apply mixins
 (0, RuntimeItemsStringMixin_1.runtimeItemsStringMixin)(Executable.prototype);
-(0, executableMixin_1.executableMixin)(Executable.prototype);
-(0, executableMixin_1.executableStaticMixin)(Executable);
 (0, NamedEntityMixin_1.namedEntityMixin)(Executable.prototype);
 (0, DefaultableMixin_1.defaultableEntityMixin)(Executable);
+(0, executableMixin_1.executableMixin)(Executable);

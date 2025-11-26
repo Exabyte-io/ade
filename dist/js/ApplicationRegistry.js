@@ -52,6 +52,7 @@ class ApplicationRegistry {
                 appTreeItem[version] = appVersion;
                 const applicationConfig = {
                     ...appData,
+                    // @ts-ignore
                     build: buildToUse,
                     ...versionInfo,
                 };

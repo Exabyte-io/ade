@@ -87,6 +87,7 @@ export default class ApplicationRegistry {
 
                 const applicationConfig: ApplicationSchemaBase = {
                     ...appData,
+                    // @ts-ignore
                     build: buildToUse,
                     ...versionInfo,
                 };

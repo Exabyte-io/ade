@@ -12,7 +12,8 @@
         "lint:fix": "eslint --fix --cache src/js tests/js && prettier --write src/js tests/js",
         "transpile": "tsc -p tsconfig-transpile.json",
         "prettier": "prettier --check src/js tests/js",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "generate-mixins": "ts-node scripts/generate-mixins.ts"
     },
     "repository": {
         "type": "git",
@@ -52,7 +53,7 @@
         "@exabyte-io/eslint-config": "2025.5.13-0",
         "@mat3ra/utils": "2025.9.20-0",
         "@mat3ra/code": "git+https://github.com/Exabyte-io/code.git#2f5206cb8db85af8c9af3d450a8dc551bb6b9b61",
-        "@mat3ra/esse": "git+https://github.com/Exabyte-io/esse#a91ed6431f436b52689a1aff82096f3f9d618654",
+        "@mat3ra/esse": "git+https://github.com/Exabyte-io/esse#c248a30803e421f6da33e8270602bd1571945fb6",
         "@mat3ra/made": "2025.7.15-0",
         "@mat3ra/standata": "2025.10.1-0",
         "@mat3ra/tsconfig": "2024.6.3-0",

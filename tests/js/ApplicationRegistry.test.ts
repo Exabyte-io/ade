@@ -349,7 +349,12 @@ describe("ApplicationRegistry", () => {
         });
 
         it("should handle flavor with no input", () => {
-            const templates = ApplicationRegistry.getInputAsTemplates(new Flavor());
+            const templates = ApplicationRegistry.getInputAsTemplates(
+                new Flavor({
+                    executableId: "espresso_pw",
+                    input: [],
+                }),
+            );
 
             expect(templates).to.be.an("array");
             expect(templates.length).to.equal(0);
@@ -358,6 +363,7 @@ describe("ApplicationRegistry", () => {
         it("should handle input with templateName", () => {
             const templates = ApplicationRegistry.getInputAsTemplates(
                 new Flavor({
+                    executableId: "espresso_pw",
                     applicationName: "espresso",
                     executableName: "pw",
                     input: [{ name: "input", templateName: "test_template" }],

@@ -4,20 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.executableMixin = executableMixin;
-exports.executableStaticMixin = executableStaticMixin;
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
-function executableMixin(item) {
-    // @ts-expect-error
-    const properties = {
-        get applicationId() {
-            return this.prop("applicationId", []);
-        },
-        set applicationId(value) {
-            this.setProp("applicationId", value);
-        },
-    };
-    Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
-}
+const ExecutableSchemaMixin_1 = require("./generated/ExecutableSchemaMixin");
 function executableStaticMixin(Executable) {
     const properties = {
         get jsonSchema() {
@@ -25,4 +13,8 @@ function executableStaticMixin(Executable) {
         },
     };
     Object.defineProperties(Executable, Object.getOwnPropertyDescriptors(properties));
+}
+function executableMixin(Item) {
+    (0, ExecutableSchemaMixin_1.executableSchemaMixin)(Item.prototype);
+    executableStaticMixin(Item);
 }

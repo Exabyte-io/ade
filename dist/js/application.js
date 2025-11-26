@@ -5,5 +5,4 @@ const applicationMixin_1 = require("./applicationMixin");
 class Application extends entity_1.NamedDefaultableInMemoryEntity {
 }
 exports.default = Application;
-(0, applicationMixin_1.applicationMixin)(Application.prototype);
-(0, applicationMixin_1.applicationStaticMixin)(Application);
+(0, applicationMixin_1.applicationMixin)(Application);

@@ -4,12 +4,12 @@ import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/Nam
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
 import Executable from "./executable";
+import { type ApplicationSchemaMixin } from "./generated/ApplicationSchemaMixin";
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 export type BaseConstructor = Constructor<Base> & {
     constructCustomExecutable?: (config: object) => Executable;
 };
-export type ApplicationConstructor = Constructor<ApplicationMixin> & ApplicationStaticMixin;
-export type ApplicationMixin = Pick<ApplicationSchemaBase, "summary" | "version" | "build" | "shortName" | "hasAdvancedComputeOptions" | "isLicensed"> & {
+export type ApplicationMixin = ApplicationSchemaMixin & {
     name: Required<ApplicationSchemaBase>["name"];
     isUsingMaterial: boolean;
 };
@@ -18,6 +18,5 @@ export type ApplicationStaticMixin = {
     defaultConfig: DefaultApplicationConfig;
     jsonSchema: ApplicationSchemaBase;
 };
-export declare function applicationMixin(item: Base): void;
-export declare function applicationStaticMixin<T extends BaseConstructor>(Application: T): void;
+export declare function applicationMixin(Item: BaseConstructor): void;
 export {};

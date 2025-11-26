@@ -5,7 +5,6 @@ import {
     type ApplicationMixin,
     type ApplicationStaticMixin,
     applicationMixin,
-    applicationStaticMixin,
 } from "./applicationMixin";
 
 type Base = typeof NamedDefaultableInMemoryEntity &
@@ -14,5 +13,4 @@ type Base = typeof NamedDefaultableInMemoryEntity &
 
 export default class Application extends (NamedDefaultableInMemoryEntity as Base) {}
 
-applicationMixin(Application.prototype);
-applicationStaticMixin(Application);
+applicationMixin(Application);

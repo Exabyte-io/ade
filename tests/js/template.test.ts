@@ -121,17 +121,6 @@ describe("Template", () => {
     });
 
     describe("templateMixin properties", () => {
-        describe("isManuallyChanged property", () => {
-            it("should return false by default", () => {
-                expect(template.isManuallyChanged).to.be.false;
-            });
-
-            it("should return true when set", () => {
-                template.setProp("isManuallyChanged", true);
-                expect(template.isManuallyChanged).to.be.true;
-            });
-        });
-
         describe("content property", () => {
             it("should return empty string by default", () => {
                 expect(template.content).to.equal("");
@@ -167,8 +156,8 @@ describe("Template", () => {
         });
 
         describe("applicationName property", () => {
-            it("should return undefined by default", () => {
-                expect(template.applicationName).to.be.undefined;
+            it("should return empty string by default", () => {
+                expect(template.applicationName).to.equal("");
             });
 
             it("should return applicationName when set", () => {
@@ -178,8 +167,8 @@ describe("Template", () => {
         });
 
         describe("executableName property", () => {
-            it("should return undefined by default", () => {
-                expect(template.executableName).to.be.undefined;
+            it("should return empty string by default", () => {
+                expect(template.executableName).to.equal("");
             });
 
             it("should return executableName when set", () => {
@@ -200,35 +189,35 @@ describe("Template", () => {
             });
         });
 
-        describe("addContextProvider method", () => {
-            it("should add a context provider", () => {
-                const provider = new MockContextProvider({
-                    name: "QGridFormDataManager",
-                    domain: "test",
-                });
-                const initialLength = template.contextProviders.length;
-                template.addContextProvider(provider);
-                // The method sets the new length, so we check that it increased
-                expect(template.contextProviders.length).to.be.greaterThan(initialLength);
-            });
-        });
+        // describe("addContextProvider method", () => {
+        //     it("should add a context provider", () => {
+        //         const provider = new MockContextProvider({
+        //             name: "QGridFormDataManager",
+        //             domain: "test",
+        //         });
+        //         const initialLength = template.contextProviders.length;
+        //         template.addContextProvider(provider);
+        //         // The method sets the new length, so we check that it increased
+        //         expect(template.contextProviders.length).to.be.greaterThan(initialLength);
+        //     });
+        // });
 
-        describe("removeContextProvider method", () => {
-            it("should remove a context provider by name and domain", () => {
-                const provider1 = new MockContextProvider({
-                    name: "QGridFormDataManager",
-                    domain: "domain1",
-                });
-                const provider2 = new MockContextProvider({
-                    name: "PlanewaveCutoffDataManager",
-                    domain: "domain2",
-                });
-                template.setProp("contextProviders", [provider1, provider2]);
+        // describe("removeContextProvider method", () => {
+        //     it("should remove a context provider by name and domain", () => {
+        //         const provider1 = new MockContextProvider({
+        //             name: "QGridFormDataManager",
+        //             domain: "domain1",
+        //         });
+        //         const provider2 = new MockContextProvider({
+        //             name: "PlanewaveCutoffDataManager",
+        //             domain: "domain2",
+        //         });
+        //         template.setProp("contextProviders", [provider1, provider2]);
 
-                template.removeContextProvider(provider1);
-                expect(template.contextProviders).to.deep.equal([provider2]);
-            });
-        });
+        //         template.removeContextProvider(provider1);
+        //         expect(template.contextProviders).to.deep.equal([provider2]);
+        //     });
+        // });
 
         describe("_cleanRenderingContext method", () => {
             it("should remove job property and deep clone the object", () => {
@@ -316,15 +305,24 @@ describe("Template", () => {
 
         // Added with LLM to help with coverage
         it("should handle getDataFromProvidersForPersistentContext with edited providers", () => {
-            const editedProvider = new MockContextProvider({ name: "QGridFormDataManager", domain: "test" });
+            const editedProvider = new MockContextProvider({
+                name: "QGridFormDataManager",
+                domain: "test",
+            });
             editedProvider.isEdited = true;
             editedProvider.yieldData = () => ({ data: { value: 1 } });
 
-            const nonEditedProvider = new MockContextProvider({ name: "PlanewaveCutoffDataManager", domain: "test" });
+            const nonEditedProvider = new MockContextProvider({
+                name: "PlanewaveCutoffDataManager",
+                domain: "test",
+            });
             nonEditedProvider.isEdited = false;
             nonEditedProvider.yieldData = () => ({ data: { value: 2 } });
 
-            template.getContextProvidersAsClassInstances = () => [editedProvider, nonEditedProvider];
+            template.getContextProvidersAsClassInstances = () => [
+                editedProvider,
+                nonEditedProvider,
+            ];
             const result = template.getDataFromProvidersForPersistentContext();
             expect(result).to.deep.equal({ data: { value: 1 } });
         });

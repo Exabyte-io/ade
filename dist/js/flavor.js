@@ -12,14 +12,16 @@ class Flavor extends entity_1.InMemoryEntity {
             results: [],
             postProcessors: [],
             preProcessors: [],
+            input: [],
+            executableId: "",
+            executableName: "",
+            applicationName: "",
             ...data,
         });
     }
 }
 exports.default = Flavor;
-// Apply mixins
-(0, flavorMixin_1.flavorMixin)(Flavor.prototype);
 (0, RuntimeItemsStringMixin_1.runtimeItemsStringMixin)(Flavor.prototype);
 (0, NamedEntityMixin_1.namedEntityMixin)(Flavor.prototype);
 (0, DefaultableMixin_1.defaultableEntityMixin)(Flavor);
-(0, flavorMixin_1.flavorStaticMixin)(Flavor);
+(0, flavorMixin_1.flavorMixin)(Flavor);

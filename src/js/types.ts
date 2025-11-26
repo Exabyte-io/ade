@@ -2,7 +2,7 @@ import { ApplicationMixin, ApplicationStaticMixin } from "./applicationMixin";
 import { CreateApplicationConfig } from "./ApplicationRegistry";
 import { ExecutableMixin } from "./executableMixin";
 import { FlavorMixin } from "./flavorMixin";
-import { TemplateMixin, TemplateStaticMixin } from "./templateMixin";
+import { TemplateMixin } from "./templateMixin";
 
 export type {
     FlavorMixin,
@@ -11,5 +11,4 @@ export type {
     ApplicationStaticMixin,
     CreateApplicationConfig,
     TemplateMixin,
-    TemplateStaticMixin,
 };

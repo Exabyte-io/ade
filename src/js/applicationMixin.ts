@@ -7,6 +7,10 @@ import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
 import { ApplicationStandata } from "@mat3ra/standata";
 
 import Executable from "./executable";
+import {
+    type ApplicationSchemaMixin,
+    applicationSchemaMixin,
+} from "./generated/ApplicationSchemaMixin";
 
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 
@@ -14,12 +18,7 @@ export type BaseConstructor = Constructor<Base> & {
     constructCustomExecutable?: (config: object) => Executable;
 };
 
-export type ApplicationConstructor = Constructor<ApplicationMixin> & ApplicationStaticMixin;
-
-export type ApplicationMixin = Pick<
-    ApplicationSchemaBase,
-    "summary" | "version" | "build" | "shortName" | "hasAdvancedComputeOptions" | "isLicensed"
-> & {
+export type ApplicationMixin = ApplicationSchemaMixin & {
     name: Required<ApplicationSchemaBase>["name"];
     isUsingMaterial: boolean;
 };
@@ -34,33 +33,13 @@ export type ApplicationStaticMixin = {
     jsonSchema: ApplicationSchemaBase;
 };
 
-export function applicationMixin(item: Base) {
+function applicationPropertiesMixin<T extends InMemoryEntity>(
+    item: T,
+): asserts item is T & ApplicationMixin {
+    applicationSchemaMixin(item);
+
     // @ts-expect-error
     const properties: ApplicationMixin & Base = {
-        get summary() {
-            return this.prop("summary");
-        },
-
-        get version() {
-            return this.prop("version", "");
-        },
-
-        get build() {
-            return this.prop("build");
-        },
-
-        get shortName() {
-            return this.prop("shortName", this.name);
-        },
-
-        get hasAdvancedComputeOptions() {
-            return this.prop("hasAdvancedComputeOptions", false);
-        },
-
-        get isLicensed() {
-            return this.prop("isLicensed", false);
-        },
-
         get isUsingMaterial() {
             const materialUsingApplications = ["vasp", "nwchem", "espresso"];
             return materialUsingApplications.includes(this.name);
@@ -70,7 +49,7 @@ export function applicationMixin(item: Base) {
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
 }
 
-export function applicationStaticMixin<T extends BaseConstructor>(Application: T) {
+function applicationStaticMixin<T extends BaseConstructor>(Application: T) {
     const properties: ApplicationStaticMixin = {
         get defaultConfig() {
             return new ApplicationStandata().getDefaultConfig();
@@ -83,4 +62,9 @@ export function applicationStaticMixin<T extends BaseConstructor>(Application: T
     };
 
     Object.defineProperties(Application, Object.getOwnPropertyDescriptors(properties));
+}
+
+export function applicationMixin(Item: BaseConstructor) {
+    applicationPropertiesMixin(Item.prototype);
+    applicationStaticMixin(Item);
 }

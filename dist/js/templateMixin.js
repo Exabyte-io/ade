@@ -4,47 +4,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.templateMixin = templateMixin;
-exports.templateStaticMixin = templateStaticMixin;
-const utils_1 = require("@mat3ra/utils");
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
+const utils_1 = require("@mat3ra/utils");
 const nunjucks_1 = __importDefault(require("nunjucks"));
 const ContextProviderRegistryContainer_1 = __importDefault(require("./context/ContextProviderRegistryContainer"));
-function templateMixin(item) {
-    // @ts-ignore
+const TemplateSchemaMixin_1 = require("./generated/TemplateSchemaMixin");
+function templatePropertiesMixin(item) {
+    // @ts-expect-error
     const properties = {
-        get isManuallyChanged() {
-            return this.prop("isManuallyChanged", false);
-        },
-        get content() {
-            return this.prop("content", "");
-        },
         setContent(text) {
-            return this.setProp("content", text);
-        },
-        get rendered() {
-            return this.prop("rendered") || this.content;
+            this.content = text;
+            if (!this.rendered) {
+                this.rendered = text;
+            }
         },
         setRendered(text) {
-            return this.setProp("rendered", text);
+            this.rendered = text;
         },
-        get applicationName() {
-            return this.prop("applicationName");
-        },
-        get executableName() {
-            return this.prop("executableName");
-        },
-        get contextProviders() {
-            return this.prop("contextProviders", []);
-        },
-        addContextProvider(provider) {
-            this.setProp("contextProviders", [...this.contextProviders, provider]);
-        },
-        removeContextProvider(provider) {
-            const contextProviders = this.contextProviders.filter((p) => {
-                return p.name !== provider.name && p.domain !== provider.domain;
-            });
-            this.setProp("contextProviders", contextProviders);
-        },
+        // addContextProvider(provider: ContextProvider) {
+        //     this.setProp("contextProviders", [...this.contextProviders, provider]);
+        // },
+        // removeContextProvider(provider: ContextProvider) {
+        //     const contextProviders = this.contextProviders.filter((p) => {
+        //         return p.name !== provider.name && p.domain !== provider.domain;
+        //     });
+        //     this.setProp("contextProviders", contextProviders);
+        // },
         render(externalContext) {
             const renderingContext = this.getRenderingContext(externalContext);
             if (!this.isManuallyChanged) {
@@ -137,7 +122,6 @@ function templateMixin(item) {
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
-    return properties;
 }
 function templateStaticMixin(item) {
     // @ts-ignore
@@ -158,5 +142,9 @@ function templateStaticMixin(item) {
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
-    return properties;
+}
+function templateMixin(Item) {
+    (0, TemplateSchemaMixin_1.templateSchemaMixin)(Item.prototype);
+    templatePropertiesMixin(Item.prototype);
+    templateStaticMixin(Item);
 }

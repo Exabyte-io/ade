@@ -1,20 +1,12 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 import ContextProvider, { type ContextProviderConfig, type ContextProviderName } from "./context/ContextProvider";
 import ContextProviderRegistryContainer from "./context/ContextProviderRegistryContainer";
-export type TemplateBase = InMemoryEntity & NamedInMemoryEntity;
-export type TemplateMixin = {
-    isManuallyChanged: boolean;
-    content: string;
-    rendered: string | undefined;
-    applicationName: string | undefined;
-    executableName: string | undefined;
-    contextProviders: ContextProvider[];
-    addContextProvider: (provider: ContextProvider) => void;
-    removeContextProvider: (provider: ContextProvider) => void;
+import { type TemplateSchemaMixin } from "./generated/TemplateSchemaMixin";
+export type TemplateBase = InMemoryEntity;
+export type TemplateMixin = TemplateSchemaMixin & {
     render: (externalContext?: Record<string, unknown>) => void;
     getRenderedJSON: (context?: Record<string, unknown>) => AnyObject;
     _cleanRenderingContext: (object: Record<string, unknown>) => Record<string, unknown>;
@@ -24,9 +16,6 @@ export type TemplateMixin = {
     getContextProvidersAsClassInstances: (providerContext?: Record<string, unknown>) => ContextProvider[];
     getDataFromProvidersForPersistentContext: (providerContext?: Record<string, unknown>) => Record<string, unknown>;
     getRenderingContext: (externalContext?: Record<string, unknown>) => Record<string, unknown>;
-};
-export declare function templateMixin(item: TemplateBase): TemplateMixin & InMemoryEntity & import("@mat3ra/esse/dist/js/types").NameEntitySchema & {
-    setName: (name: string) => void;
 };
 export type ContextProviderConfigMapEntry = {
     providerCls: typeof ContextProvider;
@@ -38,6 +27,4 @@ export type TemplateStaticMixin = {
     setContextProvidersConfig: (classConfigMap: ContextProviderConfigMap) => void;
     jsonSchema: TemplateSchema;
 };
-export declare function templateStaticMixin(item: Constructor<TemplateBase & TemplateMixin>): TemplateStaticMixin & Constructor<InMemoryEntity & import("@mat3ra/esse/dist/js/types").NameEntitySchema & {
-    setName: (name: string) => void;
-} & TemplateMixin>;
+export declare function templateMixin(Item: Constructor<TemplateBase>): void;

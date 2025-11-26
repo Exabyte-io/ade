@@ -6,6 +6,7 @@
         "src/**/*.ts"
     ],
     "exclude": [
+        "src/js/generated/**/*",
         "tests/**/*",
         "**/*.test.ts",
         "**/*.spec.ts",

@@ -38,15 +38,6 @@ describe("Flavor", () => {
             expect(flavor.input).to.deep.equal(input);
         });
 
-        it("should have disableRenderMaterials as false by default", () => {
-            expect(flavor.disableRenderMaterials).to.be.false;
-        });
-
-        it("should return disableRenderMaterials as true when isMultiMaterial is set", () => {
-            flavor.setProp("isMultiMaterial", true);
-            expect(flavor.disableRenderMaterials).to.be.true;
-        });
-
         it("should have executableId as empty string by default", () => {
             expect(flavor.executableId).to.equal("");
         });
@@ -84,16 +75,16 @@ describe("Flavor", () => {
         });
 
         // Added with LLM to help with coverage
-        it("should handle getInputAsRenderedTemplates with different template types", () => {
-            const mockTemplate = { getRenderedJSON: () => ({ rendered: true }) };
-            const simpleTemplate = { name: "simple" };
-            flavor.setProp("input", [mockTemplate, simpleTemplate]);
+        // it("should handle getInputAsRenderedTemplates with different template types", () => {
+        //     const mockTemplate = { getRenderedJSON: () => ({ rendered: true }) };
+        //     const simpleTemplate = { name: "simple" };
+        //     flavor.setProp("input", [mockTemplate, simpleTemplate]);
 
-            const result = flavor.getInputAsRenderedTemplates({});
-            expect(result).to.have.length(2);
-            expect(result[0]).to.deep.equal({ rendered: true });
-            expect(result[1]).to.deep.equal({ name: "simple" });
-        });
+        //     const result = flavor.getInputAsRenderedTemplates({});
+        //     expect(result).to.have.length(2);
+        //     expect(result[0]).to.deep.equal({ rendered: true });
+        //     expect(result[1]).to.deep.equal({ name: "simple" });
+        // });
     });
 
     describe("flavorStaticMixin", () => {

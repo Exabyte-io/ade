@@ -4,30 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.applicationMixin = applicationMixin;
-exports.applicationStaticMixin = applicationStaticMixin;
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
 const standata_1 = require("@mat3ra/standata");
-function applicationMixin(item) {
+const ApplicationSchemaMixin_1 = require("./generated/ApplicationSchemaMixin");
+function applicationPropertiesMixin(item) {
+    (0, ApplicationSchemaMixin_1.applicationSchemaMixin)(item);
     // @ts-expect-error
     const properties = {
-        get summary() {
-            return this.prop("summary");
-        },
-        get version() {
-            return this.prop("version", "");
-        },
-        get build() {
-            return this.prop("build");
-        },
-        get shortName() {
-            return this.prop("shortName", this.name);
-        },
-        get hasAdvancedComputeOptions() {
-            return this.prop("hasAdvancedComputeOptions", false);
-        },
-        get isLicensed() {
-            return this.prop("isLicensed", false);
-        },
         get isUsingMaterial() {
             const materialUsingApplications = ["vasp", "nwchem", "espresso"];
             return materialUsingApplications.includes(this.name);
@@ -45,4 +28,8 @@ function applicationStaticMixin(Application) {
         },
     };
     Object.defineProperties(Application, Object.getOwnPropertyDescriptors(properties));
+}
+function applicationMixin(Item) {
+    applicationPropertiesMixin(Item.prototype);
+    applicationStaticMixin(Item);
 }

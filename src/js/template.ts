@@ -1,17 +1,29 @@
-import { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
-
+import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type TemplateMixin,
-    type TemplateStaticMixin,
-    templateMixin,
-    templateStaticMixin,
-} from "./templateMixin";
+    type NamedInMemoryEntity,
+    namedEntityMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
+import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 
-type Base = typeof NamedInMemoryEntity & Constructor<TemplateMixin> & TemplateStaticMixin;
+import { type TemplateMixin, type TemplateStaticMixin, templateMixin } from "./templateMixin";
 
-export default class Template extends (NamedInMemoryEntity as Base) {}
+type Base = typeof InMemoryEntity &
+    Constructor<TemplateMixin> &
+    Constructor<NamedInMemoryEntity> &
+    TemplateStaticMixin;
 
-// Apply mixins
-templateMixin(Template.prototype);
-templateStaticMixin(Template);
+export default class Template extends (InMemoryEntity as Base) {
+    constructor(data: Partial<TemplateSchema> = {}) {
+        super({
+            applicationName: "",
+            executableName: "",
+            content: "",
+            contextProviders: [],
+            ...data,
+        });
+    }
+}
+
+namedEntityMixin(Template.prototype);
+templateMixin(Template);

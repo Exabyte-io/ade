@@ -1,10 +1,9 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import { Utils } from "@mat3ra/utils";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
+import { Utils } from "@mat3ra/utils";
 import nunjucks from "nunjucks";
 
 import ContextProvider, {
@@ -12,18 +11,13 @@ import ContextProvider, {
     type ContextProviderName,
 } from "./context/ContextProvider";
 import ContextProviderRegistryContainer from "./context/ContextProviderRegistryContainer";
+import { type TemplateSchemaMixin, templateSchemaMixin } from "./generated/TemplateSchemaMixin";
 
-export type TemplateBase = InMemoryEntity & NamedInMemoryEntity;
+export type TemplateBase = InMemoryEntity;
 
-export type TemplateMixin = {
-    isManuallyChanged: boolean;
-    content: string;
-    rendered: string | undefined;
-    applicationName: string | undefined;
-    executableName: string | undefined;
-    contextProviders: ContextProvider[];
-    addContextProvider: (provider: ContextProvider) => void;
-    removeContextProvider: (provider: ContextProvider) => void;
+export type TemplateMixin = TemplateSchemaMixin & {
+    // addContextProvider: (provider: ContextProvider) => void;
+    // removeContextProvider: (provider: ContextProvider) => void;
     render: (externalContext?: Record<string, unknown>) => void;
     getRenderedJSON: (context?: Record<string, unknown>) => AnyObject;
     _cleanRenderingContext: (object: Record<string, unknown>) => Record<string, unknown>;
@@ -41,52 +35,46 @@ export type TemplateMixin = {
     getRenderingContext: (externalContext?: Record<string, unknown>) => Record<string, unknown>;
 };
 
-export function templateMixin(item: TemplateBase) {
-    // @ts-ignore
+export type ContextProviderConfigMapEntry = {
+    providerCls: typeof ContextProvider;
+    config: ContextProviderConfig;
+};
+
+export type ContextProviderConfigMap = Partial<
+    Record<ContextProviderName, ContextProviderConfigMapEntry>
+>;
+
+export type TemplateStaticMixin = {
+    contextProviderRegistry: ContextProviderRegistryContainer | null;
+    setContextProvidersConfig: (classConfigMap: ContextProviderConfigMap) => void;
+    jsonSchema: TemplateSchema;
+};
+
+function templatePropertiesMixin(item: InMemoryEntity) {
+    // @ts-expect-error
     const properties: TemplateMixin & TemplateBase = {
-        get isManuallyChanged() {
-            return this.prop("isManuallyChanged", false);
-        },
-
-        get content() {
-            return this.prop("content", "");
-        },
-
         setContent(text: string) {
-            return this.setProp("content", text);
-        },
-
-        get rendered() {
-            return this.prop("rendered") || this.content;
+            this.content = text;
+            if (!this.rendered) {
+                this.rendered = text;
+            }
         },
 
         setRendered(text: string) {
-            return this.setProp("rendered", text);
+            this.rendered = text;
         },
 
-        get applicationName() {
-            return this.prop<string>("applicationName");
-        },
+        // addContextProvider(provider: ContextProvider) {
+        //     this.setProp("contextProviders", [...this.contextProviders, provider]);
+        // },
 
-        get executableName() {
-            return this.prop<string>("executableName");
-        },
+        // removeContextProvider(provider: ContextProvider) {
+        //     const contextProviders = this.contextProviders.filter((p) => {
+        //         return p.name !== provider.name && p.domain !== provider.domain;
+        //     });
 
-        get contextProviders() {
-            return this.prop("contextProviders", []);
-        },
-
-        addContextProvider(provider: ContextProvider) {
-            this.setProp("contextProviders", [...this.contextProviders, provider]);
-        },
-
-        removeContextProvider(provider: ContextProvider) {
-            const contextProviders = this.contextProviders.filter((p) => {
-                return p.name !== provider.name && p.domain !== provider.domain;
-            });
-
-            this.setProp("contextProviders", contextProviders);
-        },
+        //     this.setProp("contextProviders", contextProviders);
+        // },
 
         render(externalContext?: Record<string, unknown>) {
             const renderingContext = this.getRenderingContext(externalContext);
@@ -194,28 +182,11 @@ export function templateMixin(item: TemplateBase) {
     };
 
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
-
-    return properties;
 }
 
-export type ContextProviderConfigMapEntry = {
-    providerCls: typeof ContextProvider;
-    config: ContextProviderConfig;
-};
-
-export type ContextProviderConfigMap = Partial<
-    Record<ContextProviderName, ContextProviderConfigMapEntry>
->;
-
-export type TemplateStaticMixin = {
-    contextProviderRegistry: ContextProviderRegistryContainer | null;
-    setContextProvidersConfig: (classConfigMap: ContextProviderConfigMap) => void;
-    jsonSchema: TemplateSchema;
-};
-
-export function templateStaticMixin(item: Constructor<TemplateBase & TemplateMixin>) {
+function templateStaticMixin(item: Constructor<TemplateBase>) {
     // @ts-ignore
-    const properties: TemplateStaticMixin & Constructor<TemplateBase & TemplateMixin> = {
+    const properties: TemplateStaticMixin & Constructor<TemplateBase> = {
         contextProviderRegistry: null,
 
         get jsonSchema() {
@@ -237,6 +208,10 @@ export function templateStaticMixin(item: Constructor<TemplateBase & TemplateMix
     };
 
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
+}
 
-    return properties;
+export function templateMixin(Item: Constructor<TemplateBase>) {
+    templateSchemaMixin(Item.prototype);
+    templatePropertiesMixin(Item.prototype);
+    templateStaticMixin(Item);
 }

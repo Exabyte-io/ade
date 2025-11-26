@@ -1,60 +1,31 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
-type Base = InMemoryEntity & NamedInMemoryEntity;
+import { type FlavorSchemaMixin, flavorSchemaMixin } from "./generated/FlavorSchemaMixin";
 
-type Input = Required<FlavorSchema>["input"];
-
-export type FlavorMixin = {
-    input: Input;
-    disableRenderMaterials: boolean;
-    executableId: string;
-    executableName: string;
-    applicationName: string;
-    supportedApplicationVersions?: string[];
-    getInputAsRenderedTemplates: (context: Record<string, unknown>) => Record<string, unknown>[];
+export type FlavorMixin = FlavorSchemaMixin & {
+    // getInputAsRenderedTemplates: (context: Record<string, unknown>) => Record<string, unknown>[];
 };
 
 // TODO: should we add fields from esse schema (executableId, executableName, applicationName)?
-export function flavorMixin(item: Base) {
+function flavorPropertiesMixin(item: InMemoryEntity & FlavorSchemaMixin) {
     // @ts-expect-error
-    const properties: FlavorMixin & Base = {
-        get input() {
-            return this.prop<Input>("input", []);
-        },
-
-        get disableRenderMaterials() {
-            return this.prop("isMultiMaterial", false);
-        },
-
-        get executableId() {
-            return this.prop("executableId", "");
-        },
-
-        get executableName() {
-            return this.prop("executableName", "");
-        },
-
-        get applicationName() {
-            return this.prop("applicationName", "");
-        },
-
-        get supportedApplicationVersions() {
-            return this.prop("supportedApplicationVersions");
-        },
-
-        getInputAsRenderedTemplates(context: Record<string, unknown>) {
-            const input = this.input;
-            return input.map((template) => {
-                if (template && typeof template === "object" && "getRenderedJSON" in template) {
-                    return (template as any).getRenderedJSON(context);
-                }
-                return template;
-            });
-        },
+    const properties: FlavorMixin & InMemoryEntity & FlavorSchemaMixin = {
+        // TODO: there is no "isMultiMaterial" field in the schema; should we add it?
+        // get disableRenderMaterials() {
+        //     return this.prop("isMultiMaterial", false);
+        // },
+        // TODO: do we actually use this method anywhere?
+        // getInputAsRenderedTemplates(context: Record<string, unknown>) {
+        //     return this.input?.map((template) => {
+        //         if (template && typeof template === "object" && "getRenderedJSON" in template) {
+        //             return template.getRenderedJSON(context);
+        //         }
+        //         return template;
+        //     });
+        // },
     };
 
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
@@ -62,7 +33,7 @@ export function flavorMixin(item: Base) {
     return properties;
 }
 
-export function flavorStaticMixin(Flavor: Constructor<Base>) {
+function flavorStaticMixin(Flavor: Constructor<InMemoryEntity>) {
     const properties: FlavorStaticMixin = {
         get jsonSchema() {
             return JSONSchemasInterface.getSchemaById("software/flavor") as FlavorSchema;
@@ -75,3 +46,9 @@ export function flavorStaticMixin(Flavor: Constructor<Base>) {
 export type FlavorStaticMixin = {
     jsonSchema: FlavorSchema;
 };
+
+export function flavorMixin(Item: Constructor<InMemoryEntity>) {
+    flavorSchemaMixin(Item.prototype);
+    flavorPropertiesMixin(Item.prototype);
+    flavorStaticMixin(Item);
+}

@@ -14,7 +14,7 @@ import {
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
-import { type FlavorMixin, flavorMixin, flavorStaticMixin } from "./flavorMixin";
+import { type FlavorMixin, flavorMixin } from "./flavorMixin";
 
 type Base = typeof InMemoryEntity &
     Constructor<FlavorMixin> &
@@ -29,14 +29,16 @@ export default class Flavor extends (InMemoryEntity as Base) {
             results: [],
             postProcessors: [],
             preProcessors: [],
+            input: [],
+            executableId: "",
+            executableName: "",
+            applicationName: "",
             ...data,
         });
     }
 }
 
-// Apply mixins
-flavorMixin(Flavor.prototype);
 runtimeItemsStringMixin(Flavor.prototype);
 namedEntityMixin(Flavor.prototype);
 defaultableEntityMixin(Flavor);
-flavorStaticMixin(Flavor);
+flavorMixin(Flavor);

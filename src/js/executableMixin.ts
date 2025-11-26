@@ -7,25 +7,12 @@ import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
 import type { FlavorMixin } from "./flavorMixin";
+import { ExecutableSchemaMixin, executableSchemaMixin } from "./generated/ExecutableSchemaMixin";
 
 type BaseFlavor = FlavorMixin & NamedInMemoryEntity & InMemoryEntity;
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 
-export function executableMixin(item: Base) {
-    // @ts-expect-error
-    const properties: ExecutableMixin & Base = {
-        get applicationId() {
-            return this.prop("applicationId", []);
-        },
-        set applicationId(value: string[]) {
-            this.setProp("applicationId", value);
-        },
-    };
-
-    Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
-}
-
-export function executableStaticMixin(Executable: Constructor<Base>) {
+function executableStaticMixin(Executable: Constructor<Base>) {
     const properties: ExecutableStaticMixin = {
         get jsonSchema() {
             return JSONSchemasInterface.getSchemaById("software/executable") as ExecutableSchema;
@@ -39,11 +26,15 @@ export type BaseConstructor = Constructor<Base> & {
     constructCustomFlavor?: (config: object) => BaseFlavor;
 };
 
-export type ExecutableMixin = {
-    applicationId: string[];
+export type ExecutableMixin = ExecutableSchemaMixin & {
     toJSON: () => ExecutableSchema & AnyObject;
 };
 
 export type ExecutableStaticMixin = {
     jsonSchema: ExecutableSchema;
 };
+
+export function executableMixin(Item: BaseConstructor) {
+    executableSchemaMixin(Item.prototype);
+    executableStaticMixin(Item);
+}

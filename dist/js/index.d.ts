@@ -1,5 +1,5 @@
 import Application from "./application";
-import { applicationMixin, applicationStaticMixin } from "./applicationMixin";
+import { applicationMixin } from "./applicationMixin";
 import ApplicationRegistry from "./ApplicationRegistry";
 import ContextProvider from "./context/ContextProvider";
 import JSONSchemaFormDataProvider from "./context/JSONSchemaFormDataProvider";
@@ -8,6 +8,6 @@ import { executableMixin } from "./executableMixin";
 import Flavor from "./flavor";
 import { flavorMixin } from "./flavorMixin";
 import Template from "./template";
-import { templateMixin, templateStaticMixin } from "./templateMixin";
+import { templateMixin } from "./templateMixin";
 declare const allApplications: string[];
-export { Application, Executable, Flavor, Template, ApplicationRegistry, ContextProvider, JSONSchemaFormDataProvider, executableMixin, flavorMixin, applicationMixin, applicationStaticMixin, templateMixin, templateStaticMixin, allApplications, };
+export { Application, Executable, Flavor, Template, ApplicationRegistry, ContextProvider, JSONSchemaFormDataProvider, executableMixin, flavorMixin, applicationMixin, templateMixin, allApplications, };
