@@ -9,64 +9,26 @@
  *             to next one, for example data about material to track when it is changed.
  * @notes   Should hold static data only (see `setData` method), no classes or functions
  */
+import { ContextProviderSchema, Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 import { Utils } from "@mat3ra/utils";
 import lodash from "lodash";
 
 export interface ContextProviderInstance {
     constructor: typeof ContextProvider;
-    config: ContextProviderConfig;
-}
-
-export interface ContextProviderConfig {
-    name: ContextProviderName | `${ContextProviderName}`;
-    domain?: string;
-    entityName?: string;
-    data?: object;
-    extraData?: object;
-    isEdited?: boolean;
-    context?: object;
-}
-
-// TODO: separate application-specific CPs
-export enum ContextProviderName {
-    PlanewaveCutoffDataManager = "PlanewaveCutoffDataManager",
-    KGridFormDataManager = "KGridFormDataManager",
-    QGridFormDataManager = "QGridFormDataManager",
-    IGridFormDataManager = "IGridFormDataManager",
-    QPathFormDataManager = "QPathFormDataManager",
-    IPathFormDataManager = "IPathFormDataManager",
-    KPathFormDataManager = "KPathFormDataManager",
-    ExplicitKPathFormDataManager = "ExplicitKPathFormDataManager",
-    ExplicitKPath2PIBAFormDataManager = "ExplicitKPath2PIBAFormDataManager",
-    HubbardJContextManager = "HubbardJContextManager",
-    HubbardUContextManager = "HubbardUContextManager",
-    HubbardVContextManager = "HubbardVContextManager",
-    HubbardContextManagerLegacy = "HubbardContextManagerLegacy",
-    NEBFormDataManager = "NEBFormDataManager",
-    BoundaryConditionsFormDataManager = "BoundaryConditionsFormDataManager",
-    MLSettingsDataManager = "MLSettingsDataManager",
-    MLTrainTestSplitDataManager = "MLTrainTestSplitDataManager",
-    IonDynamicsContextProvider = "IonDynamicsContextProvider",
-    CollinearMagnetizationDataManager = "CollinearMagnetizationDataManager",
-    NonCollinearMagnetizationDataManager = "NonCollinearMagnetizationDataManager",
-    QEPWXInputDataManager = "QEPWXInputDataManager",
-    QENEBInputDataManager = "QENEBInputDataManager",
-    VASPInputDataManager = "VASPInputDataManager",
-    VASPNEBInputDataManager = "VASPNEBInputDataManager",
-    NWChemInputDataManager = "NWChemInputDataManager",
+    config: ContextProviderSchema;
 }
 
 export interface ContextProviderStatic {
-    getConstructorConfig: (config: ContextProviderConfig) => ContextProviderInstance;
-    createConfigFromContext: (config: ContextProviderConfig) => ContextProviderConfig;
+    getConstructorConfig: (config: ContextProviderSchema) => ContextProviderInstance;
+    createConfigFromContext: (config: ContextProviderSchema) => ContextProviderSchema;
     getExtraDataKeyByName: (name: string) => string;
     getIsEditedKeyByName: (name: string) => string;
 }
 
-export default class ContextProvider {
-    config: ContextProviderConfig;
+export default class ContextProvider implements ContextProviderSchema {
+    config: ContextProviderSchema;
 
-    name: `${ContextProviderName}`;
+    name: ContextProviderNameEnum;
 
     domain?: string;
 
@@ -78,7 +40,11 @@ export default class ContextProvider {
 
     isEdited?: boolean;
 
-    constructor(config: ContextProviderConfig) {
+    context?: object;
+
+    [k: string]: unknown;
+
+    constructor(config: ContextProviderSchema) {
         this.config = config;
         this.name = config.name; // property name, ie. "kpath"
         this.domain = config.domain || "default";
@@ -99,14 +65,14 @@ export default class ContextProvider {
         this.yieldData = this.yieldData.bind(this);
     }
 
-    static getConstructorConfig(config: ContextProviderConfig): ContextProviderInstance {
+    static getConstructorConfig(config: ContextProviderSchema): ContextProviderInstance {
         return {
             constructor: this.prototype.constructor as typeof ContextProvider,
             config,
         };
     }
 
-    static createConfigFromContext(config: ContextProviderConfig) {
+    static createConfigFromContext(config: ContextProviderSchema) {
         const data = lodash.get(config.context, config.name);
         const isEdited = lodash.get(config.context, this.getIsEditedKeyByName(config.name));
         const extraData = lodash.get(config.context, this.getExtraDataKeyByName(config.name));

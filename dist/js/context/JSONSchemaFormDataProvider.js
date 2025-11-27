@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ContextProvider_1 = __importDefault(require("./ContextProvider"));
+const JSONSchemaDataProvider_1 = __importDefault(require("./JSONSchemaDataProvider"));
 /**
  * @summary Provides jsonSchema and uiSchema for generating react-jsonschema-form
  *          See https://github.com/mozilla-services/react-jsonschema-form for Form UI.
@@ -14,14 +14,8 @@ const ContextProvider_1 = __importDefault(require("./ContextProvider"));
  *      formData={provider.getData(unit.important)} />
  * ```
  */
-class JSONSchemaFormDataProvider extends ContextProvider_1.default {
-    constructor(config) {
-        super(config);
-        this.isUsingJinjaVariables = Boolean(config === null || config === void 0 ? void 0 : config.isUsingJinjaVariables);
-    }
-    get jsonSchema() {
-        throw new Error("Not implemented.");
-    }
+// TODO: MOVE to WebApp/ave or wove
+class JSONSchemaFormDataProvider extends JSONSchemaDataProvider_1.default {
     get uiSchema() {
         throw new Error("Not implemented.");
     }

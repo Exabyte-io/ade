@@ -1,6 +1,6 @@
+import { Name as ContextProviderName } from "@mat3ra/esse/dist/js/types";
 import { expect } from "chai";
 
-import { ContextProviderName } from "../../src/js/context/ContextProvider";
 import JSONSchemaFormDataProvider from "../../src/js/context/JSONSchemaFormDataProvider";
 
 describe("JSONSchemaFormDataProvider", () => {

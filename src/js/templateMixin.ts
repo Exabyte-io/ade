@@ -2,14 +2,15 @@ import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
-import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
+import type {
+    ContextProviderNameEnum,
+    ContextProviderSchema,
+    TemplateSchema,
+} from "@mat3ra/esse/dist/js/types";
 import { Utils } from "@mat3ra/utils";
 import nunjucks from "nunjucks";
 
-import ContextProvider, {
-    type ContextProviderConfig,
-    type ContextProviderName,
-} from "./context/ContextProvider";
+import ContextProvider from "./context/ContextProvider";
 import ContextProviderRegistryContainer from "./context/ContextProviderRegistryContainer";
 import { type TemplateSchemaMixin, templateSchemaMixin } from "./generated/TemplateSchemaMixin";
 
@@ -37,11 +38,11 @@ export type TemplateMixin = TemplateSchemaMixin & {
 
 export type ContextProviderConfigMapEntry = {
     providerCls: typeof ContextProvider;
-    config: ContextProviderConfig;
+    config: ContextProviderSchema;
 };
 
 export type ContextProviderConfigMap = Partial<
-    Record<ContextProviderName, ContextProviderConfigMapEntry>
+    Record<ContextProviderNameEnum, ContextProviderConfigMapEntry>
 >;
 
 export type TemplateStaticMixin = {
@@ -184,7 +185,7 @@ function templatePropertiesMixin(item: InMemoryEntity) {
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
 }
 
-function templateStaticMixin(item: Constructor<TemplateBase>) {
+export function templateStaticMixin(item: Constructor<TemplateBase>) {
     // @ts-ignore
     const properties: TemplateStaticMixin & Constructor<TemplateBase> = {
         contextProviderRegistry: null,

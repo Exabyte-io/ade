@@ -1,11 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import type { UiSchema } from "react-jsonschema-form";
 
-import ContextProvider, { type ContextProviderConfig } from "./ContextProvider";
-
-interface JSONSchemaFormDataProviderConfig extends ContextProviderConfig {
-    isUsingJinjaVariables?: boolean;
-}
+import JSONSchemaDataProvider from "./JSONSchemaDataProvider";
 
 /**
  * @summary Provides jsonSchema and uiSchema for generating react-jsonschema-form
@@ -17,18 +13,8 @@ interface JSONSchemaFormDataProviderConfig extends ContextProviderConfig {
  *      formData={provider.getData(unit.important)} />
  * ```
  */
-export default class JSONSchemaFormDataProvider extends ContextProvider {
-    isUsingJinjaVariables: boolean;
-
-    constructor(config: JSONSchemaFormDataProviderConfig) {
-        super(config);
-        this.isUsingJinjaVariables = Boolean(config?.isUsingJinjaVariables);
-    }
-
-    get jsonSchema() {
-        throw new Error("Not implemented.");
-    }
-
+// TODO: MOVE to WebApp/ave or wove
+export default class JSONSchemaFormDataProvider extends JSONSchemaDataProvider {
     get uiSchema(): UiSchema {
         throw new Error("Not implemented.");
     }

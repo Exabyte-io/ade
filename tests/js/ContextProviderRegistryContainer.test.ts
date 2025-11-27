@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-expressions */
+import { Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 import { expect } from "chai";
 
 import ContextProvider, {
     type ContextProviderInstance,
-    ContextProviderName,
 } from "../../src/js/context/ContextProvider";
 import ContextProviderRegistryContainer from "../../src/js/context/ContextProviderRegistryContainer";
 
@@ -23,7 +22,7 @@ describe("ContextProviderRegistryContainer", () => {
         container = new ContextProviderRegistryContainer();
         mockProviderInstance = {
             constructor: MockContextProvider,
-            config: { name: ContextProviderName.QGridFormDataManager },
+            config: { name: ContextProviderNameEnum.QGridFormDataManager },
         };
     });
 
@@ -51,12 +50,12 @@ describe("ContextProviderRegistryContainer", () => {
     describe("addProvider", () => {
         it("should add a provider to the registry", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             expect(container.providers).to.have.length(1);
             expect(container.providers[0]).to.deep.equal({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
         });
@@ -64,22 +63,24 @@ describe("ContextProviderRegistryContainer", () => {
         it("should add multiple providers", () => {
             const provider2 = {
                 constructor: MockContextProvider,
-                config: { name: ContextProviderName.PlanewaveCutoffDataManager },
+                config: { name: ContextProviderNameEnum.PlanewaveCutoffDataManager },
             };
 
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             container.addProvider({
-                name: ContextProviderName.PlanewaveCutoffDataManager,
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 instance: provider2,
             });
 
             expect(container.providers).to.have.length(2);
-            expect(container.providers[0].name).to.equal(ContextProviderName.QGridFormDataManager);
+            expect(container.providers[0].name).to.equal(
+                ContextProviderNameEnum.QGridFormDataManager,
+            );
             expect(container.providers[1].name).to.equal(
-                ContextProviderName.PlanewaveCutoffDataManager,
+                ContextProviderNameEnum.PlanewaveCutoffDataManager,
             );
         });
     });
@@ -87,19 +88,19 @@ describe("ContextProviderRegistryContainer", () => {
     describe("findProviderInstanceByName", () => {
         it("should find provider instance by name", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
 
             const found = container.findProviderInstanceByName(
-                ContextProviderName.QGridFormDataManager,
+                ContextProviderNameEnum.QGridFormDataManager,
             );
             expect(found).to.equal(mockProviderInstance);
         });
 
         it("should return undefined for non-existent provider", () => {
             const found = container.findProviderInstanceByName(
-                ContextProviderName.KGridFormDataManager,
+                ContextProviderNameEnum.KGridFormDataManager,
             );
             expect(found).to.be.undefined;
         });
@@ -107,20 +108,20 @@ describe("ContextProviderRegistryContainer", () => {
         it("should find provider when multiple providers exist", () => {
             const provider2 = {
                 constructor: MockContextProvider,
-                config: { name: ContextProviderName.PlanewaveCutoffDataManager },
+                config: { name: ContextProviderNameEnum.PlanewaveCutoffDataManager },
             };
 
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             container.addProvider({
-                name: ContextProviderName.PlanewaveCutoffDataManager,
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 instance: provider2,
             });
 
             const found = container.findProviderInstanceByName(
-                ContextProviderName.PlanewaveCutoffDataManager,
+                ContextProviderNameEnum.PlanewaveCutoffDataManager,
             );
             expect(found).to.equal(provider2);
         });
@@ -129,12 +130,12 @@ describe("ContextProviderRegistryContainer", () => {
     describe("removeProvider", () => {
         it("should remove provider by ContextProvider instance", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
 
             const providerInstance = new MockContextProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
             });
             container.removeProvider(providerInstance);
 
@@ -145,38 +146,38 @@ describe("ContextProviderRegistryContainer", () => {
         it("should remove only the matching provider", () => {
             const provider2 = {
                 constructor: MockContextProvider,
-                config: { name: ContextProviderName.PlanewaveCutoffDataManager },
+                config: { name: ContextProviderNameEnum.PlanewaveCutoffDataManager },
             };
 
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             container.addProvider({
-                name: ContextProviderName.PlanewaveCutoffDataManager,
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 instance: provider2,
             });
 
             const providerInstance = new MockContextProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
             });
             container.removeProvider(providerInstance);
 
             // The removeProvider method should remove the matching provider
             expect(container.providers).to.have.length(1);
             expect(container.providers[0].name).to.equal(
-                ContextProviderName.PlanewaveCutoffDataManager,
+                ContextProviderNameEnum.PlanewaveCutoffDataManager,
             );
         });
 
         it("should not remove anything if provider not found", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
 
             const nonExistentProvider = new MockContextProvider({
-                name: ContextProviderName.KGridFormDataManager,
+                name: ContextProviderNameEnum.KGridFormDataManager,
             });
             container.removeProvider(nonExistentProvider);
 
@@ -187,13 +188,13 @@ describe("ContextProviderRegistryContainer", () => {
     describe("removeProviderByName", () => {
         it("should remove provider by name", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
 
             expect(container.providers).to.have.length(1);
 
-            container.removeProviderByName(ContextProviderName.QGridFormDataManager);
+            container.removeProviderByName(ContextProviderNameEnum.QGridFormDataManager);
 
             expect(container.providers).to.have.length(0);
         });
@@ -201,33 +202,33 @@ describe("ContextProviderRegistryContainer", () => {
         it("should remove only the matching provider by name", () => {
             const provider2 = {
                 constructor: MockContextProvider,
-                config: { name: ContextProviderName.PlanewaveCutoffDataManager },
+                config: { name: ContextProviderNameEnum.PlanewaveCutoffDataManager },
             };
 
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             container.addProvider({
-                name: ContextProviderName.PlanewaveCutoffDataManager,
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 instance: provider2,
             });
 
-            container.removeProviderByName(ContextProviderName.QGridFormDataManager);
+            container.removeProviderByName(ContextProviderNameEnum.QGridFormDataManager);
 
             expect(container.providers).to.have.length(1);
             expect(container.providers[0].name).to.equal(
-                ContextProviderName.PlanewaveCutoffDataManager,
+                ContextProviderNameEnum.PlanewaveCutoffDataManager,
             );
         });
 
         it("should not remove anything if provider name not found", () => {
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
 
-            container.removeProviderByName(ContextProviderName.KGridFormDataManager);
+            container.removeProviderByName(ContextProviderNameEnum.KGridFormDataManager);
 
             expect(container.providers).to.have.length(1);
         });
@@ -237,33 +238,34 @@ describe("ContextProviderRegistryContainer", () => {
         it("should handle full lifecycle: add, find, remove", () => {
             // Add providers
             container.addProvider({
-                name: ContextProviderName.QGridFormDataManager,
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 instance: mockProviderInstance,
             });
             container.addProvider({
-                name: ContextProviderName.PlanewaveCutoffDataManager,
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 instance: mockProviderInstance,
             });
 
             // Verify they exist
             expect(
-                container.findProviderInstanceByName(ContextProviderName.QGridFormDataManager),
+                container.findProviderInstanceByName(ContextProviderNameEnum.QGridFormDataManager),
             ).to.equal(mockProviderInstance);
             expect(
                 container.findProviderInstanceByName(
-                    ContextProviderName.PlanewaveCutoffDataManager,
+                    ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 ),
             ).to.equal(mockProviderInstance);
 
             // Remove one
-            container.removeProviderByName(ContextProviderName.QGridFormDataManager);
+            container.removeProviderByName(ContextProviderNameEnum.QGridFormDataManager);
 
             // Verify state
-            expect(container.findProviderInstanceByName(ContextProviderName.QGridFormDataManager))
-                .to.be.undefined;
+            expect(
+                container.findProviderInstanceByName(ContextProviderNameEnum.QGridFormDataManager),
+            ).to.be.undefined;
             expect(
                 container.findProviderInstanceByName(
-                    ContextProviderName.PlanewaveCutoffDataManager,
+                    ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 ),
             ).to.equal(mockProviderInstance);
             expect(container.providers).to.have.length(1);

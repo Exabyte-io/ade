@@ -1,60 +1,27 @@
+import { ContextProviderSchema, Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 export interface ContextProviderInstance {
     constructor: typeof ContextProvider;
-    config: ContextProviderConfig;
+    config: ContextProviderSchema;
 }
-export interface ContextProviderConfig {
-    name: ContextProviderName | `${ContextProviderName}`;
+export interface ContextProviderStatic {
+    getConstructorConfig: (config: ContextProviderSchema) => ContextProviderInstance;
+    createConfigFromContext: (config: ContextProviderSchema) => ContextProviderSchema;
+    getExtraDataKeyByName: (name: string) => string;
+    getIsEditedKeyByName: (name: string) => string;
+}
+export default class ContextProvider implements ContextProviderSchema {
+    config: ContextProviderSchema;
+    name: ContextProviderNameEnum;
     domain?: string;
     entityName?: string;
     data?: object;
     extraData?: object;
     isEdited?: boolean;
     context?: object;
-}
-export declare enum ContextProviderName {
-    PlanewaveCutoffDataManager = "PlanewaveCutoffDataManager",
-    KGridFormDataManager = "KGridFormDataManager",
-    QGridFormDataManager = "QGridFormDataManager",
-    IGridFormDataManager = "IGridFormDataManager",
-    QPathFormDataManager = "QPathFormDataManager",
-    IPathFormDataManager = "IPathFormDataManager",
-    KPathFormDataManager = "KPathFormDataManager",
-    ExplicitKPathFormDataManager = "ExplicitKPathFormDataManager",
-    ExplicitKPath2PIBAFormDataManager = "ExplicitKPath2PIBAFormDataManager",
-    HubbardJContextManager = "HubbardJContextManager",
-    HubbardUContextManager = "HubbardUContextManager",
-    HubbardVContextManager = "HubbardVContextManager",
-    HubbardContextManagerLegacy = "HubbardContextManagerLegacy",
-    NEBFormDataManager = "NEBFormDataManager",
-    BoundaryConditionsFormDataManager = "BoundaryConditionsFormDataManager",
-    MLSettingsDataManager = "MLSettingsDataManager",
-    MLTrainTestSplitDataManager = "MLTrainTestSplitDataManager",
-    IonDynamicsContextProvider = "IonDynamicsContextProvider",
-    CollinearMagnetizationDataManager = "CollinearMagnetizationDataManager",
-    NonCollinearMagnetizationDataManager = "NonCollinearMagnetizationDataManager",
-    QEPWXInputDataManager = "QEPWXInputDataManager",
-    QENEBInputDataManager = "QENEBInputDataManager",
-    VASPInputDataManager = "VASPInputDataManager",
-    VASPNEBInputDataManager = "VASPNEBInputDataManager",
-    NWChemInputDataManager = "NWChemInputDataManager"
-}
-export interface ContextProviderStatic {
-    getConstructorConfig: (config: ContextProviderConfig) => ContextProviderInstance;
-    createConfigFromContext: (config: ContextProviderConfig) => ContextProviderConfig;
-    getExtraDataKeyByName: (name: string) => string;
-    getIsEditedKeyByName: (name: string) => string;
-}
-export default class ContextProvider {
-    config: ContextProviderConfig;
-    name: `${ContextProviderName}`;
-    domain?: string;
-    entityName?: string;
-    data?: object;
-    extraData?: object;
-    isEdited?: boolean;
-    constructor(config: ContextProviderConfig);
-    static getConstructorConfig(config: ContextProviderConfig): ContextProviderInstance;
-    static createConfigFromContext(config: ContextProviderConfig): ContextProviderConfig & ({
+    [k: string]: unknown;
+    constructor(config: ContextProviderSchema);
+    static getConstructorConfig(config: ContextProviderSchema): ContextProviderInstance;
+    static createConfigFromContext(config: ContextProviderSchema): ContextProviderSchema & ({
         data: never;
         extraData: any;
         isEdited: any;

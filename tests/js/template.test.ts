@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+import { Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 import { expect } from "chai";
 
 import ContextProvider from "../../src/js/context/ContextProvider";
@@ -19,7 +20,7 @@ class MockContextProvider extends ContextProvider {
 // Set up the static context provider registry before tests
 const mockConfig: ContextProviderConfigMapEntry = {
     providerCls: MockContextProvider,
-    config: { name: "QGridFormDataManager" },
+    config: { name: ContextProviderNameEnum.QGridFormDataManager },
 };
 
 const providersConfig: ContextProviderConfigMap = {
@@ -192,7 +193,7 @@ describe("Template", () => {
         // describe("addContextProvider method", () => {
         //     it("should add a context provider", () => {
         //         const provider = new MockContextProvider({
-        //             name: "QGridFormDataManager",
+        //             name: ContextProviderNameEnum.QGridFormDataManager,
         //             domain: "test",
         //         });
         //         const initialLength = template.contextProviders.length;
@@ -205,15 +206,14 @@ describe("Template", () => {
         // describe("removeContextProvider method", () => {
         //     it("should remove a context provider by name and domain", () => {
         //         const provider1 = new MockContextProvider({
-        //             name: "QGridFormDataManager",
+        //             name: ContextProviderNameEnum.QGridFormDataManager,
         //             domain: "domain1",
         //         });
         //         const provider2 = new MockContextProvider({
-        //             name: "PlanewaveCutoffDataManager",
+        //             name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
         //             domain: "domain2",
         //         });
         //         template.setProp("contextProviders", [provider1, provider2]);
-
         //         template.removeContextProvider(provider1);
         //         expect(template.contextProviders).to.deep.equal([provider2]);
         //     });
@@ -306,14 +306,14 @@ describe("Template", () => {
         // Added with LLM to help with coverage
         it("should handle getDataFromProvidersForPersistentContext with edited providers", () => {
             const editedProvider = new MockContextProvider({
-                name: "QGridFormDataManager",
+                name: ContextProviderNameEnum.QGridFormDataManager,
                 domain: "test",
             });
             editedProvider.isEdited = true;
             editedProvider.yieldData = () => ({ data: { value: 1 } });
 
             const nonEditedProvider = new MockContextProvider({
-                name: "PlanewaveCutoffDataManager",
+                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
                 domain: "test",
             });
             nonEditedProvider.isEdited = false;
@@ -325,6 +325,16 @@ describe("Template", () => {
             ];
             const result = template.getDataFromProvidersForPersistentContext();
             expect(result).to.deep.equal({ data: { value: 1 } });
+        });
+
+        it("should throw error when provider not found", () => {
+            template.setProp("contextProviders", [
+                { name: ContextProviderNameEnum.KGridFormDataManager },
+            ]);
+            Template.contextProviderRegistry = null;
+            expect(() => template.getContextProvidersAsClassInstances()).to.throw(
+                /Provider .* not found/,
+            );
         });
     });
 

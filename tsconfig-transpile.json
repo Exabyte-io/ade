@@ -1,3 +1,0 @@
-{
-    "extends": "@mat3ra/tsconfig/tsconfig-js-py-transpile.json"
-}

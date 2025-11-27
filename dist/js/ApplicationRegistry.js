@@ -119,7 +119,6 @@ class ApplicationRegistry {
     }
     static getExecutableByName(appName, execName) {
         const appTree = new standata_1.ApplicationStandata().getAppTreeForApplication(appName);
-        console.log("================", appTree);
         Object.entries(appTree).forEach(([name, exec]) => {
             exec.name = name;
         });

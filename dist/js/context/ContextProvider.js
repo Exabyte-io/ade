@@ -3,49 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContextProviderName = void 0;
-/*
- * @summary This is a standalone class that contains "data" for a property with "name". Helps facilitate UI logic.
- *          Can be initialized from context when user edits are present:
- *          - user edits the corresponding property, eg. "kpath"
- *          - isKpathEdited is set to `true`
- *          - context property is updated for the parent entity (eg. Unit) in a way that persists in Redux state
- *          - new entity inherits the "data" through "context" field in config
- *          - `extraData` field is used to store any other data that should be passed from one instance of provider
- *             to next one, for example data about material to track when it is changed.
- * @notes   Should hold static data only (see `setData` method), no classes or functions
- */
 const utils_1 = require("@mat3ra/utils");
 const lodash_1 = __importDefault(require("lodash"));
-// TODO: separate application-specific CPs
-var ContextProviderName;
-(function (ContextProviderName) {
-    ContextProviderName["PlanewaveCutoffDataManager"] = "PlanewaveCutoffDataManager";
-    ContextProviderName["KGridFormDataManager"] = "KGridFormDataManager";
-    ContextProviderName["QGridFormDataManager"] = "QGridFormDataManager";
-    ContextProviderName["IGridFormDataManager"] = "IGridFormDataManager";
-    ContextProviderName["QPathFormDataManager"] = "QPathFormDataManager";
-    ContextProviderName["IPathFormDataManager"] = "IPathFormDataManager";
-    ContextProviderName["KPathFormDataManager"] = "KPathFormDataManager";
-    ContextProviderName["ExplicitKPathFormDataManager"] = "ExplicitKPathFormDataManager";
-    ContextProviderName["ExplicitKPath2PIBAFormDataManager"] = "ExplicitKPath2PIBAFormDataManager";
-    ContextProviderName["HubbardJContextManager"] = "HubbardJContextManager";
-    ContextProviderName["HubbardUContextManager"] = "HubbardUContextManager";
-    ContextProviderName["HubbardVContextManager"] = "HubbardVContextManager";
-    ContextProviderName["HubbardContextManagerLegacy"] = "HubbardContextManagerLegacy";
-    ContextProviderName["NEBFormDataManager"] = "NEBFormDataManager";
-    ContextProviderName["BoundaryConditionsFormDataManager"] = "BoundaryConditionsFormDataManager";
-    ContextProviderName["MLSettingsDataManager"] = "MLSettingsDataManager";
-    ContextProviderName["MLTrainTestSplitDataManager"] = "MLTrainTestSplitDataManager";
-    ContextProviderName["IonDynamicsContextProvider"] = "IonDynamicsContextProvider";
-    ContextProviderName["CollinearMagnetizationDataManager"] = "CollinearMagnetizationDataManager";
-    ContextProviderName["NonCollinearMagnetizationDataManager"] = "NonCollinearMagnetizationDataManager";
-    ContextProviderName["QEPWXInputDataManager"] = "QEPWXInputDataManager";
-    ContextProviderName["QENEBInputDataManager"] = "QENEBInputDataManager";
-    ContextProviderName["VASPInputDataManager"] = "VASPInputDataManager";
-    ContextProviderName["VASPNEBInputDataManager"] = "VASPNEBInputDataManager";
-    ContextProviderName["NWChemInputDataManager"] = "NWChemInputDataManager";
-})(ContextProviderName || (exports.ContextProviderName = ContextProviderName = {}));
 class ContextProvider {
     constructor(config) {
         this.config = config;
