@@ -1,6 +1,6 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type NamedInMemoryEntity,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
@@ -10,7 +10,7 @@ import { type TemplateMixin, type TemplateStaticMixin, templateMixin } from "./t
 
 type Base = typeof InMemoryEntity &
     Constructor<TemplateMixin> &
-    Constructor<NamedInMemoryEntity> &
+    Constructor<NamedEntity> &
     TemplateStaticMixin;
 
 export default class Template extends (InMemoryEntity as Base) {

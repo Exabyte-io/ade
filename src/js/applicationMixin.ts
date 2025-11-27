@@ -1,6 +1,6 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import type { DefaultableInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
-import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
+import type { NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
@@ -12,7 +12,7 @@ import {
     applicationSchemaMixin,
 } from "./generated/ApplicationSchemaMixin";
 
-type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
+type Base = InMemoryEntity & NamedEntity & DefaultableInMemoryEntity;
 
 export type BaseConstructor = Constructor<Base> & {
     constructCustomExecutable?: (config: object) => Executable;
@@ -36,8 +36,6 @@ export type ApplicationStaticMixin = {
 function applicationPropertiesMixin<T extends InMemoryEntity>(
     item: T,
 ): asserts item is T & ApplicationMixin {
-    applicationSchemaMixin(item);
-
     // @ts-expect-error
     const properties: ApplicationMixin & Base = {
         get isUsingMaterial() {
@@ -65,6 +63,7 @@ function applicationStaticMixin<T extends BaseConstructor>(Application: T) {
 }
 
 export function applicationMixin(Item: BaseConstructor) {
+    applicationSchemaMixin(Item.prototype);
     applicationPropertiesMixin(Item.prototype);
     applicationStaticMixin(Item);
 }

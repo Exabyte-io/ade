@@ -4,13 +4,13 @@ import {
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
-    type NamedInMemoryEntity,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import {
-    type RuntimeItemsStringInMemoryEntity,
-    runtimeItemsStringMixin,
-} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsStringMixin";
+    type RuntimeItems,
+    runtimeItemsMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
@@ -18,8 +18,8 @@ import { type FlavorMixin, flavorMixin } from "./flavorMixin";
 
 type Base = typeof InMemoryEntity &
     Constructor<FlavorMixin> &
-    Constructor<RuntimeItemsStringInMemoryEntity> &
-    Constructor<NamedInMemoryEntity> &
+    Constructor<RuntimeItems> &
+    Constructor<NamedEntity> &
     Constructor<DefaultableInMemoryEntity>;
 
 export default class Flavor extends (InMemoryEntity as Base) {
@@ -38,7 +38,7 @@ export default class Flavor extends (InMemoryEntity as Base) {
     }
 }
 
-runtimeItemsStringMixin(Flavor.prototype);
+runtimeItemsMixin(Flavor.prototype);
 namedEntityMixin(Flavor.prototype);
 defaultableEntityMixin(Flavor);
 flavorMixin(Flavor);

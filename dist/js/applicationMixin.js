@@ -8,7 +8,6 @@ const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/ess
 const standata_1 = require("@mat3ra/standata");
 const ApplicationSchemaMixin_1 = require("./generated/ApplicationSchemaMixin");
 function applicationPropertiesMixin(item) {
-    (0, ApplicationSchemaMixin_1.applicationSchemaMixin)(item);
     // @ts-expect-error
     const properties = {
         get isUsingMaterial() {
@@ -30,6 +29,7 @@ function applicationStaticMixin(Application) {
     Object.defineProperties(Application, Object.getOwnPropertyDescriptors(properties));
 }
 function applicationMixin(Item) {
+    (0, ApplicationSchemaMixin_1.applicationSchemaMixin)(Item.prototype);
     applicationPropertiesMixin(Item.prototype);
     applicationStaticMixin(Item);
 }

@@ -21,6 +21,8 @@ describe("Executable", () => {
         expect(executable).to.be.instanceOf(Executable);
         expect(executable.name).to.equal("pw.x");
 
+        console.log("================", executable._json);
+
         // Get JSON representation
         const json = executable.toJSON();
 

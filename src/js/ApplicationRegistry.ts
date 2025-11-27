@@ -176,6 +176,8 @@ export default class ApplicationRegistry {
     static getExecutableByName(appName: string, execName?: string) {
         const appTree = new ApplicationStandata().getAppTreeForApplication(appName);
 
+        console.log("================", appTree);
+
         Object.entries(appTree).forEach(([name, exec]) => {
             exec.name = name;
         });

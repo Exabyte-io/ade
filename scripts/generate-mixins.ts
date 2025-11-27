@@ -18,10 +18,10 @@ import type { JSONSchema7 } from "json-schema";
  * Output file paths for each schema
  */
 const OUTPUT_PATHS = {
-    "software/executable_properties": "src/js/generated/ExecutableSchemaMixin.ts",
-    "software/flavor_properties": "src/js/generated/FlavorSchemaMixin.ts",
-    "software/application_properties": "src/js/generated/ApplicationSchemaMixin.ts",
-    "software/template_properties": "src/js/generated/TemplateSchemaMixin.ts",
+    "software/executable-properties": "src/js/generated/ExecutableSchemaMixin.ts",
+    "software/flavor-properties": "src/js/generated/FlavorSchemaMixin.ts",
+    "software/application-properties": "src/js/generated/ApplicationSchemaMixin.ts",
+    "software/template-properties": "src/js/generated/TemplateSchemaMixin.ts",
 };
 
 function main() {

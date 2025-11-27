@@ -4,21 +4,21 @@ import {
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
-    type NamedInMemoryEntity,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import {
-    type RuntimeItemsStringInMemoryEntity,
-    runtimeItemsStringMixin,
-} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsStringMixin";
+    type RuntimeItems,
+    runtimeItemsMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
 import { type ExecutableMixin, executableMixin } from "./executableMixin";
 
 type Base = Constructor<ExecutableMixin> &
-    Constructor<RuntimeItemsStringInMemoryEntity> &
-    Constructor<NamedInMemoryEntity> &
+    Constructor<RuntimeItems> &
+    Constructor<NamedEntity> &
     Constructor<DefaultableInMemoryEntity> &
     typeof InMemoryEntity;
 
@@ -35,8 +35,7 @@ export default class Executable extends (InMemoryEntity as Base) {
     }
 }
 
-// Apply mixins
-runtimeItemsStringMixin(Executable.prototype);
 namedEntityMixin(Executable.prototype);
 defaultableEntityMixin(Executable);
+runtimeItemsMixin(Executable.prototype);
 executableMixin(Executable);
