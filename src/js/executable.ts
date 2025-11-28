@@ -1,14 +1,14 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type DefaultableInMemoryEntity,
+    type DefaultableInMemoryEntityConstructor,
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
-    type NamedEntity,
+    type NamedInMemoryEntityConstructor,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import {
-    type RuntimeItems,
+    type RuntimeItemsInMemoryEntityConstructor,
     runtimeItemsMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
@@ -17,12 +17,12 @@ import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 import { type ExecutableMixin, executableMixin } from "./executableMixin";
 
 type Base = Constructor<ExecutableMixin> &
-    Constructor<RuntimeItems> &
-    Constructor<NamedEntity> &
-    Constructor<DefaultableInMemoryEntity> &
+    RuntimeItemsInMemoryEntityConstructor &
+    NamedInMemoryEntityConstructor &
+    DefaultableInMemoryEntityConstructor &
     typeof InMemoryEntity;
 
-export default class Executable extends (InMemoryEntity as Base) {
+export default class Executable extends (InMemoryEntity as Base) implements ExecutableSchema {
     constructor(data: Partial<ExecutableSchema> = {}) {
         super({
             monitors: [],

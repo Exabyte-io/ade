@@ -21,7 +21,7 @@ class Flavor extends entity_1.InMemoryEntity {
     }
 }
 exports.default = Flavor;
-(0, RuntimeItemsMixin_1.runtimeItemsMixin)(Flavor.prototype);
 (0, NamedEntityMixin_1.namedEntityMixin)(Flavor.prototype);
 (0, DefaultableMixin_1.defaultableEntityMixin)(Flavor);
+(0, RuntimeItemsMixin_1.runtimeItemsMixin)(Flavor.prototype);
 (0, flavorMixin_1.flavorMixin)(Flavor);

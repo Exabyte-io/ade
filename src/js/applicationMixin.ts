@@ -1,5 +1,5 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { DefaultableInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
+import type { Defaultable } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import type { NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
@@ -12,7 +12,7 @@ import {
     applicationSchemaMixin,
 } from "./generated/ApplicationSchemaMixin";
 
-type Base = InMemoryEntity & NamedEntity & DefaultableInMemoryEntity;
+type Base = InMemoryEntity & NamedEntity & Defaultable;
 
 export type BaseConstructor = Constructor<Base> & {
     constructCustomExecutable?: (config: object) => Executable;

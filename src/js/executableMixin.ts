@@ -1,5 +1,5 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { DefaultableInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
+import type { Defaultable } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import type { NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
@@ -10,7 +10,7 @@ import type { FlavorMixin } from "./flavorMixin";
 import { ExecutableSchemaMixin, executableSchemaMixin } from "./generated/ExecutableSchemaMixin";
 
 type BaseFlavor = FlavorMixin & NamedEntity & InMemoryEntity;
-type Base = InMemoryEntity & NamedEntity & DefaultableInMemoryEntity;
+type Base = InMemoryEntity & NamedEntity & Defaultable;
 
 export type BaseConstructor = Constructor<Base> & {
     constructCustomFlavor?: (config: object) => BaseFlavor;
