@@ -2,7 +2,6 @@ import Application from "./application";
 import { applicationMixin } from "./applicationMixin";
 import ApplicationRegistry from "./ApplicationRegistry";
 import ContextProvider from "./context/ContextProvider";
-import JSONSchemaDataProvider from "./context/JSONSchemaDataProvider";
 import Executable from "./executable";
 import { executableMixin } from "./executableMixin";
 import Flavor from "./flavor";
@@ -19,7 +18,6 @@ export {
     Template,
     ApplicationRegistry,
     ContextProvider,
-    JSONSchemaDataProvider,
     executableMixin,
     flavorMixin,
     applicationMixin,
