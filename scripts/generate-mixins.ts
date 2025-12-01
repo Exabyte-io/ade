@@ -25,7 +25,6 @@ const OUTPUT_PATHS = {
 };
 
 function main() {
-    // Type assertion to handle schema compatibility - the schemas from esse may have slightly different types
     const result = generateSchemaMixin(allSchemas as JSONSchema7[], OUTPUT_PATHS);
 
     if (result.errorCount > 0) {
