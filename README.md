@@ -22,11 +22,18 @@ For usage within a JavaScript project:
 npm install @mat3ra/ade
 ```
 
+For usage within a Python project:
+
+```bash
+pip install mat3ra-ade
+```
+
 For development:
 
 ```bash
 git clone https://github.com/Exabyte-io/ade.git
 ```
+
 
 ## Contributions
 
@@ -39,6 +46,7 @@ See [ESSE](https://github.com/Exabyte-io/esse) for additional context regarding 
 
 Useful commands for development:
 
+### JavaScript/TypeScript
 ```bash
 # run linter without persistence
 npm run lint
@@ -60,6 +68,20 @@ npm run test:coverage:check
 
 # generate HTML coverage report
 npm run test:coverage:html
+```
+
+### Python
+```bash
+# run linter
+python -m black src/py/mat3ra/ade/ tests/py/
+python -m ruff check src/py/mat3ra/ade/ tests/py/
+python -m isort src/py/mat3ra/ade/ tests/py/
+
+# run tests
+python -m pytest tests/py/
+
+# run tests with coverage
+python -m pytest tests/py/ --cov=mat3ra.ade --cov-report=html
 ```
 
 ## Development: Code/Test Coverage
