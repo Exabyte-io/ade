@@ -38,29 +38,11 @@ export function templateSchemaMixin<T extends InMemoryEntity>(
         set contextProviders(value: TemplatePropertiesSchema["contextProviders"]) {
             this.setProp("contextProviders", value);
         },
-        get isManuallyChanged() {
-            return this.prop<TemplatePropertiesSchema["isManuallyChanged"]>("isManuallyChanged");
-        },
-        set isManuallyChanged(value: TemplatePropertiesSchema["isManuallyChanged"]) {
-            this.setProp("isManuallyChanged", value);
-        },
-        get name() {
-            return this.requiredProp<TemplatePropertiesSchema["name"]>("name");
-        },
-        set name(value: TemplatePropertiesSchema["name"]) {
-            this.setProp("name", value);
-        },
         get content() {
             return this.requiredProp<TemplatePropertiesSchema["content"]>("content");
         },
         set content(value: TemplatePropertiesSchema["content"]) {
             this.setProp("content", value);
-        },
-        get rendered() {
-            return this.prop<TemplatePropertiesSchema["rendered"]>("rendered");
-        },
-        set rendered(value: TemplatePropertiesSchema["rendered"]) {
-            this.setProp("rendered", value);
         },
     };
 

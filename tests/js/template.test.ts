@@ -1,60 +1,7 @@
 /* eslint-disable no-unused-expressions */
-import { Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 import { expect } from "chai";
 
-import ContextProvider from "../../src/js/context/ContextProvider";
-import Template from "../../src/js/template";
-import type {
-    ContextProviderConfigMap,
-    ContextProviderConfigMapEntry,
-} from "../../src/js/templateMixin";
-
-// Mock context provider class
-class MockContextProvider extends ContextProvider {
-    // eslint-disable-next-line class-methods-use-this
-    get defaultData() {
-        return { test: "value" };
-    }
-}
-
-// Set up the static context provider registry before tests
-const mockConfig: ContextProviderConfigMapEntry = {
-    providerCls: MockContextProvider,
-    config: { name: ContextProviderNameEnum.QGridFormDataManager },
-};
-
-const providersConfig: ContextProviderConfigMap = {
-    QGridFormDataManager: mockConfig,
-    PlanewaveCutoffDataManager: mockConfig,
-    KGridFormDataManager: mockConfig,
-    IGridFormDataManager: mockConfig,
-    QPathFormDataManager: mockConfig,
-    IPathFormDataManager: mockConfig,
-    KPathFormDataManager: mockConfig,
-    ExplicitKPathFormDataManager: mockConfig,
-    ExplicitKPath2PIBAFormDataManager: mockConfig,
-    HubbardJContextManager: mockConfig,
-    HubbardUContextManager: mockConfig,
-    HubbardVContextManager: mockConfig,
-    HubbardContextManagerLegacy: mockConfig,
-    NEBFormDataManager: mockConfig,
-    BoundaryConditionsFormDataManager: mockConfig,
-    MLSettingsDataManager: mockConfig,
-    MLTrainTestSplitDataManager: mockConfig,
-    IonDynamicsContextProvider: mockConfig,
-    CollinearMagnetizationDataManager: mockConfig,
-    NonCollinearMagnetizationDataManager: mockConfig,
-    QEPWXInputDataManager: mockConfig,
-    QENEBInputDataManager: mockConfig,
-    VASPInputDataManager: mockConfig,
-    VASPNEBInputDataManager: mockConfig,
-    NWChemInputDataManager: mockConfig,
-};
-
-before(() => {
-    // Register the mock provider
-    Template.setContextProvidersConfig(providersConfig);
-});
+import Template from "../../src/js/Template";
 
 describe("Template", () => {
     let template: Template;
@@ -64,9 +11,7 @@ describe("Template", () => {
     });
 
     it("toJSON works as expected", () => {
-        const template = new Template({ name: "test_template" });
-        template.setContent("test content");
-        template.setRendered("test content");
+        const template = new Template({ name: "test_template", content: "test content" });
         const json = template.toJSON();
 
         // Check basic properties from NamedInMemoryEntity
@@ -84,14 +29,9 @@ describe("Template", () => {
     });
 
     it("toJSON includes all template properties when set", () => {
-        const template = new Template({ name: "test_template" });
+        const template = new Template({ name: "test_template", content: "test content" });
 
         // Set various properties
-        template.setContent("test content");
-        template.setProp("isManuallyChanged", true);
-        template.setProp("applicationName", "espresso");
-        template.setProp("executableName", "pw");
-        template.setRendered("rendered content");
 
         const json = template.toJSON();
 
@@ -108,8 +48,8 @@ describe("Template", () => {
 
     it("getRenderedJSON returns valid JSON after rendering", () => {
         const template = new Template({ name: "test_template" });
-        template.setContent("Hello {{ name }}!");
-        template.setProp("isManuallyChanged", false);
+        template.content = "Hello {{ name }}!";
+        template.isManuallyChanged = false;
 
         const json = template.getRenderedJSON({ name: "World" });
 
@@ -302,48 +242,9 @@ describe("Template", () => {
                 template.getDataFromProvidersForRenderingContext = originalMethod;
             });
         });
-
-        // Added with LLM to help with coverage
-        it("should handle getDataFromProvidersForPersistentContext with edited providers", () => {
-            const editedProvider = new MockContextProvider({
-                name: ContextProviderNameEnum.QGridFormDataManager,
-                domain: "test",
-            });
-            editedProvider.isEdited = true;
-            editedProvider.yieldData = () => ({ data: { value: 1 } });
-
-            const nonEditedProvider = new MockContextProvider({
-                name: ContextProviderNameEnum.PlanewaveCutoffDataManager,
-                domain: "test",
-            });
-            nonEditedProvider.isEdited = false;
-            nonEditedProvider.yieldData = () => ({ data: { value: 2 } });
-
-            template.getContextProvidersAsClassInstances = () => [
-                editedProvider,
-                nonEditedProvider,
-            ];
-            const result = template.getDataFromProvidersForPersistentContext();
-            expect(result).to.deep.equal({ data: { value: 1 } });
-        });
-
-        it("should throw error when provider not found", () => {
-            template.setProp("contextProviders", [
-                { name: ContextProviderNameEnum.KGridFormDataManager },
-            ]);
-            Template.contextProviderRegistry = null;
-            expect(() => template.getContextProvidersAsClassInstances()).to.throw(
-                /Provider .* not found/,
-            );
-        });
     });
 
     describe("templateStaticMixin properties", () => {
-        it("should set context providers config", () => {
-            Template.setContextProvidersConfig(providersConfig);
-            expect(Template.contextProviderRegistry).to.not.be.null;
-        });
-
         it("should have jsonSchema property", () => {
             expect(Template.jsonSchema).to.exist;
         });

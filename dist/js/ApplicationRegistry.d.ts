@@ -1,8 +1,8 @@
-import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
-import Application from "./application";
-import Executable from "./executable";
-import Flavor from "./flavor";
-import Template from "./template";
+import type { ApplicationSchemaBase, TemplateSchema } from "@mat3ra/esse/dist/js/types";
+import Application from "./Application";
+import Executable from "./Executable";
+import Flavor from "./Flavor";
+import Template from "./Template";
 type ApplicationVersion = {
     [build: string]: ApplicationSchemaBase;
 };
@@ -51,7 +51,7 @@ export default class ApplicationRegistry {
         name: string;
     }): Flavor | undefined;
     static getInputAsTemplates(flavor: Flavor): Template[];
-    static getInputAsRenderedTemplates(flavor: Flavor, context: Record<string, unknown>): import("@mat3ra/esse/dist/js/esse/types").AnyObject[];
+    static getInput(flavor: Flavor): TemplateSchema[];
     static getAllFlavorsForApplication(appName: string, version?: string): Flavor[];
 }
 export {};

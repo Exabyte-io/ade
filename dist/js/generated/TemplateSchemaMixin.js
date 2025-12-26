@@ -28,29 +28,11 @@ function templateSchemaMixin(item) {
         set contextProviders(value) {
             this.setProp("contextProviders", value);
         },
-        get isManuallyChanged() {
-            return this.prop("isManuallyChanged");
-        },
-        set isManuallyChanged(value) {
-            this.setProp("isManuallyChanged", value);
-        },
-        get name() {
-            return this.requiredProp("name");
-        },
-        set name(value) {
-            this.setProp("name", value);
-        },
         get content() {
             return this.requiredProp("content");
         },
         set content(value) {
             this.setProp("content", value);
-        },
-        get rendered() {
-            return this.prop("rendered");
-        },
-        set rendered(value) {
-            this.setProp("rendered", value);
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));

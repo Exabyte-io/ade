@@ -1,11 +1,15 @@
 import { getOneMatchFromObject } from "@mat3ra/code/dist/js/utils/object";
-import type { ApplicationSchemaBase, ExecutableSchema } from "@mat3ra/esse/dist/js/types";
+import type {
+    ApplicationSchemaBase,
+    ExecutableSchema,
+    TemplateSchema,
+} from "@mat3ra/esse/dist/js/types";
 import { ApplicationStandata } from "@mat3ra/standata";
 
-import Application from "./application";
-import Executable from "./executable";
-import Flavor from "./flavor";
-import Template from "./template";
+import Application from "./Application";
+import Executable from "./Executable";
+import Flavor from "./Flavor";
+import Template from "./Template";
 
 type ApplicationVersion = {
     [build: string]: ApplicationSchemaBase;
@@ -213,12 +217,15 @@ export default class ApplicationRegistry {
         return this.getFlavorByName(executable, config?.name);
     }
 
-    // flavors
     static getInputAsTemplates(flavor: Flavor) {
-        const appName = flavor.prop("applicationName", "");
-        const execName = flavor.prop("executableName", "");
+        return this.getInput(flavor).map((template) => new Template(template));
+    }
 
-        return flavor.input.map((input) => {
+    static getInput(flavor: Flavor): TemplateSchema[] {
+        const appName = flavor.applicationName || "";
+        const execName = flavor.executableName || "";
+
+        return flavor.input.map((input): TemplateSchema => {
             const inputName = input.templateName || input.name;
 
             const filtered = new ApplicationStandata().getTemplatesByName(
@@ -233,15 +240,15 @@ export default class ApplicationRegistry {
                 );
             }
 
-            return new Template({ ...filtered[0], name: input.name });
+            return { ...filtered[0], name: input.name || "" };
         });
     }
 
-    static getInputAsRenderedTemplates(flavor: Flavor, context: Record<string, unknown>) {
-        return this.getInputAsTemplates(flavor).map((template) => {
-            return template.getRenderedJSON(context);
-        });
-    }
+    // static getInputAsRenderedTemplates(flavor: Flavor, context: ContextProviderConfig) {
+    //     return this.getInputAsTemplates(flavor).map((template) => {
+    //         return template.setContext(context).render().toJSON();
+    //     });
+    // }
 
     static getAllFlavorsForApplication(appName: string, version?: string) {
         const allExecutables = this.getExecutables({ name: appName, version });

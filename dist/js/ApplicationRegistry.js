@@ -5,14 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const object_1 = require("@mat3ra/code/dist/js/utils/object");
 const standata_1 = require("@mat3ra/standata");
-const application_1 = __importDefault(require("./application"));
-const executable_1 = __importDefault(require("./executable"));
-const flavor_1 = __importDefault(require("./flavor"));
-const template_1 = __importDefault(require("./template"));
+const Application_1 = __importDefault(require("./Application"));
+const Executable_1 = __importDefault(require("./Executable"));
+const Flavor_1 = __importDefault(require("./Flavor"));
+const Template_1 = __importDefault(require("./Template"));
 class ApplicationRegistry {
     static createApplication({ name, version = null, build = null }) {
         const staticConfig = ApplicationRegistry.getApplicationConfig({ name, version, build });
-        return new application_1.default({
+        return new Application_1.default({
             ...staticConfig,
             name,
             ...(version && { version }),
@@ -115,7 +115,7 @@ class ApplicationRegistry {
             return (!supportedApplicationVersions ||
                 (version && supportedApplicationVersions.includes(version)));
         })
-            .map((key) => new executable_1.default({ ...tree[key], name: key }));
+            .map((key) => new Executable_1.default({ ...tree[key], name: key }));
     }
     static getExecutableByName(appName, execName) {
         const appTree = new standata_1.ApplicationStandata().getAppTreeForApplication(appName);
@@ -125,7 +125,7 @@ class ApplicationRegistry {
         const config = execName
             ? appTree[execName]
             : (0, object_1.getOneMatchFromObject)(appTree, "isDefault", true);
-        return new executable_1.default(config);
+        return new Executable_1.default(config);
     }
     // TODO: remove this method and use getApplicationExecutableByName directly
     static getExecutableByConfig(appName, config) {
@@ -134,7 +134,7 @@ class ApplicationRegistry {
     static getExecutableFlavors(executable) {
         const flavorsTree = executable.prop("flavors", {});
         return Object.keys(flavorsTree).map((key) => {
-            return new flavor_1.default({
+            return new Flavor_1.default({
                 ...flavorsTree[key],
                 name: key,
             });
@@ -146,24 +146,26 @@ class ApplicationRegistry {
     static getFlavorByConfig(executable, config) {
         return this.getFlavorByName(executable, config === null || config === void 0 ? void 0 : config.name);
     }
-    // flavors
     static getInputAsTemplates(flavor) {
-        const appName = flavor.prop("applicationName", "");
-        const execName = flavor.prop("executableName", "");
+        return this.getInput(flavor).map((template) => new Template_1.default(template));
+    }
+    static getInput(flavor) {
+        const appName = flavor.applicationName || "";
+        const execName = flavor.executableName || "";
         return flavor.input.map((input) => {
             const inputName = input.templateName || input.name;
             const filtered = new standata_1.ApplicationStandata().getTemplatesByName(appName, execName, inputName);
             if (filtered.length !== 1) {
                 console.log(`found ${filtered.length} templates for app=${appName} exec=${execName} name=${inputName} expected 1`);
             }
-            return new template_1.default({ ...filtered[0], name: input.name });
+            return { ...filtered[0], name: input.name || "" };
         });
     }
-    static getInputAsRenderedTemplates(flavor, context) {
-        return this.getInputAsTemplates(flavor).map((template) => {
-            return template.getRenderedJSON(context);
-        });
-    }
+    // static getInputAsRenderedTemplates(flavor: Flavor, context: ContextProviderConfig) {
+    //     return this.getInputAsTemplates(flavor).map((template) => {
+    //         return template.setContext(context).render().toJSON();
+    //     });
+    // }
     static getAllFlavorsForApplication(appName, version) {
         const allExecutables = this.getExecutables({ name: appName, version });
         return allExecutables.flatMap((executable) => this.getExecutableFlavors(executable));

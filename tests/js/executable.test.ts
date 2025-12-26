@@ -2,7 +2,7 @@
 import { expect } from "chai";
 
 import ApplicationRegistry from "../../src/js/ApplicationRegistry";
-import Executable from "../../src/js/executable";
+import Executable from "../../src/js/Executable";
 
 describe("Executable", () => {
     it("toJSON works as expected", () => {

@@ -1,13 +1,12 @@
-import Application from "./application";
+import Application from "./Application";
 import { applicationMixin } from "./applicationMixin";
 import ApplicationRegistry from "./ApplicationRegistry";
-import ContextProvider from "./context/ContextProvider";
-import Executable from "./executable";
+import Executable from "./Executable";
 import { executableMixin } from "./executableMixin";
-import Flavor from "./flavor";
+import Flavor from "./Flavor";
 import { flavorMixin } from "./flavorMixin";
-import Template from "./template";
+import Template from "./Template";
 import { templateMixin } from "./templateMixin";
 declare const allApplications: string[];
-export { Application, Executable, Flavor, Template, ApplicationRegistry, ContextProvider, executableMixin, flavorMixin, applicationMixin, templateMixin, allApplications, };
+export { Application, Executable, Flavor, Template, ApplicationRegistry, executableMixin, flavorMixin, applicationMixin, templateMixin, allApplications, };
 export type * from "./types";

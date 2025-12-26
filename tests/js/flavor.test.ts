@@ -2,7 +2,7 @@
 import { expect } from "chai";
 
 import ApplicationRegistry from "../../src/js/ApplicationRegistry";
-import Flavor from "../../src/js/flavor";
+import Flavor from "../../src/js/Flavor";
 
 describe("Flavor", () => {
     it("results are correct", () => {

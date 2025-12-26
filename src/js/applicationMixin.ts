@@ -6,7 +6,7 @@ import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface
 import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
 import { ApplicationStandata } from "@mat3ra/standata";
 
-import Executable from "./executable";
+import Executable from "./Executable";
 import {
     type ApplicationSchemaMixin,
     applicationSchemaMixin,

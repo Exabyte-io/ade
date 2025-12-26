@@ -1,40 +1,18 @@
 /* eslint-disable no-unused-expressions */
-import { Name as ContextProviderNameEnum } from "@mat3ra/esse/dist/js/types";
 import { expect } from "chai";
-import type { ContextProviderConfigMapEntry } from "src/js/templateMixin";
 
-import Application from "../../src/js/application";
+import Application from "../../src/js/Application";
 import type { CreateApplicationConfig } from "../../src/js/ApplicationRegistry";
 import ApplicationRegistry from "../../src/js/ApplicationRegistry";
-import ContextProvider from "../../src/js/context/ContextProvider";
-import Executable from "../../src/js/executable";
-import Flavor from "../../src/js/flavor";
-import Template from "../../src/js/template";
-
-class MockContextProvider extends ContextProvider {
-    // eslint-disable-next-line class-methods-use-this
-    get defaultData() {
-        return { test: "value" };
-    }
-}
+import Executable from "../../src/js/Executable";
+import Flavor from "../../src/js/Flavor";
+import Template from "../../src/js/Template";
 
 describe("ApplicationRegistry", () => {
     beforeEach(() => {
         // Reset static properties before each test
         ApplicationRegistry.applicationsTree = undefined;
         ApplicationRegistry.applicationsArray = undefined;
-
-        const mockConfig: ContextProviderConfigMapEntry = {
-            providerCls: MockContextProvider,
-            config: { name: ContextProviderNameEnum.QGridFormDataManager },
-        };
-
-        Template.setContextProvidersConfig({
-            QGridFormDataManager: mockConfig,
-            PlanewaveCutoffDataManager: mockConfig,
-            KGridFormDataManager: mockConfig,
-            QEPWXInputDataManager: mockConfig,
-        });
     });
 
     describe("createApplication", () => {
@@ -374,39 +352,6 @@ describe("ApplicationRegistry", () => {
             expect(templates).to.be.an("array");
             // The actual result depends on the allTemplates data
             // We just verify it returns an array
-        });
-    });
-
-    describe("getInputAsRenderedTemplates", () => {
-        it("should return rendered templates for flavor input", () => {
-            const executable = ApplicationRegistry.getExecutableByName("espresso", "pw.x");
-            const flavor = ApplicationRegistry.getFlavorByName(executable, "pw_scf");
-
-            if (flavor) {
-                const context = { test: "value" };
-                const renderedTemplates = ApplicationRegistry.getInputAsRenderedTemplates(
-                    flavor,
-                    context,
-                );
-
-                expect(renderedTemplates).to.be.an("array");
-                renderedTemplates.forEach((template) => {
-                    expect(template).to.be.an("object");
-                });
-            }
-        });
-
-        it("should handle empty context", () => {
-            const executable = ApplicationRegistry.getExecutableByName("espresso", "pw.x");
-            const flavor = ApplicationRegistry.getFlavorByName(executable, "pw_scf");
-
-            if (!flavor) {
-                throw new Error("Flavor not found");
-            }
-
-            const renderedTemplates = ApplicationRegistry.getInputAsRenderedTemplates(flavor, {});
-
-            expect(renderedTemplates).to.be.an("array");
         });
     });
 

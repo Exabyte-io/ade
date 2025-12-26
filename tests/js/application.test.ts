@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
 
-import Application from "../../src/js/application";
+import Application from "../../src/js/Application";
 
 describe("Application", () => {
     const obj = { name: "espresso" };

@@ -3,7 +3,7 @@ import type { Defaultable } from "@mat3ra/code/dist/js/entity/mixins/Defaultable
 import type { NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
-import Executable from "./executable";
+import Executable from "./Executable";
 import { type ApplicationSchemaMixin } from "./generated/ApplicationSchemaMixin";
 type Base = InMemoryEntity & NamedEntity & Defaultable;
 export type BaseConstructor = Constructor<Base> & {
