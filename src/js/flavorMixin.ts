@@ -14,6 +14,7 @@ export type FlavorMixin = {
     executableId: string;
     executableName: string;
     applicationName: string;
+    applicationId: string;
     supportedApplicationVersions?: string[];
     getInputAsRenderedTemplates: (context: Record<string, unknown>) => Record<string, unknown>[];
 };
@@ -42,12 +43,16 @@ export function flavorMixin(item: Base) {
             return this.prop("applicationName", "");
         },
 
+        get applicationId() {
+            return this.prop("applicationId", "");
+        },
+
         get supportedApplicationVersions() {
             return this.prop("supportedApplicationVersions");
         },
 
         getInputAsRenderedTemplates(context: Record<string, unknown>) {
-            const input = this.input;
+            const { input } = this;
             return input.map((template) => {
                 if (template && typeof template === "object" && "getRenderedJSON" in template) {
                     return (template as any).getRenderedJSON(context);

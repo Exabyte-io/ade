@@ -25,11 +25,14 @@ function flavorMixin(item) {
         get applicationName() {
             return this.prop("applicationName", "");
         },
+        get applicationId() {
+            return this.prop("applicationId", "");
+        },
         get supportedApplicationVersions() {
             return this.prop("supportedApplicationVersions");
         },
         getInputAsRenderedTemplates(context) {
-            const input = this.input;
+            const { input } = this;
             return input.map((template) => {
                 if (template && typeof template === "object" && "getRenderedJSON" in template) {
                     return template.getRenderedJSON(context);

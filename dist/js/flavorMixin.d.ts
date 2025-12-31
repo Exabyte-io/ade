@@ -10,6 +10,7 @@ export type FlavorMixin = {
     executableId: string;
     executableName: string;
     applicationName: string;
+    applicationId: string;
     supportedApplicationVersions?: string[];
     getInputAsRenderedTemplates: (context: Record<string, unknown>) => Record<string, unknown>[];
 };
