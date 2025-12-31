@@ -3,7 +3,7 @@ import type { Defaultable } from "@mat3ra/code/dist/js/entity/mixins/Defaultable
 import type { NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
+import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 import { ApplicationStandata } from "@mat3ra/standata";
 
 import Executable from "./Executable";
@@ -19,18 +19,18 @@ export type BaseConstructor = Constructor<Base> & {
 };
 
 export type ApplicationMixin = ApplicationSchemaMixin & {
-    name: Required<ApplicationSchemaBase>["name"];
+    name: Required<ApplicationSchema>["name"];
     isUsingMaterial: boolean;
 };
 
 export type DefaultApplicationConfig = Pick<
-    ApplicationSchemaBase,
+    ApplicationSchema,
     "name" | "shortName" | "version" | "summary" | "build"
 >;
 
 export type ApplicationStaticMixin = {
     defaultConfig: DefaultApplicationConfig;
-    jsonSchema: ApplicationSchemaBase;
+    jsonSchema: ApplicationSchema;
 };
 
 function applicationPropertiesMixin<T extends InMemoryEntity>(
@@ -53,9 +53,7 @@ function applicationStaticMixin<T extends BaseConstructor>(Application: T) {
             return new ApplicationStandata().getDefaultConfig();
         },
         get jsonSchema() {
-            return JSONSchemasInterface.getSchemaById(
-                "software/application",
-            ) as ApplicationSchemaBase;
+            return JSONSchemasInterface.getSchemaById("software/application") as ApplicationSchema;
         },
     };
 

@@ -1,8 +1,8 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
-from mat3ra.esse.models.software.application import ApplicationSchemaBase
+from mat3ra.esse.models.software.application import ApplicationSchema
 
 
-class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
+class Application(ApplicationSchema, InMemoryEntitySnakeCase):
     """
     Application class representing a software application.
 

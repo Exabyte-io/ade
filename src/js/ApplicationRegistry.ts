@@ -1,6 +1,6 @@
 import { getOneMatchFromObject } from "@mat3ra/code/dist/js/utils/object";
 import type {
-    ApplicationSchemaBase,
+    ApplicationSchema,
     ExecutableSchema,
     TemplateSchema,
 } from "@mat3ra/esse/dist/js/types";
@@ -12,7 +12,7 @@ import Flavor from "./Flavor";
 import Template from "./Template";
 
 type ApplicationVersion = {
-    [build: string]: ApplicationSchemaBase;
+    [build: string]: ApplicationSchema;
 };
 
 type ApplicationTreeItem = {
@@ -32,7 +32,7 @@ export default class ApplicationRegistry {
     // applications
     static applicationsTree?: ApplicationTree;
 
-    static applicationsArray?: ApplicationSchemaBase[];
+    static applicationsArray?: ApplicationSchema[];
 
     static createApplication({ name, version = null, build = null }: CreateApplicationConfig) {
         const staticConfig = ApplicationRegistry.getApplicationConfig({ name, version, build });
@@ -61,7 +61,7 @@ export default class ApplicationRegistry {
         }
 
         const applicationsTree: ApplicationTree = {};
-        const applicationsArray: ApplicationSchemaBase[] = [];
+        const applicationsArray: ApplicationSchema[] = [];
 
         const allApplications = new ApplicationStandata().getAllApplicationNames();
         allApplications.forEach((appName) => {
@@ -89,7 +89,7 @@ export default class ApplicationRegistry {
 
                 appTreeItem[version] = appVersion;
 
-                const applicationConfig: ApplicationSchemaBase = {
+                const applicationConfig: ApplicationSchema = {
                     ...appData,
                     // @ts-ignore
                     build: buildToUse,

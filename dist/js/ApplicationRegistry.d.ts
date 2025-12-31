@@ -1,10 +1,10 @@
-import type { ApplicationSchemaBase, TemplateSchema } from "@mat3ra/esse/dist/js/types";
+import type { ApplicationSchema, TemplateSchema } from "@mat3ra/esse/dist/js/types";
 import Application from "./Application";
 import Executable from "./Executable";
 import Flavor from "./Flavor";
 import Template from "./Template";
 type ApplicationVersion = {
-    [build: string]: ApplicationSchemaBase;
+    [build: string]: ApplicationSchema;
 };
 type ApplicationTreeItem = {
     defaultVersion: string;
@@ -18,7 +18,7 @@ export type CreateApplicationConfig = {
 type ApplicationTree = Partial<Record<string, ApplicationTreeItem>>;
 export default class ApplicationRegistry {
     static applicationsTree?: ApplicationTree;
-    static applicationsArray?: ApplicationSchemaBase[];
+    static applicationsArray?: ApplicationSchema[];
     static createApplication({ name, version, build }: CreateApplicationConfig): Application;
     static getUniqueAvailableApplicationNames(): string[];
     /**
@@ -27,7 +27,7 @@ export default class ApplicationRegistry {
      */
     static getAllApplications(): {
         applicationsTree: Partial<Record<string, ApplicationTreeItem>>;
-        applicationsArray: ApplicationSchemaBase[];
+        applicationsArray: ApplicationSchema[];
     };
     /**
      * @summary Get an application from the constructed applications
@@ -36,7 +36,7 @@ export default class ApplicationRegistry {
      * @param build  the build to use (optional, defaults to Default)
      * @return an application
      */
-    static getApplicationConfig({ name, version, build }: CreateApplicationConfig): ApplicationSchemaBase | null;
+    static getApplicationConfig({ name, version, build }: CreateApplicationConfig): ApplicationSchema | null;
     static getExecutables({ name, version }: {
         name: string;
         version?: string;
