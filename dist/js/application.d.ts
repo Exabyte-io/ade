@@ -8,6 +8,6 @@ type Base = typeof InMemoryEntity & NamedInMemoryEntityConstructor & Defaultable
 declare const Application_base: Base;
 export default class Application extends Application_base implements ApplicationSchema {
     constructor(data?: Partial<ApplicationSchema>);
-    createDefault: () => Application;
+    static createDefault: () => Application;
 }
 export {};

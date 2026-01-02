@@ -29,7 +29,7 @@ export default class Application extends (InMemoryEntity as Base) implements App
         });
     }
 
-    declare createDefault: () => Application;
+    declare static createDefault: () => Application;
 }
 
 namedEntityMixin(Application.prototype);
