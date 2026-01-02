@@ -33,6 +33,8 @@ export default class Executable extends (InMemoryEntity as Base) implements Exec
             ...data,
         });
     }
+
+    declare createDefault: () => Executable;
 }
 
 namedEntityMixin(Executable.prototype);

@@ -9,5 +9,6 @@ type Base = Constructor<ExecutableMixin> & RuntimeItemsInMemoryEntityConstructor
 declare const Executable_base: Base;
 export default class Executable extends Executable_base implements ExecutableSchema {
     constructor(data?: Partial<ExecutableSchema>);
+    createDefault: () => Executable;
 }
 export {};

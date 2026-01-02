@@ -9,5 +9,6 @@ type Base = typeof InMemoryEntity & Constructor<FlavorMixin> & RuntimeItemsInMem
 declare const Flavor_base: Base;
 export default class Flavor extends Flavor_base implements FlavorSchema {
     constructor(data?: Partial<FlavorSchema>);
+    createDefault: () => Flavor;
 }
 export {};

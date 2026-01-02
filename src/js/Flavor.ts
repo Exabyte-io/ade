@@ -36,6 +36,8 @@ export default class Flavor extends (InMemoryEntity as Base) implements FlavorSc
             ...data,
         });
     }
+
+    declare createDefault: () => Flavor;
 }
 
 namedEntityMixin(Flavor.prototype);
