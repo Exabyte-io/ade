@@ -12,6 +12,7 @@ import {
     runtimeItemsMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
 import { type FlavorMixin, flavorMixin } from "./flavorMixin";
@@ -38,6 +39,8 @@ export default class Flavor extends (InMemoryEntity as Base) implements FlavorSc
     }
 
     declare static createDefault: () => Flavor;
+
+    declare toJSON: () => FlavorSchema & AnyObject;
 }
 
 namedEntityMixin(Flavor.prototype);

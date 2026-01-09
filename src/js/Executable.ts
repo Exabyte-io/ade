@@ -12,6 +12,7 @@ import {
     runtimeItemsMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
 import { type ExecutableMixin, executableMixin } from "./executableMixin";
@@ -35,6 +36,8 @@ export default class Executable extends (InMemoryEntity as Base) implements Exec
     }
 
     declare static createDefault: () => Executable;
+
+    declare toJSON: () => ExecutableSchema & AnyObject;
 }
 
 namedEntityMixin(Executable.prototype);

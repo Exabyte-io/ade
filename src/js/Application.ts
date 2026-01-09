@@ -8,6 +8,7 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 
 import {
@@ -30,6 +31,8 @@ export default class Application extends (InMemoryEntity as Base) implements App
     }
 
     declare static createDefault: () => Application;
+
+    declare toJSON: () => ApplicationSchema & AnyObject;
 }
 
 namedEntityMixin(Application.prototype);
