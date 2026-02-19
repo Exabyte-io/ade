@@ -2,14 +2,6 @@ from mat3ra.ade import Application
 from mat3ra.utils import assertion
 
 APPLICATION_DEFAULT_FIELDS = {
-    "shortName": None,
-    "summary": None,
-    "build": None,
-    "hasAdvancedComputeOptions": None,
-    "isLicensed": None,
-    "field_id": None,
-    "slug": None,
-    "systemName": None,
     "schemaVersion": "2022.8.16",
     "isDefault": False,
 }

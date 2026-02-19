@@ -18,6 +18,7 @@ class FlavorInput(ExecutionUnitInputIdItemSchemaForPhysicsBasedSimulationEngines
 
     pass
 
+
 class Flavor(FlavorSchema, InMemoryEntitySnakeCase):
     """
     Flavor class representing a flavor of an executable.
@@ -38,4 +39,3 @@ class Flavor(FlavorSchema, InMemoryEntitySnakeCase):
     """
 
     input: List[FlavorInput] = Field(default_factory=list, description="Input templates for this flavor")
-
