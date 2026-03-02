@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
 import Application from "../../src/js/application";
 import type { CreateApplicationConfig } from "../../src/js/ApplicationRegistry";
@@ -133,5 +135,13 @@ describe("Application", () => {
             expect(schema).to.exist;
             expect(schema).to.have.property("$id");
         });
+    });
+
+    it("calculateHash matches fixture", () => {
+        const fixture = JSON.parse(
+            readFileSync(resolve(__dirname, "../fixtures/application_hash.json"), "utf-8"),
+        );
+        const app = new Application(fixture.config);
+        expect(app.calculateHash()).to.equal(fixture.hash);
     });
 });

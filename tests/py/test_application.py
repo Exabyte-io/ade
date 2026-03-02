@@ -1,5 +1,7 @@
 from mat3ra.ade import Application
 from mat3ra.utils import assertion
+from pathlib import Path
+import json
 
 APPLICATION_DEFAULT_FIELDS = {
     "schemaVersion": "2022.8.16",
@@ -86,3 +88,10 @@ def test_application_from_dict():
     app = Application(**config)
     expected = {**config}
     assertion.assert_deep_almost_equal(expected, app.model_dump(exclude_unset=True))
+
+
+def test_calculate_hash_matches_fixture():
+    fixture_path = Path(__file__).parent.parent / "fixtures" / "application_hash.json"
+    fixture = json.loads(fixture_path.read_text())
+    app = Application(**fixture["config"])
+    assert app.calculate_hash() == fixture["hash"]
