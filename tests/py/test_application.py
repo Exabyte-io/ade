@@ -1,7 +1,9 @@
-from mat3ra.ade import Application
-from mat3ra.utils import assertion
-from pathlib import Path
 import json
+from pathlib import Path
+
+from mat3ra.ade import Application
+from mat3ra.standata.applications import ApplicationStandata
+from mat3ra.utils import assertion
 
 APPLICATION_DEFAULT_FIELDS = {
     "schemaVersion": "2022.8.16",
@@ -93,7 +95,6 @@ def test_application_from_dict():
 def test_calculate_hash_matches_fixture():
     fixture_path = Path(__file__).parent.parent / "fixtures" / "application_hash.json"
     fixture = json.loads(fixture_path.read_text())
-    from mat3ra.standata.applications import ApplicationStandata
 
     st = fixture["standata"]
     [config] = [
