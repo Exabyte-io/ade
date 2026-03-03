@@ -23,7 +23,8 @@ dependencies = [
     "pydantic>=2.0",
     "mat3ra-esse",
     "mat3ra-code",
-    "mat3ra-utils[extra]"
+    "mat3ra-utils[extra]",
+    "mat3ra-standata"
 ]
 
 [project.optional-dependencies]
@@ -40,7 +41,8 @@ tests = [
     "pytest",
     "pytest-cov",
     "mat3ra-esse",
-    "mat3ra-utils"
+    "mat3ra-utils>=2026.2.3",
+    "mat3ra-standata"
 ]
 all = [
     "mat3ra-ade[tests]",
@@ -94,4 +96,3 @@ pythonpath = [
 testpaths = [
     "tests/py"
 ]
-
