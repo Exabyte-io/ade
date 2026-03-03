@@ -93,5 +93,13 @@ def test_application_from_dict():
 def test_calculate_hash_matches_fixture():
     fixture_path = Path(__file__).parent.parent / "fixtures" / "application_hash.json"
     fixture = json.loads(fixture_path.read_text())
-    app = Application(**fixture["config"])
+    from mat3ra.standata.applications import ApplicationStandata
+
+    st = fixture["standata"]
+    [config] = [
+        a
+        for a in ApplicationStandata.get_by_name(st["name"])
+        if a.get("version") == st["version"] and a.get("build") == st["build"]
+    ]
+    app = Application(**config)
     assert app.calculate_hash() == fixture["hash"]

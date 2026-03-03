@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+import { ApplicationStandata } from "@mat3ra/standata";
 import { expect } from "chai";
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -141,7 +142,11 @@ describe("Application", () => {
         const fixture = JSON.parse(
             readFileSync(resolve(__dirname, "../fixtures/application_hash.json"), "utf-8"),
         );
-        const app = new Application(fixture.config);
+        const { name, version, build } = fixture.standata;
+        const standata = new ApplicationStandata();
+        const configs = standata.getByApplicationName(name) as any[];
+        const config = configs.find((a) => a.version === version && a.build === build);
+        const app = new Application(config);
         expect(app.calculateHash()).to.equal(fixture.hash);
     });
 });

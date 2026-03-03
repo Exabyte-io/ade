@@ -1,14 +1,8 @@
 {
-  "config": {
+  "standata": {
     "name": "espresso",
-    "version": "6.8",
-    "build": "",
-    "shortName": "espresso",
-    "summary": "",
-    "hasAdvancedComputeOptions": false,
-    "isLicensed": false,
-    "isDefault": false,
-    "schemaVersion": "2022.8.16"
+    "version": "6.3",
+    "build": "GNU"
   },
-  "hash": "b7353f1be53119573f184497442e3202"
+  "hash": "e4f4762afefb659c36b6ac2d08d860cc"
 }
