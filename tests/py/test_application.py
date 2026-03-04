@@ -1,4 +1,8 @@
+import json
+from pathlib import Path
+
 from mat3ra.ade import Application
+from mat3ra.standata.applications import ApplicationStandata
 from mat3ra.utils import assertion
 
 APPLICATION_DEFAULT_FIELDS = {
@@ -86,3 +90,17 @@ def test_application_from_dict():
     app = Application(**config)
     expected = {**config}
     assertion.assert_deep_almost_equal(expected, app.model_dump(exclude_unset=True))
+
+
+def test_calculate_hash_matches_fixture():
+    fixture_path = Path(__file__).parent.parent / "fixtures" / "application_hash.json"
+    fixture = json.loads(fixture_path.read_text())
+
+    st = fixture["standata"]
+    [config] = [
+        a
+        for a in ApplicationStandata.get_by_name(st["name"])
+        if a.get("version") == st["version"] and a.get("build") == st["build"]
+    ]
+    app = Application(**config)
+    assert app.calculate_hash() == fixture["hash"]
