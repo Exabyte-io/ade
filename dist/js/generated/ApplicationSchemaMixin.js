@@ -28,6 +28,12 @@ function applicationSchemaMixin(item) {
         set build(value) {
             this.setProp("build", value);
         },
+        get isDefault() {
+            return this.prop("isDefault");
+        },
+        set isDefault(value) {
+            this.setProp("isDefault", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop("hasAdvancedComputeOptions");
         },

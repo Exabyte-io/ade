@@ -1,24 +1,50 @@
 /* eslint-disable no-unused-expressions */
+import { ApplicationStandata } from "@mat3ra/standata";
 import { expect } from "chai";
 
-import ApplicationRegistry from "../../src/js/ApplicationRegistry";
-import Flavor from "../../src/js/Flavor";
+import { Flavor } from "../../src/js";
 
 describe("Flavor", () => {
+    it("constructs with built-in defaults when no argument is passed", () => {
+        const flavor = new Flavor();
+        expect(flavor).to.be.instanceOf(Flavor);
+        expect(flavor.monitors).to.deep.equal([]);
+        expect(flavor.results).to.deep.equal([]);
+        expect(flavor.executableName).to.equal("");
+    });
+
+    it("merges partial data over defaults", () => {
+        const flavor = new Flavor({ name: "custom", executableName: "pw.x" });
+        expect(flavor.name).to.equal("custom");
+        expect(flavor.executableName).to.equal("pw.x");
+    });
+
     it("results are correct", () => {
-        const pwscfFlavor = ApplicationRegistry.getAllFlavorsForApplication("espresso").find(
-            (flavor) => {
-                return flavor.name === "pw_scf";
+        const standata = new ApplicationStandata();
+        const { flavor } = standata.getExecutableAndFlavorByName("espresso", "pw.x", "pw_scf");
+
+        expect(flavor.results).to.deep.equal([
+            {
+                name: "atomic_forces",
             },
-        );
-        expect(pwscfFlavor?.results).to.deep.equal([
-            "atomic_forces",
-            "fermi_energy",
-            "pressure",
-            "stress_tensor",
-            "total_energy",
-            "total_energy_contributions",
-            "total_force",
+            {
+                name: "fermi_energy",
+            },
+            {
+                name: "pressure",
+            },
+            {
+                name: "stress_tensor",
+            },
+            {
+                name: "total_energy",
+            },
+            {
+                name: "total_energy_contributions",
+            },
+            {
+                name: "total_force",
+            },
         ]);
     });
 

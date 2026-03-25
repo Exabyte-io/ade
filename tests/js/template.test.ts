@@ -1,9 +1,16 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
 
-import Template from "../../src/js/Template";
+import { Template } from "../../src/js";
 
 describe("Template", () => {
+    it("constructs with default data when no argument is passed", () => {
+        const template = new Template();
+        expect(template).to.be.instanceOf(Template);
+        expect(template.applicationName).to.equal("");
+        expect(template.contextProviders).to.deep.equal([]);
+    });
+
     it("toJSON works as expected", () => {
         const template = new Template({ name: "test_template", content: "test content" });
         const json = template.toJSON();

@@ -4,12 +4,6 @@ exports.flavorSchemaMixin = flavorSchemaMixin;
 function flavorSchemaMixin(item) {
     // @ts-expect-error
     const properties = {
-        get executableId() {
-            return this.requiredProp("executableId");
-        },
-        set executableId(value) {
-            this.setProp("executableId", value);
-        },
         get executableName() {
             return this.prop("executableName");
         },

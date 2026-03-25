@@ -10,12 +10,6 @@ export function flavorSchemaMixin<T extends InMemoryEntity>(
 ): asserts item is T & FlavorSchemaMixin {
     // @ts-expect-error
     const properties: InMemoryEntity & FlavorSchemaMixin = {
-        get executableId() {
-            return this.requiredProp<FlavorPropertiesSchema["executableId"]>("executableId");
-        },
-        set executableId(value: FlavorPropertiesSchema["executableId"]) {
-            this.setProp("executableId", value);
-        },
         get executableName() {
             return this.prop<FlavorPropertiesSchema["executableName"]>("executableName");
         },

@@ -6,14 +6,14 @@ const NamedEntityMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/NamedEnti
 const RuntimeItemsMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin");
 const executableMixin_1 = require("./executableMixin");
 class Executable extends entity_1.InMemoryEntity {
-    constructor(data = {}) {
+    constructor(data) {
+        var _a, _b, _c, _d;
         super({
-            monitors: [],
-            results: [],
-            postProcessors: [],
-            preProcessors: [],
-            applicationId: [],
             ...data,
+            monitors: (_a = data.monitors) !== null && _a !== void 0 ? _a : [],
+            results: (_b = data.results) !== null && _b !== void 0 ? _b : [],
+            postProcessors: (_c = data.postProcessors) !== null && _c !== void 0 ? _c : [],
+            preProcessors: (_d = data.preProcessors) !== null && _d !== void 0 ? _d : [],
         });
     }
 }

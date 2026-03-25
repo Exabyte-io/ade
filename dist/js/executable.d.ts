@@ -6,10 +6,13 @@ import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 import { type ExecutableMixin } from "./executableMixin";
+import type { PartialBy } from "./typeUtils";
+/** Input for {@link Executable}: runtime item lists default to empty when omitted. */
+export type ExecutableConstructorData = PartialBy<ExecutableSchema, "monitors" | "results" | "postProcessors" | "preProcessors">;
 type Base = Constructor<ExecutableMixin> & RuntimeItemsInMemoryEntityConstructor & NamedInMemoryEntityConstructor & DefaultableInMemoryEntityConstructor & typeof InMemoryEntity;
 declare const Executable_base: Base;
 export default class Executable extends Executable_base implements ExecutableSchema {
-    constructor(data?: Partial<ExecutableSchema>);
+    constructor(data: ExecutableConstructorData);
     static createDefault: () => Executable;
     toJSON: () => ExecutableSchema & AnyObject;
 }

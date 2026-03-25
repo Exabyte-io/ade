@@ -10,17 +10,13 @@ export function executableSchemaMixin<T extends InMemoryEntity>(
 ): asserts item is T & ExecutableSchemaMixin {
     // @ts-expect-error
     const properties: InMemoryEntity & ExecutableSchemaMixin = {
-        get name() {
-            return this.requiredProp<ExecutablePropertiesSchema["name"]>("name");
+        get applicationName() {
+            return this.requiredProp<ExecutablePropertiesSchema["applicationName"]>(
+                "applicationName",
+            );
         },
-        set name(value: ExecutablePropertiesSchema["name"]) {
-            this.setProp("name", value);
-        },
-        get applicationId() {
-            return this.requiredProp<ExecutablePropertiesSchema["applicationId"]>("applicationId");
-        },
-        set applicationId(value: ExecutablePropertiesSchema["applicationId"]) {
-            this.setProp("applicationId", value);
+        set applicationName(value: ExecutablePropertiesSchema["applicationName"]) {
+            this.setProp("applicationName", value);
         },
         get hasAdvancedComputeOptions() {
             return this.prop<ExecutablePropertiesSchema["hasAdvancedComputeOptions"]>(

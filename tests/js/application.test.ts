@@ -1,9 +1,14 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
 
-import Application from "../../src/js/Application";
+import { Application } from "../../src/js";
 
 describe("Application", () => {
+    it("constructs with default data when no argument is passed", () => {
+        const app = new Application();
+        expect(app).to.be.instanceOf(Application);
+    });
+
     describe("applicationMixin properties", () => {
         describe("isUsingMaterial property", () => {
             it("should return true for vasp application", () => {

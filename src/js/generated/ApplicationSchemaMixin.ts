@@ -34,6 +34,12 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
         set build(value: ApplicationPropertiesSchema["build"]) {
             this.setProp("build", value);
         },
+        get isDefault() {
+            return this.prop<ApplicationPropertiesSchema["isDefault"]>("isDefault");
+        },
+        set isDefault(value: ApplicationPropertiesSchema["isDefault"]) {
+            this.setProp("isDefault", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop<ApplicationPropertiesSchema["hasAdvancedComputeOptions"]>(
                 "hasAdvancedComputeOptions",

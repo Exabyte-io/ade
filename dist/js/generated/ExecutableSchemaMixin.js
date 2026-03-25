@@ -4,17 +4,11 @@ exports.executableSchemaMixin = executableSchemaMixin;
 function executableSchemaMixin(item) {
     // @ts-expect-error
     const properties = {
-        get name() {
-            return this.requiredProp("name");
+        get applicationName() {
+            return this.requiredProp("applicationName");
         },
-        set name(value) {
-            this.setProp("name", value);
-        },
-        get applicationId() {
-            return this.requiredProp("applicationId");
-        },
-        set applicationId(value) {
-            this.setProp("applicationId", value);
+        set applicationName(value) {
+            this.setProp("applicationName", value);
         },
         get hasAdvancedComputeOptions() {
             return this.prop("hasAdvancedComputeOptions");

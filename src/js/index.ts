@@ -1,6 +1,5 @@
 import Application from "./Application";
 import { applicationMixin } from "./applicationMixin";
-import ApplicationRegistry from "./ApplicationRegistry";
 import Executable from "./Executable";
 import { executableMixin } from "./executableMixin";
 import Flavor from "./Flavor";
@@ -8,19 +7,15 @@ import { flavorMixin } from "./flavorMixin";
 import Template from "./Template";
 import { templateMixin } from "./templateMixin";
 
-const allApplications = ApplicationRegistry.getUniqueAvailableApplicationNames();
-
 export {
     Application,
     Executable,
     Flavor,
     Template,
-    ApplicationRegistry,
     executableMixin,
     flavorMixin,
     applicationMixin,
     templateMixin,
-    allApplications,
 };
 
 export type * from "./types";
