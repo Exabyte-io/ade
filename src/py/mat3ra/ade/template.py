@@ -3,7 +3,13 @@ from typing import Any, Dict, List, Optional
 
 from mat3ra.code.entity import InMemoryEntitySnakeCase
 from mat3ra.esse.models.software.template import TemplateSchema
-from mat3ra.utils.extra.jinja import render_jinja_with_error_handling
+from mat3ra.utils.extra.jinja import (
+    JINJA_EXPRESSION_PATTERN,
+    NUMERIC_VALUE_PATTERN,
+    render_jinja_with_error_handling,
+    replace_in_template_content,
+    wrap_in_raw_block,
+)
 from pydantic import Field
 
 from .context.context_provider import ContextProvider
@@ -34,6 +40,17 @@ class Template(TemplateSchema, InMemoryEntitySnakeCase):
 
     def set_content(self, text: str) -> None:
         self.content = text
+
+    def replace_in_content(self, pattern: str, replacement: str) -> None:
+        self.content = replace_in_template_content(self.content, pattern, replacement)
+
+    def replace_variable_value(self, variable_name: str, new_value: str) -> None:
+        pattern = rf"{variable_name}\s*=\s*(?:{NUMERIC_VALUE_PATTERN}|{JINJA_EXPRESSION_PATTERN})"
+        self.replace_in_content(pattern, f"{variable_name} = {new_value}")
+
+    @staticmethod
+    def make_raw_scope_reference(variable_name: str) -> str:
+        return wrap_in_raw_block("{{ " + variable_name + " }}")
 
     def set_rendered(self, text: str) -> None:
         self.rendered = text
