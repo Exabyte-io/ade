@@ -49,7 +49,7 @@ class Template(TemplateSchema, InMemoryEntitySnakeCase):
         self.replace_in_content(pattern, f"{variable_name} = {new_value}")
 
     @staticmethod
-    def make_raw_scope_reference(variable_name: str) -> str:
+    def format_as_scope_reference(variable_name: str) -> str:
         return wrap_in_raw_block("{{ " + variable_name + " }}")
 
     def set_rendered(self, text: str) -> None:

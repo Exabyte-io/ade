@@ -157,6 +157,25 @@ EXPECTED_RENDERED_DICT = {
     **TEMPLATE_DEFAULT_FIELDS,
 }
 
+CONTENT_DEGAUSS_NUMERIC = "degauss = 0.005\n"
+CONTENT_ECUTWFC_JINJA = "ecutwfc = {{ cutoffs.wavefunction }}\n"
+CONTENT_MIXING_BETA_SCIENTIFIC = "mixing_beta = 1e-3\n"
+CONTENT_NO_MATCH = "no_match\n"
+
+PATTERN_DEGAUSS_NUMERIC = r"degauss\s*=\s*[\d.e+\-]+"
+PATTERN_OTHER_NUMERIC = r"other\s*=\s*[\d.e+\-]+"
+
+REPLACEMENT_DEGAUSS = "degauss = NEW"
+REPLACEMENT_OTHER = "other = x"
+NEW_VALUE = "NEW"
+
+EXPECTED_DEGAUSS_REPLACED = "degauss = NEW\n"
+EXPECTED_ECUTWFC_REPLACED = "ecutwfc = NEW\n"
+EXPECTED_MIXING_BETA_REPLACED = "mixing_beta = NEW\n"
+
+EXPECTED_RAW_SCOPE_DEGAUSS = "{% raw %}{{ degauss }}{% endraw %}"
+EXPECTED_RAW_SCOPE_CUTOFFS_WF = "{% raw %}{{ cutoffs_wf }}{% endraw %}"
+
 
 @pytest.mark.parametrize(
     "config,expected_fields",
@@ -287,3 +306,41 @@ def test_render_with_external_context_and_provider():
     template.add_context_provider(PROVIDER_KPATH)
     template.render(EXTERNAL_CONTEXT_KPATH)
     assert template.get_rendered() == EXPECTED_EXTERNAL_CONTEXT_RENDER
+
+
+@pytest.mark.parametrize(
+    "content,pattern,replacement,expected",
+    [
+        (CONTENT_DEGAUSS_NUMERIC, PATTERN_DEGAUSS_NUMERIC, REPLACEMENT_DEGAUSS, EXPECTED_DEGAUSS_REPLACED),
+        (CONTENT_NO_MATCH, PATTERN_OTHER_NUMERIC, REPLACEMENT_OTHER, CONTENT_NO_MATCH),
+    ],
+)
+def test_replace_in_content(content, pattern, replacement, expected):
+    template = Template(name="test.in", content=content)
+    template.replace_in_content(pattern, replacement)
+    assert template.content == expected
+
+
+@pytest.mark.parametrize(
+    "content,variable_name,new_value,expected",
+    [
+        (CONTENT_DEGAUSS_NUMERIC, "degauss", NEW_VALUE, EXPECTED_DEGAUSS_REPLACED),
+        (CONTENT_ECUTWFC_JINJA, "ecutwfc", NEW_VALUE, EXPECTED_ECUTWFC_REPLACED),
+        (CONTENT_MIXING_BETA_SCIENTIFIC, "mixing_beta", NEW_VALUE, EXPECTED_MIXING_BETA_REPLACED),
+    ],
+)
+def test_replace_variable_value(content, variable_name, new_value, expected):
+    template = Template(name="test.in", content=content)
+    template.replace_variable_value(variable_name, new_value)
+    assert template.content == expected
+
+
+@pytest.mark.parametrize(
+    "variable_name,expected",
+    [
+        ("degauss", EXPECTED_RAW_SCOPE_DEGAUSS),
+        ("cutoffs_wf", EXPECTED_RAW_SCOPE_CUTOFFS_WF),
+    ],
+)
+def test_format_as_scope_reference(variable_name, expected):
+    assert Template.format_as_scope_reference(variable_name) == expected

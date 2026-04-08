@@ -23,7 +23,7 @@ dependencies = [
     "pydantic>=2.0",
     "mat3ra-esse",
     "mat3ra-code",
-    "mat3ra-utils[extra]  @ git+https://github.com/Exabyte-io/utils.git@d7f6c5cc020283f6bd8eb6434d4632bf57561bcf"
+    "mat3ra-utils[extra]  @ git+https://github.com/Exabyte-io/utils.git@5f17ac3e7ab242f2c387b5691c8d8cacc6d59f3f"
 ]
 
 [project.optional-dependencies]
