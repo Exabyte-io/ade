@@ -41,7 +41,14 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
 
     @property
     def is_using_material(self) -> bool:
-        material_using_applications = ["vasp", "nwchem", "espresso"]
+        material_using_applications = [
+            "deepmd",
+            "espresso",
+            "lammps",
+            "nwchem",
+            "python",
+            "vasp",
+        ]
         return self.name in material_using_applications
 
     def get_short_name(self) -> str:
