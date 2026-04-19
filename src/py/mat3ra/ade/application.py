@@ -57,10 +57,10 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
     def calculate_hash(self) -> str:
         """Calculate a stable hash of the application config.
 
-        Uses the ESSE ``software/application`` schema to drop keys the schema
-        doesn't declare (e.g. ``buildConfig`` that standata may attach) so the
+        Uses the ESSE `software/application` schema to drop keys the schema
+        doesn't declare (e.g. `buildConfig` that standata may attach) so the
         digest stays aligned with the JS implementation, which performs the
-        same schema-driven filtering inside ``Application.toJSON()``.
+        same schema-driven filtering inside `Application.toJSON()`.
         """
         esse = ESSE()
         schema = esse.get_schema_by_id(APPLICATION_SCHEMA_ID)
