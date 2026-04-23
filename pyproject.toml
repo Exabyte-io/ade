@@ -23,8 +23,8 @@ dependencies = [
     "pydantic>=2.0",
     "mat3ra-esse",
     "mat3ra-code",
-    "mat3ra-utils[extra]",
-    "mat3ra-standata@git+https://github.com/Exabyte-io/standata.git#ab7f373bf33e7eec0cd4a5895a5b0daa6090f2bb"
+    "mat3ra-utils[extra]>=2026.4.15-1",
+    "mat3ra-standata@git+https://github.com/Exabyte-io/standata.git@ab7f373bf33e7eec0cd4a5895a5b0daa6090f2bb"
 ]
 
 [project.optional-dependencies]
@@ -40,8 +40,6 @@ tests = [
     "coverage[toml]>=5.3",
     "pytest",
     "pytest-cov",
-    "mat3ra-esse",
-    "mat3ra-utils>=2026.2.3",
 ]
 all = [
     "mat3ra-ade[tests]",
