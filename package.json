@@ -53,7 +53,7 @@
         "@mat3ra/code": "^2026.4.1-0",
         "@mat3ra/esse": "^2026.4.4-0",
         "@mat3ra/made": "^2026.4.2-1",
-        "@mat3ra/standata": "^2026.4.15-0",
+        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#ab7f373bf33e7eec0cd4a5895a5b0daa6090f2bb",
         "@mat3ra/tsconfig": "^2024.6.3-0",
         "@mat3ra/utils": "^2026.4.15-1",
         "@types/nunjucks": "^3.2.6",

@@ -8,6 +8,21 @@ import { ApplicationStandata } from "@mat3ra/standata";
 
 import Executable from "./executable";
 
+// Derive the set of applications flagged with `isMaterial: true` directly from
+// standata runtime data. Cached at module load since standata data is static.
+let materialUsingApplicationsCache: Set<string> | null = null;
+function getMaterialUsingApplicationNames(): Set<string> {
+    if (materialUsingApplicationsCache === null) {
+        const allApps = new ApplicationStandata().getAllAppData();
+        materialUsingApplicationsCache = new Set(
+            allApps
+                .filter((app) => (app as { isMaterial?: boolean }).isMaterial === true)
+                .map((app) => app.name as string),
+        );
+    }
+    return materialUsingApplicationsCache;
+}
+
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 
 export type BaseConstructor = Constructor<Base> & {
@@ -62,15 +77,7 @@ export function applicationMixin(item: Base) {
         },
 
         get isUsingMaterial() {
-            const materialUsingApplications = [
-                "deepmd",
-                "espresso",
-                "lammps",
-                "nwchem",
-                "python",
-                "vasp",
-            ];
-            return materialUsingApplications.includes(this.name);
+            return getMaterialUsingApplicationNames().has(this.name);
         },
     };
 

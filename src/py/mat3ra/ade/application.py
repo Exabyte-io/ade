@@ -1,7 +1,22 @@
+from functools import lru_cache
+from typing import FrozenSet
+
 from mat3ra.code.entity import InMemoryEntitySnakeCase
 from mat3ra.esse.models.software.application import ApplicationSchemaBase
+from mat3ra.standata.applications import ApplicationStandata
 from mat3ra.utils.object import calculate_hash_from_object, remove_timestampable_keys
 from pydantic import ConfigDict
+
+
+@lru_cache(maxsize=1)
+def _material_using_application_names() -> FrozenSet[str]:
+    """Names of applications flagged `isMaterial: true` in standata.
+
+    Cached because standata runtime data is static.
+    """
+    return frozenset(
+        app["name"] for app in ApplicationStandata.get_as_list() if app.get("isMaterial") is True
+    )
 
 
 class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
@@ -28,15 +43,7 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
 
     @property
     def is_using_material(self) -> bool:
-        material_using_applications = [
-            "deepmd",
-            "espresso",
-            "lammps",
-            "nwchem",
-            "python",
-            "vasp",
-        ]
-        return self.name in material_using_applications
+        return self.name in _material_using_application_names()
 
     def get_short_name(self) -> str:
         return self.short_name if self.short_name else self.name
