@@ -8,15 +8,15 @@ import { ApplicationStandata } from "@mat3ra/standata";
 
 import Executable from "./executable";
 
-// Derive the set of applications flagged with `isMaterial: true` directly from
-// standata runtime data. Cached at module load since standata data is static.
+// Derive the set of applications flagged with `isUsingMaterial: true` directly
+// from standata runtime data. Cached at module load since standata data is static.
 let materialUsingApplicationsCache: Set<string> | null = null;
 function getMaterialUsingApplicationNames(): Set<string> {
     if (materialUsingApplicationsCache === null) {
         const allApps = new ApplicationStandata().getAllAppData();
         materialUsingApplicationsCache = new Set(
             allApps
-                .filter((app) => (app as { isMaterial?: boolean }).isMaterial === true)
+                .filter((app) => (app as { isUsingMaterial?: boolean }).isUsingMaterial === true)
                 .map((app) => app.name as string),
         );
     }

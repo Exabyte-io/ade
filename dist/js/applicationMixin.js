@@ -7,14 +7,14 @@ exports.applicationMixin = applicationMixin;
 exports.applicationStaticMixin = applicationStaticMixin;
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
 const standata_1 = require("@mat3ra/standata");
-// Derive the set of applications flagged with `isMaterial: true` directly from
-// standata runtime data. Cached at module load since standata data is static.
+// Derive the set of applications flagged with `isUsingMaterial: true` directly
+// from standata runtime data. Cached at module load since standata data is static.
 let materialUsingApplicationsCache = null;
 function getMaterialUsingApplicationNames() {
     if (materialUsingApplicationsCache === null) {
         const allApps = new standata_1.ApplicationStandata().getAllAppData();
         materialUsingApplicationsCache = new Set(allApps
-            .filter((app) => app.isMaterial === true)
+            .filter((app) => app.isUsingMaterial === true)
             .map((app) => app.name));
     }
     return materialUsingApplicationsCache;

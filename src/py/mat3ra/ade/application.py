@@ -10,12 +10,14 @@ from pydantic import ConfigDict
 
 @lru_cache(maxsize=1)
 def _material_using_application_names() -> FrozenSet[str]:
-    """Names of applications flagged `isMaterial: true` in standata.
+    """Names of applications flagged `isUsingMaterial: true` in standata.
 
     Cached because standata runtime data is static.
     """
     return frozenset(
-        app["name"] for app in ApplicationStandata.get_as_list() if app.get("isMaterial") is True
+        app["name"]
+        for app in ApplicationStandata.get_as_list()
+        if app.get("isUsingMaterial") is True
     )
 
 
