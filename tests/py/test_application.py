@@ -63,7 +63,8 @@ def test_is_using_material_property():
         "vasp",
     ]
     for name in apps_using_material:
-        assert Application(name=name).is_using_material is True
+        config = next(iter(ApplicationStandata.get_by_name(name)))
+        assert Application(**config).is_using_material is True
     assert Application(name="other_app").is_using_material is False
 
 
