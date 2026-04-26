@@ -45,7 +45,7 @@ describe("Executable", () => {
         expect(json).to.have.property("schemaVersion");
     });
 
-    describe("executableStaticMixin", () => {
+    describe("static jsonSchema", () => {
         it("should have jsonSchema property", () => {
             expect(Executable.jsonSchema).to.exist;
         });

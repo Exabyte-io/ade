@@ -22,7 +22,7 @@ describe("Template", () => {
         expect(json.schemaVersion).to.be.a("string");
     });
 
-    describe("templateStaticMixin properties", () => {
+    describe("static jsonSchema", () => {
         it("should have jsonSchema property", () => {
             expect(Template.jsonSchema).to.exist;
         });

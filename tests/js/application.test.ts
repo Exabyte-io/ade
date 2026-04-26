@@ -9,8 +9,8 @@ describe("Application", () => {
         expect(app).to.be.instanceOf(Application);
     });
 
-    describe("applicationMixin properties", () => {
-        describe("isUsingMaterial property", () => {
+    describe("instance properties", () => {
+        describe("isUsingMaterial", () => {
             it("should return true for vasp application", () => {
                 const vaspApp = new Application({ name: "vasp" });
                 expect(vaspApp.isUsingMaterial).to.be.true;
@@ -33,7 +33,7 @@ describe("Application", () => {
         });
     });
 
-    describe("applicationStaticMixin properties", () => {
+    describe("static accessors", () => {
         it("should return the complete defaultConfig object", () => {
             expect(Application.defaultConfig).to.deep.equal({
                 name: "espresso",

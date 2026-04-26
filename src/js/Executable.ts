@@ -1,21 +1,23 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type DefaultableInMemoryEntityConstructor,
+    type Defaultable,
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
-    type NamedInMemoryEntityConstructor,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import {
-    type RuntimeItemsInMemoryEntityConstructor,
-    runtimeItemsMixin,
-} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import { runtimeItemsMixin } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
+import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
+import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
-import { type ExecutableMixin, executableMixin } from "./executableMixin";
+import {
+    type ExecutableSchemaMixin,
+    executableSchemaMixin,
+} from "./generated/ExecutableSchemaMixin";
 import type { PartialBy } from "./typeUtils";
 
 /** Input for {@link Executable}: runtime item lists default to empty when omitted. */
@@ -24,13 +26,13 @@ export type ExecutableConstructorData = PartialBy<
     "monitors" | "results" | "postProcessors" | "preProcessors"
 >;
 
-type Base = Constructor<ExecutableMixin> &
-    RuntimeItemsInMemoryEntityConstructor &
-    NamedInMemoryEntityConstructor &
-    DefaultableInMemoryEntityConstructor &
-    typeof InMemoryEntity;
+interface Executable
+    extends ExecutableSchemaMixin,
+        RuntimeItemsInMemoryEntity,
+        NamedEntity,
+        Defaultable {}
 
-export default class Executable extends (InMemoryEntity as Base) implements ExecutableSchema {
+class Executable extends InMemoryEntity implements ExecutableSchema {
     constructor(data: ExecutableConstructorData) {
         super({
             ...data,
@@ -41,6 +43,14 @@ export default class Executable extends (InMemoryEntity as Base) implements Exec
         });
     }
 
+    static get jsonSchema(): JSONSchema {
+        const schema = JSONSchemasInterface.getSchemaById("software/executable");
+        if (schema === undefined) {
+            throw new Error('JSONSchemasInterface: missing schema id "software/executable"');
+        }
+        return schema;
+    }
+
     declare static createDefault: () => Executable;
 
     declare toJSON: () => ExecutableSchema & AnyObject;
@@ -49,4 +59,6 @@ export default class Executable extends (InMemoryEntity as Base) implements Exec
 namedEntityMixin(Executable.prototype);
 defaultableEntityMixin(Executable);
 runtimeItemsMixin(Executable.prototype);
-executableMixin(Executable);
+executableSchemaMixin(Executable.prototype);
+
+export default Executable;

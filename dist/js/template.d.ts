@@ -1,13 +1,14 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import { type NamedInMemoryEntityConstructor } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import { type NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
-import { type TemplateMixin, type TemplateStaticMixin } from "./templateMixin";
-type Base = typeof InMemoryEntity & Constructor<TemplateMixin> & NamedInMemoryEntityConstructor & TemplateStaticMixin;
-declare const Template_base: Base;
-export default class Template extends Template_base implements TemplateSchema {
+import { type TemplateSchemaMixin } from "./generated/TemplateSchemaMixin";
+interface Template extends TemplateSchemaMixin, NamedEntity {
+}
+declare class Template extends InMemoryEntity implements TemplateSchema {
     constructor(data?: Partial<TemplateSchema>);
+    static get jsonSchema(): JSONSchema;
     toJSON: () => TemplateSchema & AnyObject;
 }
-export {};
+export default Template;

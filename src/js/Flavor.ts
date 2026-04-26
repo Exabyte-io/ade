@@ -1,29 +1,24 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type DefaultableInMemoryEntityConstructor,
+    type Defaultable,
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
+    type NamedEntity,
     namedEntityMixin,
-    NamedInMemoryEntityConstructor,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import {
-    type RuntimeItemsInMemoryEntityConstructor,
-    runtimeItemsMixin,
-} from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import { runtimeItemsMixin } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
+import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
+import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
-import { type FlavorMixin, flavorMixin } from "./flavorMixin";
+import { type FlavorSchemaMixin, flavorSchemaMixin } from "./generated/FlavorSchemaMixin";
 
-type Base = typeof InMemoryEntity &
-    Constructor<FlavorMixin> &
-    RuntimeItemsInMemoryEntityConstructor &
-    NamedInMemoryEntityConstructor &
-    DefaultableInMemoryEntityConstructor;
+interface Flavor extends FlavorSchemaMixin, RuntimeItemsInMemoryEntity, NamedEntity, Defaultable {}
 
-export default class Flavor extends (InMemoryEntity as Base) implements FlavorSchema {
+class Flavor extends InMemoryEntity implements FlavorSchema {
     constructor(data: Partial<FlavorSchema> = {}) {
         super({
             monitors: [],
@@ -38,6 +33,14 @@ export default class Flavor extends (InMemoryEntity as Base) implements FlavorSc
         });
     }
 
+    static get jsonSchema(): JSONSchema {
+        const schema = JSONSchemasInterface.getSchemaById("software/flavor");
+        if (schema === undefined) {
+            throw new Error('JSONSchemasInterface: missing schema id "software/flavor"');
+        }
+        return schema;
+    }
+
     declare static createDefault: () => Flavor;
 
     declare toJSON: () => FlavorSchema & AnyObject;
@@ -46,4 +49,6 @@ export default class Flavor extends (InMemoryEntity as Base) implements FlavorSc
 namedEntityMixin(Flavor.prototype);
 defaultableEntityMixin(Flavor);
 runtimeItemsMixin(Flavor.prototype);
-flavorMixin(Flavor);
+flavorSchemaMixin(Flavor.prototype);
+
+export default Flavor;

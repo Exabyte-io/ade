@@ -1,15 +1,19 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import { type DefaultableInMemoryEntityConstructor } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
-import { type NamedInMemoryEntityConstructor } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import { type Defaultable } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
+import { type NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
-import { type ApplicationMixin, type ApplicationStaticMixin } from "./applicationMixin";
-type Base = typeof InMemoryEntity & NamedInMemoryEntityConstructor & DefaultableInMemoryEntityConstructor & Constructor<ApplicationMixin> & ApplicationStaticMixin;
-declare const Application_base: Base;
-export default class Application extends Application_base implements ApplicationSchema {
+import { type ApplicationSchemaMixin } from "./generated/ApplicationSchemaMixin";
+export type DefaultApplicationConfig = Pick<ApplicationSchema, "name" | "shortName" | "version" | "summary" | "build">;
+interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable {
+}
+declare class Application extends InMemoryEntity implements ApplicationSchema {
     constructor(data?: Partial<ApplicationSchema>);
+    static get defaultConfig(): DefaultApplicationConfig;
+    static get jsonSchema(): JSONSchema;
     static createDefault: () => Application;
     toJSON: () => ApplicationSchema & AnyObject;
+    get isUsingMaterial(): boolean;
 }
-export {};
+export default Application;

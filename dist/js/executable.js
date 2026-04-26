@@ -1,10 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const entity_1 = require("@mat3ra/code/dist/js/entity");
 const DefaultableMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/DefaultableMixin");
 const NamedEntityMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin");
 const RuntimeItemsMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin");
-const executableMixin_1 = require("./executableMixin");
+const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
+const ExecutableSchemaMixin_1 = require("./generated/ExecutableSchemaMixin");
 class Executable extends entity_1.InMemoryEntity {
     constructor(data) {
         var _a, _b, _c, _d;
@@ -16,9 +20,16 @@ class Executable extends entity_1.InMemoryEntity {
             preProcessors: (_d = data.preProcessors) !== null && _d !== void 0 ? _d : [],
         });
     }
+    static get jsonSchema() {
+        const schema = JSONSchemasInterface_1.default.getSchemaById("software/executable");
+        if (schema === undefined) {
+            throw new Error('JSONSchemasInterface: missing schema id "software/executable"');
+        }
+        return schema;
+    }
 }
-exports.default = Executable;
 (0, NamedEntityMixin_1.namedEntityMixin)(Executable.prototype);
 (0, DefaultableMixin_1.defaultableEntityMixin)(Executable);
 (0, RuntimeItemsMixin_1.runtimeItemsMixin)(Executable.prototype);
-(0, executableMixin_1.executableMixin)(Executable);
+(0, ExecutableSchemaMixin_1.executableSchemaMixin)(Executable.prototype);
+exports.default = Executable;

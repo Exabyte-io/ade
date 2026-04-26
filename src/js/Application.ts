@@ -1,40 +1,61 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type DefaultableInMemoryEntityConstructor,
+    type Defaultable,
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
-    type NamedInMemoryEntityConstructor,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
+import { ApplicationStandata } from "@mat3ra/standata";
 
 import {
-    type ApplicationMixin,
-    type ApplicationStaticMixin,
-    applicationMixin,
-} from "./applicationMixin";
+    type ApplicationSchemaMixin,
+    applicationSchemaMixin,
+} from "./generated/ApplicationSchemaMixin";
 
-type Base = typeof InMemoryEntity &
-    NamedInMemoryEntityConstructor &
-    DefaultableInMemoryEntityConstructor &
-    Constructor<ApplicationMixin> &
-    ApplicationStaticMixin;
+export type DefaultApplicationConfig = Pick<
+    ApplicationSchema,
+    "name" | "shortName" | "version" | "summary" | "build"
+>;
 
-export default class Application extends (InMemoryEntity as Base) implements ApplicationSchema {
+interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable {}
+
+class Application extends InMemoryEntity implements ApplicationSchema {
     constructor(data: Partial<ApplicationSchema> = {}) {
         super({
             ...data,
         });
     }
 
+    static get defaultConfig(): DefaultApplicationConfig {
+        return new ApplicationStandata().getDefaultConfig();
+    }
+
+    static get jsonSchema(): JSONSchema {
+        const schema = JSONSchemasInterface.getSchemaById("software/application");
+        if (schema === undefined) {
+            throw new Error('JSONSchemasInterface: missing schema id "software/application"');
+        }
+        return schema;
+    }
+
     declare static createDefault: () => Application;
 
     declare toJSON: () => ApplicationSchema & AnyObject;
+
+    get isUsingMaterial() {
+        const materialUsingApplications = ["vasp", "nwchem", "espresso"];
+        return materialUsingApplications.includes(this.name);
+    }
 }
 
 namedEntityMixin(Application.prototype);
 defaultableEntityMixin(Application);
-applicationMixin(Application);
+applicationSchemaMixin(Application.prototype);
+
+export default Application;

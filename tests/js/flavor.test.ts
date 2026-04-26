@@ -48,7 +48,7 @@ describe("Flavor", () => {
         ]);
     });
 
-    describe("flavorStaticMixin", () => {
+    describe("static jsonSchema", () => {
         it("should have jsonSchema property", () => {
             expect(Flavor.jsonSchema).to.exist;
         });

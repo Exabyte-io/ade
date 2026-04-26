@@ -1,20 +1,18 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import {
-    type NamedInMemoryEntityConstructor,
+    type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
+import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 
-import { type TemplateMixin, type TemplateStaticMixin, templateMixin } from "./templateMixin";
+import { type TemplateSchemaMixin, templateSchemaMixin } from "./generated/TemplateSchemaMixin";
 
-type Base = typeof InMemoryEntity &
-    Constructor<TemplateMixin> &
-    NamedInMemoryEntityConstructor &
-    TemplateStaticMixin;
+interface Template extends TemplateSchemaMixin, NamedEntity {}
 
-export default class Template extends (InMemoryEntity as Base) implements TemplateSchema {
+class Template extends InMemoryEntity implements TemplateSchema {
     constructor(data: Partial<TemplateSchema> = {}) {
         super({
             applicationName: "",
@@ -25,8 +23,18 @@ export default class Template extends (InMemoryEntity as Base) implements Templa
         });
     }
 
+    static get jsonSchema(): JSONSchema {
+        const schema = JSONSchemasInterface.getSchemaById("software/template");
+        if (schema === undefined) {
+            throw new Error('JSONSchemasInterface: missing schema id "software/template"');
+        }
+        return schema;
+    }
+
     declare toJSON: () => TemplateSchema & AnyObject;
 }
 
 namedEntityMixin(Template.prototype);
-templateMixin(Template);
+templateSchemaMixin(Template.prototype);
+
+export default Template;
