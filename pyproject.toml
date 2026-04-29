@@ -21,10 +21,10 @@ classifiers = [
 dependencies = [
     "numpy",
     "pydantic>=2.0",
-    "mat3ra-esse@git+https://github.com/Exabyte-io/esse.git@1434ceb125a88c1d9023117310c3b7cbfdec5d08",
+    "mat3ra-esse>=2026.4.29.post0",
     "mat3ra-code",
     "mat3ra-utils[extra]>=2026.4.15-1",
-    "mat3ra-standata@git+https://github.com/Exabyte-io/standata.git@c0bf2d9e8a15903df7e4fa53ce0d45a3f79cf34e"
+    "mat3ra-standata>=2026.4.29.post0"
 ]
 
 [project.optional-dependencies]
