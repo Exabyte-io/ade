@@ -62,8 +62,7 @@ export function applicationMixin(item: Base) {
         },
 
         get isUsingMaterial() {
-            const materialUsingApplications = ["vasp", "nwchem", "espresso"];
-            return materialUsingApplications.includes(this.name);
+            return this.prop("isUsingMaterial", false);
         },
     };
 

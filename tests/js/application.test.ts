@@ -89,19 +89,20 @@ describe("Application", () => {
         });
 
         describe("isUsingMaterial property", () => {
+            const standata = new ApplicationStandata();
+            const appFromStandata = (name: string) =>
+                new Application(standata.getAllAppData().find((a) => a.name === name)!);
+
             it("should return true for vasp application", () => {
-                const vaspApp = new Application({ name: "vasp" });
-                expect(vaspApp.isUsingMaterial).to.be.true;
+                expect(appFromStandata("vasp").isUsingMaterial).to.be.true;
             });
 
             it("should return true for nwchem application", () => {
-                const nwchemApp = new Application({ name: "nwchem" });
-                expect(nwchemApp.isUsingMaterial).to.be.true;
+                expect(appFromStandata("nwchem").isUsingMaterial).to.be.true;
             });
 
             it("should return true for espresso application", () => {
-                const espressoApp = new Application({ name: "espresso" });
-                expect(espressoApp.isUsingMaterial).to.be.true;
+                expect(appFromStandata("espresso").isUsingMaterial).to.be.true;
             });
 
             it("should return false for other applications", () => {

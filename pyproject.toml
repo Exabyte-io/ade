@@ -21,9 +21,10 @@ classifiers = [
 dependencies = [
     "numpy",
     "pydantic>=2.0",
-    "mat3ra-esse",
+    "mat3ra-esse>=2026.4.29.post0",
     "mat3ra-code",
-    "mat3ra-utils[extra]"
+    "mat3ra-utils[extra]>=2026.4.15-1",
+    "mat3ra-standata>=2026.4.29.post0"
 ]
 
 [project.optional-dependencies]
@@ -39,9 +40,6 @@ tests = [
     "coverage[toml]>=5.3",
     "pytest",
     "pytest-cov",
-    "mat3ra-esse",
-    "mat3ra-utils>=2026.2.3",
-    "mat3ra-standata"
 ]
 all = [
     "mat3ra-ade[tests]",

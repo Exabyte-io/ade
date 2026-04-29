@@ -54,17 +54,18 @@ def test_application_with_all_fields():
 
 
 def test_is_using_material_property():
-    vasp = Application(name="vasp")
-    assert vasp.is_using_material is True
-
-    nwchem = Application(name="nwchem")
-    assert nwchem.is_using_material is True
-
-    espresso = Application(name="espresso")
-    assert espresso.is_using_material is True
-
-    other = Application(name="other_app")
-    assert other.is_using_material is False
+    apps_using_material = [
+        "deepmd",
+        "espresso",
+        "lammps",
+        "nwchem",
+        "python",
+        "vasp",
+    ]
+    for name in apps_using_material:
+        config = next(iter(ApplicationStandata.get_by_name(name)))
+        assert Application(**config).is_using_material is True
+    assert Application(name="other_app").is_using_material is False
 
 
 def test_get_short_name():
