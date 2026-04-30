@@ -109,6 +109,25 @@ describe("Application", () => {
                 const otherApp = new Application({ name: "other_app" });
                 expect(otherApp.isUsingMaterial).to.be.false;
             });
+
+            describe("fallback when key is missing", () => {
+                ["vasp", "nwchem", "espresso"].forEach((name) => {
+                    it(`should fall back to true for ${name} when key is absent`, () => {
+                        expect(new Application({ name }).isUsingMaterial).to.be.true;
+                    });
+                });
+
+                ["deepmd", "lammps", "python", "shell"].forEach((name) => {
+                    it(`should stay false for ${name} when key is absent (not in fallback list)`, () => {
+                        expect(new Application({ name }).isUsingMaterial).to.be.false;
+                    });
+                });
+
+                it("should honor explicit false even for fallback-listed app", () => {
+                    const app = new Application({ name: "espresso", isUsingMaterial: false });
+                    expect(app.isUsingMaterial).to.be.false;
+                });
+            });
         });
     });
 

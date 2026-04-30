@@ -8,6 +8,12 @@ import { ApplicationStandata } from "@mat3ra/standata";
 
 import Executable from "./executable";
 
+// Fallback list consulted only when `isUsingMaterial` is absent from the
+// application config. Keeps legacy workflows/jobs (created before the
+// `isUsingMaterial` flag existed) rendering the materials tab without
+// requiring a DB migration.
+export const APPS_USING_MATERIAL_FALLBACK = new Set(["vasp", "nwchem", "espresso"]);
+
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 
 export type BaseConstructor = Constructor<Base> & {
@@ -62,7 +68,9 @@ export function applicationMixin(item: Base) {
         },
 
         get isUsingMaterial() {
-            return this.prop("isUsingMaterial", false);
+            const stored = this.prop("isUsingMaterial");
+            if (typeof stored === "boolean") return stored;
+            return APPS_USING_MATERIAL_FALLBACK.has(this.name);
         },
     };
 

@@ -3,6 +3,13 @@ from mat3ra.esse.models.software.application import ApplicationSchemaBase
 from mat3ra.utils.object import calculate_hash_from_object, remove_timestampable_keys
 from pydantic import ConfigDict
 
+# Fallback list consulted only when `isUsingMaterial` is absent from the
+# application config. Keeps legacy workflows/jobs (created before the
+# `isUsingMaterial` flag existed) rendering the materials tab without
+# requiring a DB migration. Mirror of the JS-side constant in
+# `applicationMixin.ts`.
+APPS_USING_MATERIAL_FALLBACK = frozenset({"vasp", "nwchem", "espresso"})
+
 
 class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
     """
@@ -16,7 +23,8 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
         summary: Application's short description
         hasAdvancedComputeOptions: Whether advanced compute options are present
         isLicensed: Whether licensing is present
-        isUsingMaterial: Whether this application is used for materials processing
+        isUsingMaterial: Whether this application uses a material as input.
+            When absent, falls back to `APPS_USING_MATERIAL_FALLBACK`.
         isDefault: Identifies that entity is defaultable
         schemaVersion: Entity's schema version
     """
@@ -29,7 +37,9 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
 
     @property
     def is_using_material(self) -> bool:
-        return bool(self.isUsingMaterial)
+        if self.isUsingMaterial is not None:
+            return bool(self.isUsingMaterial)
+        return self.name in APPS_USING_MATERIAL_FALLBACK
 
     def get_short_name(self) -> str:
         return self.short_name if self.short_name else self.name

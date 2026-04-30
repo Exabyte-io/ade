@@ -68,6 +68,21 @@ def test_is_using_material_property():
     assert Application(name="other_app").is_using_material is False
 
 
+def test_is_using_material_falls_back_when_key_missing():
+    # When `isUsingMaterial` is absent (e.g. legacy workflow snapshots) the
+    # fallback list of well-known material apps is consulted by name.
+    for name in ["vasp", "nwchem", "espresso"]:
+        assert Application(name=name).is_using_material is True
+    # Apps outside the fallback list (and without an explicit flag) stay False.
+    for name in ["deepmd", "lammps", "python", "shell", "other_app"]:
+        assert Application(name=name).is_using_material is False
+
+
+def test_is_using_material_explicit_false_overrides_fallback():
+    # An explicit `isUsingMaterial: False` must win over the fallback list.
+    assert Application(name="espresso", isUsingMaterial=False).is_using_material is False
+
+
 def test_get_short_name():
     app_with_short = Application(name="espresso", shortName="QE")
     assert app_with_short.get_short_name() == "QE"
