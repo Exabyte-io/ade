@@ -12,6 +12,8 @@ const standata_1 = require("@mat3ra/standata");
 // application config. Keeps legacy workflows/jobs (created before the
 // `isUsingMaterial` flag existed) rendering the materials tab without
 // requiring a DB migration.
+// DO NOT add new apps to this list, new apps should use `isUsingMaterial` in
+// standata definitions instead.
 exports.APPS_USING_MATERIAL_FALLBACK = new Set(["vasp", "nwchem", "espresso"]);
 function applicationMixin(item) {
     // @ts-expect-error

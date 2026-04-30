@@ -8,6 +8,8 @@ from pydantic import ConfigDict
 # `isUsingMaterial` flag existed) rendering the materials tab without
 # requiring a DB migration. Mirror of the JS-side constant in
 # `applicationMixin.ts`.
+# DO NOT add new apps to this list, new apps should use `isUsingMaterial` in
+# standata definitions instead.
 APPS_USING_MATERIAL_FALLBACK = frozenset({"vasp", "nwchem", "espresso"})
 
 

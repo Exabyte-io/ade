@@ -12,6 +12,8 @@ import Executable from "./executable";
 // application config. Keeps legacy workflows/jobs (created before the
 // `isUsingMaterial` flag existed) rendering the materials tab without
 // requiring a DB migration.
+// DO NOT add new apps to this list, new apps should use `isUsingMaterial` in
+// standata definitions instead.
 export const APPS_USING_MATERIAL_FALLBACK = new Set(["vasp", "nwchem", "espresso"]);
 
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
