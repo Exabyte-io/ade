@@ -4,6 +4,7 @@ import type { NamedInMemoryEntity } from "@mat3ra/code/dist/js/entity/mixins/Nam
 import type { Constructor } from "@mat3ra/code/dist/js/utils/types";
 import type { ApplicationSchemaBase } from "@mat3ra/esse/dist/js/types";
 import Executable from "./executable";
+export declare const APPS_USING_MATERIAL_FALLBACK: Set<string>;
 type Base = InMemoryEntity & NamedInMemoryEntity & DefaultableInMemoryEntity;
 export type BaseConstructor = Constructor<Base> & {
     constructCustomExecutable?: (config: object) => Executable;

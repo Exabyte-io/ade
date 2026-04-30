@@ -3,10 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.APPS_USING_MATERIAL_FALLBACK = void 0;
 exports.applicationMixin = applicationMixin;
 exports.applicationStaticMixin = applicationStaticMixin;
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
 const standata_1 = require("@mat3ra/standata");
+// Fallback list consulted only when `isUsingMaterial` is absent from the
+// application config. Keeps legacy workflows/jobs (created before the
+// `isUsingMaterial` flag existed) rendering the materials tab without
+// requiring a DB migration.
+// DO NOT add new apps to this list, new apps should use `isUsingMaterial` in
+// standata definitions instead.
+exports.APPS_USING_MATERIAL_FALLBACK = new Set(["vasp", "nwchem", "espresso"]);
 function applicationMixin(item) {
     // @ts-expect-error
     const properties = {
@@ -29,7 +37,10 @@ function applicationMixin(item) {
             return this.prop("isLicensed", false);
         },
         get isUsingMaterial() {
-            return this.prop("isUsingMaterial", false);
+            const stored = this.prop("isUsingMaterial");
+            if (typeof stored === "boolean")
+                return stored;
+            return exports.APPS_USING_MATERIAL_FALLBACK.has(this.name);
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));
