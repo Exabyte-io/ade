@@ -10,7 +10,6 @@ interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable {
 }
 declare class Application extends InMemoryEntity implements ApplicationSchema {
     constructor(data?: Partial<ApplicationSchema>);
-    static get defaultConfig(): DefaultApplicationConfig;
     static get jsonSchema(): JSONSchema;
     static createDefault: () => Application;
     toJSON: () => ApplicationSchema & AnyObject;

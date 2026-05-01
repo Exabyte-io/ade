@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-expressions */
-import { ApplicationStandata } from "@mat3ra/standata";
+import { ApplicationRegistry } from "@mat3ra/standata";
+import StandataDriver from "@mat3ra/standata/dist/js/StandataDriver";
 import { expect } from "chai";
 
 import { Flavor } from "../../src/js";
@@ -20,10 +21,16 @@ describe("Flavor", () => {
     });
 
     it("results are correct", () => {
-        const standata = new ApplicationStandata();
-        const { flavor } = standata.getExecutableAndFlavorByName("espresso", "pw.x", "pw_scf");
+        ApplicationRegistry.setDriver(new StandataDriver());
+        const standata = new ApplicationRegistry();
+        const flavor = standata
+            .getFlavorsByApplicationExecutable(
+                { name: "espresso", version: "6.3" },
+                { name: "pw.x" },
+            )
+            .find((flavor) => flavor.name === "pw_scf");
 
-        expect(flavor.results).to.deep.equal([
+        expect(flavor?.results).to.deep.equal([
             {
                 name: "atomic_forces",
             },

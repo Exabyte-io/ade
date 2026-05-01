@@ -34,16 +34,6 @@ describe("Application", () => {
     });
 
     describe("static accessors", () => {
-        it("should return the complete defaultConfig object", () => {
-            expect(Application.defaultConfig).to.deep.equal({
-                name: "espresso",
-                shortName: "qe",
-                version: "6.3",
-                summary: "Quantum ESPRESSO",
-                build: "GNU",
-            });
-        });
-
         it("should have jsonSchema property", () => {
             const schema = Application.jsonSchema;
             expect(schema).to.exist;

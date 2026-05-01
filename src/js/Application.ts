@@ -11,7 +11,6 @@ import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
-import { ApplicationStandata } from "@mat3ra/standata";
 
 import {
     type ApplicationSchemaMixin,
@@ -30,10 +29,6 @@ class Application extends InMemoryEntity implements ApplicationSchema {
         super({
             ...data,
         });
-    }
-
-    static get defaultConfig(): DefaultApplicationConfig {
-        return new ApplicationStandata().getDefaultConfig();
     }
 
     static get jsonSchema(): JSONSchema {

@@ -48,11 +48,12 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.16.3",
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/utils": "2025.9.20-0",
         "@mat3ra/code": "git+https://github.com/Exabyte-io/code.git#c3c9e5eb177fe70b8bc221832b6f9d93104d7e2d",
         "@mat3ra/esse": "git+https://github.com/Exabyte-io/esse#75ec994043d2dfadfff0c36a23ec9f6fbcf214e4",
-        "@mat3ra/standata": "git+https://github.com/Exabyte-io/standata.git#7a759159c5858b9a815429f041bd004fd8cec8be",
+        "@mat3ra/standata": "file:../../../standata/mat3ra-standata-0.0.0.tgz",
         "@mat3ra/tsconfig": "2024.6.3-0",
+        "@mat3ra/utils": "2025.9.20-0",
+        "@types/node": "^20.19.39",
         "@typescript-eslint/eslint-plugin": "^5.9.1",
         "@typescript-eslint/parser": "^5.9.1",
         "chai": "^4.3.4",
@@ -78,11 +79,11 @@
         "typescript": "^5.6.0"
     },
     "peerDependencies": {
-        "@mat3ra/utils": "*",
         "@mat3ra/code": "*",
         "@mat3ra/esse": "*",
         "@mat3ra/made": "*",
-        "@mat3ra/standata": "*"
+        "@mat3ra/standata": "*",
+        "@mat3ra/utils": "*"
     },
     "engines": {
         "node": ">=20.0.0"
