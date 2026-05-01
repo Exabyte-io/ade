@@ -11,6 +11,7 @@ import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
+import { Utils } from "@mat3ra/utils";
 
 import {
     type ApplicationSchemaMixin,
@@ -43,9 +44,10 @@ class Application extends InMemoryEntity implements ApplicationSchema {
 
     declare toJSON: () => ApplicationSchema & AnyObject;
 
-    get isUsingMaterial() {
-        const materialUsingApplications = ["vasp", "nwchem", "espresso"];
-        return materialUsingApplications.includes(this.name);
+    calculateHash() {
+        return Utils.hash.calculateHashFromObject(
+            Utils.specific.removeTimestampableKeysFromConfig(this.toJSON()),
+        );
     }
 }
 

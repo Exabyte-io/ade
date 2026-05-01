@@ -18,6 +18,14 @@ export function executableSchemaMixin<T extends InMemoryEntity>(
         set applicationName(value: ExecutablePropertiesSchema["applicationName"]) {
             this.setProp("applicationName", value);
         },
+        get applicationVersion() {
+            return this.requiredProp<ExecutablePropertiesSchema["applicationVersion"]>(
+                "applicationVersion",
+            );
+        },
+        set applicationVersion(value: ExecutablePropertiesSchema["applicationVersion"]) {
+            this.setProp("applicationVersion", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop<ExecutablePropertiesSchema["hasAdvancedComputeOptions"]>(
                 "hasAdvancedComputeOptions",

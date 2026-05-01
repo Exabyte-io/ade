@@ -40,6 +40,12 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
         set isDefault(value: ApplicationPropertiesSchema["isDefault"]) {
             this.setProp("isDefault", value);
         },
+        get isDefaultVersion() {
+            return this.prop<ApplicationPropertiesSchema["isDefaultVersion"]>("isDefaultVersion");
+        },
+        set isDefaultVersion(value: ApplicationPropertiesSchema["isDefaultVersion"]) {
+            this.setProp("isDefaultVersion", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop<ApplicationPropertiesSchema["hasAdvancedComputeOptions"]>(
                 "hasAdvancedComputeOptions",
@@ -55,6 +61,12 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
         },
         set isLicensed(value: ApplicationPropertiesSchema["isLicensed"]) {
             this.setProp("isLicensed", value);
+        },
+        get isUsingMaterial() {
+            return this.prop<ApplicationPropertiesSchema["isUsingMaterial"]>("isUsingMaterial");
+        },
+        set isUsingMaterial(value: ApplicationPropertiesSchema["isUsingMaterial"]) {
+            this.setProp("isUsingMaterial", value);
         },
     };
 

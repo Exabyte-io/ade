@@ -5,28 +5,28 @@ function flavorSchemaMixin(item) {
     // @ts-expect-error
     const properties = {
         get executableName() {
-            return this.prop("executableName");
+            return this.requiredProp("executableName");
         },
         set executableName(value) {
             this.setProp("executableName", value);
         },
         get applicationName() {
-            return this.prop("applicationName");
+            return this.requiredProp("applicationName");
         },
         set applicationName(value) {
             this.setProp("applicationName", value);
+        },
+        get applicationVersion() {
+            return this.requiredProp("applicationVersion");
+        },
+        set applicationVersion(value) {
+            this.setProp("applicationVersion", value);
         },
         get input() {
             return this.requiredProp("input");
         },
         set input(value) {
             this.setProp("input", value);
-        },
-        get supportedApplicationVersions() {
-            return this.prop("supportedApplicationVersions");
-        },
-        set supportedApplicationVersions(value) {
-            this.setProp("supportedApplicationVersions", value);
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));

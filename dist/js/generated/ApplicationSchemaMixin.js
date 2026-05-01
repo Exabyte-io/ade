@@ -34,6 +34,12 @@ function applicationSchemaMixin(item) {
         set isDefault(value) {
             this.setProp("isDefault", value);
         },
+        get isDefaultVersion() {
+            return this.prop("isDefaultVersion");
+        },
+        set isDefaultVersion(value) {
+            this.setProp("isDefaultVersion", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop("hasAdvancedComputeOptions");
         },
@@ -45,6 +51,12 @@ function applicationSchemaMixin(item) {
         },
         set isLicensed(value) {
             this.setProp("isLicensed", value);
+        },
+        get isUsingMaterial() {
+            return this.prop("isUsingMaterial");
+        },
+        set isUsingMaterial(value) {
+            this.setProp("isUsingMaterial", value);
         },
     };
     Object.defineProperties(item, Object.getOwnPropertyDescriptors(properties));

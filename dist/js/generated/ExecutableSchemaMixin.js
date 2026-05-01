@@ -10,6 +10,12 @@ function executableSchemaMixin(item) {
         set applicationName(value) {
             this.setProp("applicationName", value);
         },
+        get applicationVersion() {
+            return this.requiredProp("applicationVersion");
+        },
+        set applicationVersion(value) {
+            this.setProp("applicationVersion", value);
+        },
         get hasAdvancedComputeOptions() {
             return this.prop("hasAdvancedComputeOptions");
         },

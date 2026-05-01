@@ -10,6 +10,12 @@ export function templateSchemaMixin<T extends InMemoryEntity>(
 ): asserts item is T & TemplateSchemaMixin {
     // @ts-expect-error
     const properties: InMemoryEntity & TemplateSchemaMixin = {
+        get executableName() {
+            return this.requiredProp<TemplatePropertiesSchema["executableName"]>("executableName");
+        },
+        set executableName(value: TemplatePropertiesSchema["executableName"]) {
+            this.setProp("executableName", value);
+        },
         get applicationName() {
             return this.requiredProp<TemplatePropertiesSchema["applicationName"]>(
                 "applicationName",
@@ -19,16 +25,12 @@ export function templateSchemaMixin<T extends InMemoryEntity>(
             this.setProp("applicationName", value);
         },
         get applicationVersion() {
-            return this.prop<TemplatePropertiesSchema["applicationVersion"]>("applicationVersion");
+            return this.requiredProp<TemplatePropertiesSchema["applicationVersion"]>(
+                "applicationVersion",
+            );
         },
         set applicationVersion(value: TemplatePropertiesSchema["applicationVersion"]) {
             this.setProp("applicationVersion", value);
-        },
-        get executableName() {
-            return this.requiredProp<TemplatePropertiesSchema["executableName"]>("executableName");
-        },
-        set executableName(value: TemplatePropertiesSchema["executableName"]) {
-            this.setProp("executableName", value);
         },
         get contextProviders() {
             return this.requiredProp<TemplatePropertiesSchema["contextProviders"]>(

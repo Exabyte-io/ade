@@ -4,6 +4,12 @@ exports.templateSchemaMixin = templateSchemaMixin;
 function templateSchemaMixin(item) {
     // @ts-expect-error
     const properties = {
+        get executableName() {
+            return this.requiredProp("executableName");
+        },
+        set executableName(value) {
+            this.setProp("executableName", value);
+        },
         get applicationName() {
             return this.requiredProp("applicationName");
         },
@@ -11,16 +17,10 @@ function templateSchemaMixin(item) {
             this.setProp("applicationName", value);
         },
         get applicationVersion() {
-            return this.prop("applicationVersion");
+            return this.requiredProp("applicationVersion");
         },
         set applicationVersion(value) {
             this.setProp("applicationVersion", value);
-        },
-        get executableName() {
-            return this.requiredProp("executableName");
-        },
-        set executableName(value) {
-            this.setProp("executableName", value);
         },
         get contextProviders() {
             return this.requiredProp("contextProviders");

@@ -13,6 +13,6 @@ declare class Application extends InMemoryEntity implements ApplicationSchema {
     static get jsonSchema(): JSONSchema;
     static createDefault: () => Application;
     toJSON: () => ApplicationSchema & AnyObject;
-    get isUsingMaterial(): boolean;
+    calculateHash(): string;
 }
 export default Application;
