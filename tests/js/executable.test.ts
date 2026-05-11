@@ -8,6 +8,7 @@ describe("Executable", () => {
         const executable = new Executable({
             name: "espresso",
             applicationName: "espresso",
+            applicationVersion: "6.3",
         });
         expect(executable.monitors).to.deep.equal([]);
         expect(executable.results).to.deep.equal([]);
@@ -23,6 +24,7 @@ describe("Executable", () => {
         const executable = new Executable({
             name: "espresso",
             applicationName: "espresso",
+            applicationVersion: "6.3",
             monitors,
             results,
             postProcessors,
@@ -38,6 +40,7 @@ describe("Executable", () => {
         const executable = new Executable({
             name: "espresso",
             applicationName: "espresso",
+            applicationVersion: "6.3",
         });
         const json = executable.toJSON();
         expect(json).to.have.property("name", "espresso");

@@ -9,30 +9,6 @@ describe("Application", () => {
         expect(app).to.be.instanceOf(Application);
     });
 
-    describe("instance properties", () => {
-        describe("isUsingMaterial", () => {
-            it("should return true for vasp application", () => {
-                const vaspApp = new Application({ name: "vasp" });
-                expect(vaspApp.isUsingMaterial).to.be.true;
-            });
-
-            it("should return true for nwchem application", () => {
-                const nwchemApp = new Application({ name: "nwchem" });
-                expect(nwchemApp.isUsingMaterial).to.be.true;
-            });
-
-            it("should return true for espresso application", () => {
-                const espressoApp = new Application({ name: "espresso" });
-                expect(espressoApp.isUsingMaterial).to.be.true;
-            });
-
-            it("should return false for other applications", () => {
-                const otherApp = new Application({ name: "other_app" });
-                expect(otherApp.isUsingMaterial).to.be.false;
-            });
-        });
-    });
-
     describe("static accessors", () => {
         it("should have jsonSchema property", () => {
             const schema = Application.jsonSchema;

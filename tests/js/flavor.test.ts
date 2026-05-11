@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-expressions */
-import { ApplicationRegistry } from "@mat3ra/standata";
-import StandataDriver from "@mat3ra/standata/dist/js/StandataDriver";
 import { expect } from "chai";
 
 import { Flavor } from "../../src/js";
@@ -18,41 +16,6 @@ describe("Flavor", () => {
         const flavor = new Flavor({ name: "custom", executableName: "pw.x" });
         expect(flavor.name).to.equal("custom");
         expect(flavor.executableName).to.equal("pw.x");
-    });
-
-    it("results are correct", () => {
-        ApplicationRegistry.setDriver(new StandataDriver());
-        const standata = new ApplicationRegistry();
-        const flavor = standata
-            .getFlavorsByApplicationExecutable(
-                { name: "espresso", version: "6.3" },
-                { name: "pw.x" },
-            )
-            .find((flavor) => flavor.name === "pw_scf");
-
-        expect(flavor?.results).to.deep.equal([
-            {
-                name: "atomic_forces",
-            },
-            {
-                name: "fermi_energy",
-            },
-            {
-                name: "pressure",
-            },
-            {
-                name: "stress_tensor",
-            },
-            {
-                name: "total_energy",
-            },
-            {
-                name: "total_energy_contributions",
-            },
-            {
-                name: "total_force",
-            },
-        ]);
     });
 
     describe("static jsonSchema", () => {

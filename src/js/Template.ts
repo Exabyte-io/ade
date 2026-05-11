@@ -9,18 +9,21 @@ import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 
 import { type TemplateSchemaMixin, templateSchemaMixin } from "./generated/TemplateSchemaMixin";
+import type { PartialBy } from "./typeUtils";
 
 interface Template extends TemplateSchemaMixin, NamedEntity {}
 
+export type DefaultTemplateConfig = PartialBy<TemplateSchema, "content" | "contextProviders">;
+
 class Template extends InMemoryEntity implements TemplateSchema {
-    constructor(data: Partial<TemplateSchema> = {}) {
-        super({
-            applicationName: "",
-            executableName: "",
+    constructor(data: DefaultTemplateConfig) {
+        const templateData: TemplateSchema = {
             content: "",
             contextProviders: [],
             ...data,
-        });
+        };
+
+        super(templateData);
     }
 
     static get jsonSchema(): JSONSchema {
