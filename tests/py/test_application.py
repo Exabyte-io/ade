@@ -82,6 +82,7 @@ def test_application_to_dict():
     expected = {
         **APPLICATION_DEFAULT_FIELDS,
         **config,
+        "isUsingMaterial": False,
     }
     assertion.assert_deep_almost_equal(expected, app.to_dict())
 
