@@ -1,7 +1,7 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
 from mat3ra.esse.models.software.application import ApplicationSchemaBase
 from mat3ra.utils.object import calculate_hash_from_object, remove_timestampable_keys
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 
 
 class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
@@ -26,6 +26,8 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
     # aligned with the JS side, which performs the same schema-driven filtering
     # inside `Application.toJSON()`.
     model_config = ConfigDict(extra="ignore")
+
+    isUsingMaterial: bool = Field(default=False)
 
     @property
     def is_using_material(self) -> bool:
