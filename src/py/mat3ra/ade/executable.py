@@ -1,5 +1,8 @@
+from typing import List
+
 from mat3ra.code.entity import InMemoryEntitySnakeCase
-from mat3ra.esse.models.software.executable import ExecutableSchema
+from mat3ra.esse.models.software.executable import ExecutableSchema, RuntimeItemNameObjectSchema
+from pydantic import Field
 
 
 class Executable(ExecutableSchema, InMemoryEntitySnakeCase):
@@ -8,7 +11,8 @@ class Executable(ExecutableSchema, InMemoryEntitySnakeCase):
 
     Attributes:
         name: The name of the executable (required)
-        applicationId: IDs of the application this executable belongs to
+        applicationName: Name of the application this executable belongs to
+        applicationVersion: Version of the application this executable belongs to
         hasAdvancedComputeOptions: Whether advanced compute options are present
         isDefault: Identifies that entity is defaultable
         schemaVersion: Entity's schema version
@@ -18,4 +22,9 @@ class Executable(ExecutableSchema, InMemoryEntitySnakeCase):
         results: Names of the results for this calculation
     """
 
-    pass
+    preProcessors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    postProcessors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    monitors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    results: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    applicationName: str = ""
+    applicationVersion: str = ""

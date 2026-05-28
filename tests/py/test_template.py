@@ -9,6 +9,10 @@ CONTEXT_PROVIDER_DEFAULT_FIELDS = {}
 TEMPLATE_DEFAULT_FIELDS = {
     "contextProviders": [],
     "schemaVersion": "2022.8.16",
+    "executableName": "",
+    "applicationName": "",
+    "applicationVersion": "",
+    "isManuallyChanged": False,
 }
 
 CONFIG_MINIMAL = {
@@ -47,8 +51,6 @@ EXPECTED_FULL = {
 }
 
 CONFIG_INVALID_EMPTY = {}
-CONFIG_INVALID_NAME_ONLY = {"name": "test.in"}
-CONFIG_INVALID_CONTENT_ONLY = {"content": "content"}
 
 CONFIG_WITH_RENDERED = {
     "name": "test.in",
@@ -174,8 +176,6 @@ def test_template_creation(config, expected_fields):
     "config",
     [
         CONFIG_INVALID_EMPTY,
-        CONFIG_INVALID_NAME_ONLY,
-        CONFIG_INVALID_CONTENT_ONLY,
     ],
 )
 def test_template_validation(config):

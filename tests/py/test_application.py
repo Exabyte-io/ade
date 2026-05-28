@@ -8,6 +8,9 @@ from mat3ra.utils import assertion
 APPLICATION_DEFAULT_FIELDS = {
     "schemaVersion": "2022.8.16",
     "isDefault": False,
+    "shortName": "",
+    "summary": "",
+    "build": "",
 }
 
 APPLICATION_MINIMAL_CONFIG = {
