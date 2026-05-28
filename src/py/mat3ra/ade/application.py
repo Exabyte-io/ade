@@ -1,11 +1,7 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
-<<<<<<< HEAD
-from mat3ra.esse.models.software.application import ApplicationSchema
-=======
 from mat3ra.esse.models.software.application import ApplicationSchemaBase
 from mat3ra.utils.object import calculate_hash_from_object, remove_timestampable_keys
 from pydantic import ConfigDict, Field
->>>>>>> 23bc8d62f269c7df69c9b7f1db9eee9ba78a188c
 
 
 class Application(ApplicationSchema, InMemoryEntitySnakeCase):
