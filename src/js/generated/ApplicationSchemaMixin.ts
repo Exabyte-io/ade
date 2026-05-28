@@ -63,7 +63,10 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
             this.setProp("isLicensed", value);
         },
         get isUsingMaterial() {
-            return this.prop<ApplicationPropertiesSchema["isUsingMaterial"]>("isUsingMaterial");
+            return this.prop<ApplicationPropertiesSchema["isUsingMaterial"]>(
+                "isUsingMaterial",
+                false,
+            );
         },
         set isUsingMaterial(value: ApplicationPropertiesSchema["isUsingMaterial"]) {
             this.setProp("isUsingMaterial", value);

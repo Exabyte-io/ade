@@ -53,7 +53,7 @@ function applicationSchemaMixin(item) {
             this.setProp("isLicensed", value);
         },
         get isUsingMaterial() {
-            return this.prop("isUsingMaterial");
+            return this.prop("isUsingMaterial", false);
         },
         set isUsingMaterial(value) {
             this.setProp("isUsingMaterial", value);
