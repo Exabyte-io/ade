@@ -4,6 +4,10 @@ import {
     defaultableEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import {
+    HashedEntity,
+    hashedEntityMixin,
+} from "@mat3ra/code/dist/js/entity/mixins/HashedEntityMixin";
+import {
     type NamedEntity,
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
@@ -11,7 +15,6 @@ import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface
 import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
-import { Utils } from "@mat3ra/utils";
 
 import {
     type ApplicationSchemaMixin,
@@ -23,7 +26,7 @@ export type DefaultApplicationConfig = Pick<
     "name" | "shortName" | "version" | "summary" | "build"
 >;
 
-interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable {}
+interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable, HashedEntity {}
 
 class Application extends InMemoryEntity implements ApplicationSchema {
     constructor(data: Partial<ApplicationSchema> = {}) {
@@ -44,15 +47,18 @@ class Application extends InMemoryEntity implements ApplicationSchema {
 
     declare toJSON: () => ApplicationSchema & AnyObject;
 
-    calculateHash() {
-        return Utils.hash.calculateHashFromObject(
-            Utils.specific.removeTimestampableKeysFromConfig(this.toJSON()),
-        );
+    getHashObject() {
+        return {
+            name: this.name,
+            version: this.version,
+            build: this.build,
+        };
     }
 }
 
 namedEntityMixin(Application.prototype);
 defaultableEntityMixin(Application);
 applicationSchemaMixin(Application.prototype);
+hashedEntityMixin(Application.prototype);
 
 export default Application;
