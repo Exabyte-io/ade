@@ -13,16 +13,14 @@ FLAVOR_INPUT_FULL_CONFIG = {
 
 FLAVOR_MINIMAL_CONFIG = {
     "name": "scf",
-    "executableId": "exe_123",
 }
 
 FLAVOR_FULL_CONFIG = {
     "name": "scf",
-    "executableId": "exe_123",
     "executableName": "pw.x",
     "applicationName": "espresso",
+    "applicationVersion": "7.2",
     "input": [FlavorInput(name="pw_scf.in", templateName="pw_scf")],
-    "supportedApplicationVersions": ["7.0", "7.1", "7.2"],
     "isDefault": True,
     "schemaVersion": "1.0.0",
     "preProcessors": [{"name": "prep1"}],
@@ -33,31 +31,32 @@ FLAVOR_FULL_CONFIG = {
 
 FLAVOR_TO_DICT_CONFIG = {
     "name": "scf",
-    "executableId": "exe_123",
     "executableName": "pw.x",
     "applicationName": "espresso",
 }
 
 FLAVOR_FROM_DICT_CONFIG = {
     "name": "scf",
-    "executableId": "exe_123",
     "executableName": "pw.x",
     "applicationName": "espresso",
+    "applicationVersion": "7.1",
     "input": [{"name": "pw_scf.in", "templateName": "pw_scf"}],
-    "supportedApplicationVersions": ["7.0", "7.1"],
 }
 
 FLAVOR_WITH_EXTRA_FIELDS_CONFIG = {
     "name": "scf",
-    "executableId": "exe_123",
     "custom_field": "custom_value",
 }
 
 EXPECTED_FLAVOR_TO_DICT = {
-    "executableId": "exe_123",
     "executableName": "pw.x",
     "applicationName": "espresso",
+    "applicationVersion": "",
     "input": [],
+    "preProcessors": [],
+    "postProcessors": [],
+    "monitors": [],
+    "results": [],
     "schemaVersion": "2022.8.16",
     "name": "scf",
     "isDefault": False,
@@ -85,6 +84,15 @@ def test_flavor_creation():
     assertion.assert_deep_almost_equal(expected, flavor.model_dump(exclude_unset=True))
 
 
+def test_flavor_defaults_runtime_item_lists_when_omitted():
+    flavor = Flavor(name="scf", executableName="pw.x", applicationName="espresso")
+    assert flavor.monitors == []
+    assert flavor.results == []
+    assert flavor.postProcessors == []
+    assert flavor.preProcessors == []
+    assert flavor.input == []
+
+
 def test_flavor_with_all_fields():
     config = FLAVOR_FULL_CONFIG
     flavor = Flavor(**config)
@@ -99,7 +107,6 @@ def test_flavor_to_dict():
     config = FLAVOR_TO_DICT_CONFIG
     flavor = Flavor(**config)
     assertion.assert_deep_almost_equal(EXPECTED_FLAVOR_TO_DICT, flavor.to_dict())
-
 
 
 def test_flavor_from_dict():

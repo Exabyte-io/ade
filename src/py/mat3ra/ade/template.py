@@ -28,6 +28,12 @@ class Template(TemplateSchema, InMemoryEntitySnakeCase):
     contextProviders: List[ContextProvider] = Field(
         default_factory=list, description="List of context providers for this template"
     )
+    executableName: str = ""
+    applicationName: str = ""
+    applicationVersion: str = ""
+    content: str = ""
+    rendered: Optional[str] = None
+    isManuallyChanged: Optional[bool] = False
 
     def get_rendered(self) -> str:
         return self.rendered if self.rendered is not None else self.content

@@ -1,10 +1,10 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
-from mat3ra.esse.models.software.application import ApplicationSchemaBase
-from mat3ra.utils.object import calculate_hash_from_object, remove_timestampable_keys
+from mat3ra.esse.models.software.application import ApplicationSchema
+from mat3ra.utils.object import calculate_hash_from_object
 from pydantic import ConfigDict, Field
 
 
-class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
+class Application(ApplicationSchema, InMemoryEntitySnakeCase):
     """
     Application class representing a software application.
 
@@ -27,6 +27,10 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
     # inside `Application.toJSON()`.
     model_config = ConfigDict(extra="ignore")
 
+    shortName: str = ""
+    summary: str = ""
+    version: str = ""
+    build: str = ""
     isUsingMaterial: bool = Field(default=False)
 
     @property
@@ -37,4 +41,10 @@ class Application(ApplicationSchemaBase, InMemoryEntitySnakeCase):
         return self.short_name if self.short_name else self.name
 
     def calculate_hash(self) -> str:
-        return calculate_hash_from_object(remove_timestampable_keys(self.to_dict()))
+        return calculate_hash_from_object(
+            {
+                "name": self.name,
+                "version": self.version,
+                "build": self.build,
+            }
+        )

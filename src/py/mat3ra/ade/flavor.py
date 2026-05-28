@@ -1,8 +1,11 @@
 from typing import List
 
 from mat3ra.code.entity import InMemoryEntitySnakeCase
-from mat3ra.esse.models.software.flavor import FlavorSchema, \
-    ExecutionUnitInputIdItemSchemaForPhysicsBasedSimulationEngines
+from mat3ra.esse.models.software.flavor import (
+    ExecutionUnitInputIdItemSchemaForPhysicsBasedSimulationEngines,
+    FlavorSchema,
+    RuntimeItemNameObjectSchema,
+)
 from pydantic import Field
 
 
@@ -25,11 +28,10 @@ class Flavor(FlavorSchema, InMemoryEntitySnakeCase):
 
     Attributes:
         name: Flavor name (required)
-        executableId: ID of the executable this flavor belongs to
         executableName: Name of the executable this flavor belongs to
         applicationName: Name of the application this flavor belongs to
+        applicationVersion: Version of the application this flavor belongs to
         input: List of input templates for this flavor
-        supportedApplicationVersions: List of application versions this flavor supports
         isDefault: Identifies that entity is defaultable
         schemaVersion: Entity's schema version
         preProcessors: Names of the pre-processors for this calculation
@@ -38,4 +40,11 @@ class Flavor(FlavorSchema, InMemoryEntitySnakeCase):
         results: Names of the results for this calculation
     """
 
+    preProcessors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    postProcessors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    monitors: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    results: List[RuntimeItemNameObjectSchema] = Field(default_factory=list)
+    executableName: str = ""
+    applicationName: str = ""
+    applicationVersion: str = ""
     input: List[FlavorInput] = Field(default_factory=list, description="Input templates for this flavor")

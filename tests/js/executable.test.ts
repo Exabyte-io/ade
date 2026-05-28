@@ -1,68 +1,54 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from "chai";
 
-import ApplicationRegistry from "../../src/js/ApplicationRegistry";
-import Executable from "../../src/js/executable";
+import { Executable } from "../../src/js";
 
 describe("Executable", () => {
+    it("defaults runtime item lists when omitted", () => {
+        const executable = new Executable({
+            name: "espresso",
+            applicationName: "espresso",
+            applicationVersion: "6.3",
+        });
+        expect(executable.monitors).to.deep.equal([]);
+        expect(executable.results).to.deep.equal([]);
+        expect(executable.postProcessors).to.deep.equal([]);
+        expect(executable.preProcessors).to.deep.equal([]);
+    });
+
+    it("preserves explicit runtime item lists when provided", () => {
+        const monitors = [{ name: "m1" }];
+        const results = [{ name: "r1" }];
+        const postProcessors = [{ name: "p1" }];
+        const preProcessors = [{ name: "pre1" }];
+        const executable = new Executable({
+            name: "espresso",
+            applicationName: "espresso",
+            applicationVersion: "6.3",
+            monitors,
+            results,
+            postProcessors,
+            preProcessors,
+        });
+        expect(executable.monitors).to.equal(monitors);
+        expect(executable.results).to.equal(results);
+        expect(executable.postProcessors).to.equal(postProcessors);
+        expect(executable.preProcessors).to.equal(preProcessors);
+    });
+
     it("toJSON works as expected", () => {
-        const executable = new Executable({ name: "espresso" });
+        const executable = new Executable({
+            name: "espresso",
+            applicationName: "espresso",
+            applicationVersion: "6.3",
+        });
         const json = executable.toJSON();
         expect(json).to.have.property("name", "espresso");
         expect(json).to.have.property("isDefault");
         expect(json).to.have.property("schemaVersion");
     });
 
-    it("should find executable via ApplicationRegistry and validate JSON structure", () => {
-        // Find an executable using ApplicationRegistry
-        const executable = ApplicationRegistry.getExecutableByName("espresso", "pw.x");
-
-        // Verify we got a valid executable
-        expect(executable).to.be.instanceOf(Executable);
-        expect(executable.name).to.equal("pw.x");
-
-        // Get JSON representation
-        const json = executable.toJSON();
-
-        // Validate JSON structure contains expected properties
-        expect(json).to.be.an("object");
-        expect(json).to.have.property("name");
-        expect(json.name).to.equal("pw.x");
-
-        // Verify core executable properties
-        expect(json).to.have.property("isDefault");
-        expect(json.isDefault).to.be.a("boolean");
-
-        expect(json).to.not.have.property("flavors");
-
-        // Verify arrays of configuration data
-        expect(json).to.have.property("monitors");
-        expect(json.monitors).to.be.an("array");
-
-        expect(json).to.have.property("results");
-        expect(json.results).to.be.an("array");
-
-        // The JSON should be comprehensive
-        expect(Object.keys(json).length).to.be.greaterThan(2);
-    });
-
-    describe("executableMixin properties", () => {
-        let executable: Executable;
-        beforeEach(() => {
-            executable = new Executable({ name: "test_exec" });
-        });
-
-        it("should get default applicationId as empty array", () => {
-            expect(executable.applicationId).to.deep.equal([]);
-        });
-
-        it("should set and get applicationId", () => {
-            executable.applicationId = ["app1", "app2"];
-            expect(executable.applicationId).to.deep.equal(["app1", "app2"]);
-        });
-    });
-
-    describe("executableStaticMixin", () => {
+    describe("static jsonSchema", () => {
         it("should have jsonSchema property", () => {
             expect(Executable.jsonSchema).to.exist;
         });

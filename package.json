@@ -12,7 +12,8 @@
         "lint:fix": "eslint --fix --cache src/js tests/js && prettier --write src/js tests/js",
         "transpile": "tsc -p tsconfig.json",
         "prettier": "prettier --check src/js tests/js",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "generate-mixins": "ts-node scripts/generate-mixins.ts"
     },
     "repository": {
         "type": "git",
@@ -42,21 +43,15 @@
     "license": "Apache-2.0",
     "homepage": "https://github.com/Exabyte-io/ade",
     "dependencies": {
-        "@types/react-jsonschema-form": "^1.7.13",
-        "lodash": "^4.18.1",
-        "nunjucks": "^3.2.4",
-        "react-jsonschema-form": "^1.8.1"
+        "lodash": "^4.18.1"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.28.6",
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/code": "^2026.4.1-0",
-        "@mat3ra/esse": "^2026.4.29-0",
-        "@mat3ra/made": "^2026.4.2-1",
-        "@mat3ra/standata": "^2026.5.15-0",
-        "@mat3ra/tsconfig": "^2024.6.3-0",
-        "@mat3ra/utils": "^2026.4.15-1",
-        "@types/nunjucks": "^3.2.6",
+        "@mat3ra/code": "2026.5.27-0",
+        "@mat3ra/esse": "2026.5.27-0",
+        "@mat3ra/standata": "2026.5.28-0",
+        "@mat3ra/tsconfig": "2024.6.3-0",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "chai": "^4.5.0",
@@ -85,7 +80,6 @@
         "@mat3ra/code": "*",
         "@mat3ra/esse": "*",
         "@mat3ra/made": "*",
-        "@mat3ra/standata": "*",
         "@mat3ra/utils": "*"
     },
     "engines": {

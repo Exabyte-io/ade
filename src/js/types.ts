@@ -1,15 +1,7 @@
-import type { ApplicationMixin, ApplicationStaticMixin } from "./applicationMixin";
-import type { CreateApplicationConfig } from "./ApplicationRegistry";
-import type { ExecutableMixin } from "./executableMixin";
-import type { FlavorMixin } from "./flavorMixin";
-import type { TemplateMixin, TemplateStaticMixin } from "./templateMixin";
+import Application from "./Application";
+import Executable from "./Executable";
+import Flavor from "./Flavor";
+import Template from "./Template";
+import type { PartialBy } from "./typeUtils";
 
-export type {
-    FlavorMixin,
-    ExecutableMixin,
-    ApplicationMixin,
-    ApplicationStaticMixin,
-    CreateApplicationConfig,
-    TemplateMixin,
-    TemplateStaticMixin,
-};
+export { Executable, Flavor, Template, Application, PartialBy };

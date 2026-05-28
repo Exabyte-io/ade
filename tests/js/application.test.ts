@@ -1,97 +1,40 @@
 /* eslint-disable no-unused-expressions */
-import { ApplicationStandata } from "@mat3ra/standata";
+import { ApplicationRegistry } from "@mat3ra/standata";
+import StandataDriver from "@mat3ra/standata/dist/js/StandataDriver";
 import { expect } from "chai";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
-import Application from "../../src/js/application";
-import type { CreateApplicationConfig } from "../../src/js/ApplicationRegistry";
+import { Application } from "../../src/js";
 
 describe("Application", () => {
-    const obj: CreateApplicationConfig = { name: "espresso" };
+    before(() => {
+        ApplicationRegistry.setDriver(new StandataDriver());
+    });
 
-    it("can be created", () => {
-        const app = new Application(obj);
-        expect(app.name).to.equal("espresso");
+    it("constructs with default data when no argument is passed", () => {
+        const app = new Application();
+        expect(app).to.be.instanceOf(Application);
+    });
+
+    describe("static accessors", () => {
+        it("should have jsonSchema property", () => {
+            const schema = Application.jsonSchema;
+            expect(schema).to.exist;
+            expect(schema).to.have.property("$id");
+        });
     });
 
     describe("applicationMixin properties", () => {
-        let app: Application;
-
-        beforeEach(() => {
-            app = new Application(obj);
-        });
-
-        describe("summary property", () => {
-            it("should return summary when set", () => {
-                app.setProp("summary", "Test summary");
-                expect(app.summary).to.equal("Test summary");
-            });
-
-            it("should return undefined when summary is not set", () => {
-                expect(app.summary).to.be.undefined;
-            });
-        });
-
-        describe("version property", () => {
-            it("should return version when set", () => {
-                app.setProp("version", "1.2.3");
-                expect(app.version).to.equal("1.2.3");
-            });
-
-            it("should return empty string as default when version is not set", () => {
-                expect(app.version).to.equal("");
-            });
-        });
-
-        describe("build property", () => {
-            it("should return build when set", () => {
-                app.setProp("build", "debug");
-                expect(app.build).to.equal("debug");
-            });
-
-            it("should return undefined when build is not set", () => {
-                expect(app.build).to.be.undefined;
-            });
-        });
-
-        describe("shortName property", () => {
-            it("should return shortName when set", () => {
-                app.setProp("shortName", "qe");
-                expect(app.shortName).to.equal("qe");
-            });
-
-            it("should return name as default when shortName is not set", () => {
-                expect(app.shortName).to.equal("espresso");
-            });
-        });
-
-        describe("hasAdvancedComputeOptions property", () => {
-            it("should return true when set", () => {
-                app.setProp("hasAdvancedComputeOptions", true);
-                expect(app.hasAdvancedComputeOptions).to.be.true;
-            });
-
-            it("should return false as default when not set", () => {
-                expect(app.hasAdvancedComputeOptions).to.be.false;
-            });
-        });
-
-        describe("isLicensed property", () => {
-            it("should return true when set", () => {
-                app.setProp("isLicensed", true);
-                expect(app.isLicensed).to.be.true;
-            });
-
-            it("should return false as default when not set", () => {
-                expect(app.isLicensed).to.be.false;
-            });
-        });
-
         describe("isUsingMaterial property", () => {
-            const standata = new ApplicationStandata();
+            let registry: ApplicationRegistry;
+
+            before(() => {
+                registry = new ApplicationRegistry();
+            });
+
             const appFromStandata = (name: string) =>
-                new Application(standata.getAllAppData().find((a) => a.name === name)!);
+                new Application(registry.getApplications().find((a) => a.name === name));
 
             it("should return true for vasp application", () => {
                 expect(appFromStandata("vasp").isUsingMaterial).to.be.true;
@@ -112,40 +55,13 @@ describe("Application", () => {
         });
     });
 
-    describe("applicationStaticMixin properties", () => {
-        it("should have defaultConfig with correct structure", () => {
-            const config = Application.defaultConfig;
-            expect(config).to.have.property("name", "espresso");
-            expect(config).to.have.property("shortName", "qe");
-            expect(config).to.have.property("version", "6.3");
-            expect(config).to.have.property("summary", "Quantum ESPRESSO");
-            expect(config).to.have.property("build", "GNU");
-        });
-
-        it("should return the complete defaultConfig object", () => {
-            expect(Application.defaultConfig).to.deep.equal({
-                name: "espresso",
-                shortName: "qe",
-                version: "6.3",
-                summary: "Quantum ESPRESSO",
-                build: "GNU",
-            });
-        });
-
-        it("should have jsonSchema property", () => {
-            const schema = Application.jsonSchema;
-            expect(schema).to.exist;
-            expect(schema).to.have.property("$id");
-        });
-    });
-
     it("calculateHash matches fixture", () => {
         const fixture = JSON.parse(
             readFileSync(resolve(__dirname, "../fixtures/application_hash.json"), "utf-8"),
         );
         const { name, version, build } = fixture.standata;
-        const standata = new ApplicationStandata();
-        const configs = standata.getByApplicationName(name) as any[];
+        const standata = new ApplicationRegistry();
+        const configs = standata.getApplications().filter((a) => a.name === name);
         const config = configs.find((a) => a.version === version && a.build === build);
         const app = new Application(config);
         expect(app.calculateHash()).to.equal(fixture.hash);
