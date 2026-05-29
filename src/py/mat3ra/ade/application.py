@@ -1,10 +1,11 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
+from mat3ra.code.mixins import HashedEntityMixin
 from mat3ra.esse.models.software.application import ApplicationSchema
 from mat3ra.utils.object import calculate_hash_from_object
 from pydantic import ConfigDict, Field
 
 
-class Application(ApplicationSchema, InMemoryEntitySnakeCase):
+class Application(ApplicationSchema, HashedEntityMixin, InMemoryEntitySnakeCase):
     """
     Application class representing a software application.
 
@@ -40,11 +41,9 @@ class Application(ApplicationSchema, InMemoryEntitySnakeCase):
     def get_short_name(self) -> str:
         return self.short_name if self.short_name else self.name
 
-    def calculate_hash(self) -> str:
-        return calculate_hash_from_object(
-            {
-                "name": self.name,
-                "version": self.version,
-                "build": self.build,
-            }
-        )
+    def get_hash_object(self) -> dict:
+        return {
+            "name": self.name,
+            "version": self.version,
+            "build": self.build,
+        }
