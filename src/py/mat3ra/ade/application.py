@@ -1,7 +1,6 @@
 from mat3ra.code.entity import InMemoryEntitySnakeCase
 from mat3ra.code.mixins import HashedEntityMixin
 from mat3ra.esse.models.software.application import ApplicationSchema
-from mat3ra.utils.object import calculate_hash_from_object
 from pydantic import ConfigDict, Field
 
 
