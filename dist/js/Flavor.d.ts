@@ -1,17 +1,17 @@
 import { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
 import { type Defaultable } from "@mat3ra/code/dist/js/entity/mixins/DefaultableMixin";
 import { type NamedEntity } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
-import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
+import type { RuntimeItemsSchemaMixin } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 import { type FlavorSchemaMixin } from "./generated/FlavorSchemaMixin";
-interface Flavor extends FlavorSchemaMixin, RuntimeItemsInMemoryEntity, NamedEntity, Defaultable {
+import type { PartialBy } from "./typeUtils";
+interface Flavor extends FlavorSchemaMixin, RuntimeItemsSchemaMixin, NamedEntity, Defaultable {
 }
-declare class Flavor extends InMemoryEntity implements FlavorSchema {
-    constructor(data?: Partial<FlavorSchema>);
+type ConstructorData = PartialBy<FlavorSchema, "monitors" | "results" | "postProcessors" | "preProcessors">;
+declare class Flavor extends InMemoryEntity<FlavorSchema> implements FlavorSchema {
+    constructor(data: ConstructorData);
     static get jsonSchema(): JSONSchema;
     static createDefault: () => Flavor;
-    toJSON: () => FlavorSchema & AnyObject;
 }
 export default Flavor;

@@ -12,11 +12,6 @@ describe("Application", () => {
         ApplicationRegistry.setDriver(new StandataDriver());
     });
 
-    it("constructs with default data when no argument is passed", () => {
-        const app = new Application();
-        expect(app).to.be.instanceOf(Application);
-    });
-
     describe("static accessors", () => {
         it("should have jsonSchema property", () => {
             const schema = Application.jsonSchema;
@@ -33,8 +28,13 @@ describe("Application", () => {
                 registry = new ApplicationRegistry();
             });
 
-            const appFromStandata = (name: string) =>
-                new Application(registry.getApplications().find((a) => a.name === name));
+            const appFromStandata = (name: string) => {
+                const app = registry.getApplications().find((a) => a.name === name);
+                if (!app) {
+                    throw new Error(`Application ${name} not found`);
+                }
+                return new Application(app);
+            };
 
             it("should return true for vasp application", () => {
                 expect(appFromStandata("vasp").isUsingMaterial).to.be.true;
@@ -48,9 +48,15 @@ describe("Application", () => {
                 expect(appFromStandata("espresso").isUsingMaterial).to.be.true;
             });
 
-            it("should return false for other applications", () => {
-                const otherApp = new Application({ name: "other_app" });
-                expect(otherApp.isUsingMaterial).to.be.false;
+            it("should return undefined for other applications", () => {
+                const otherApp = new Application({
+                    name: "other_app",
+                    shortName: "Other App",
+                    summary: "Other App summary",
+                    version: "1.0.0",
+                    build: "1",
+                });
+                expect(otherApp.isUsingMaterial).to.be.undefined;
             });
         });
     });
@@ -63,6 +69,9 @@ describe("Application", () => {
         const standata = new ApplicationRegistry();
         const configs = standata.getApplications().filter((a) => a.name === name);
         const config = configs.find((a) => a.version === version && a.build === build);
+        if (!config) {
+            throw new Error(`Application ${name} ${version} ${build} not found`);
+        }
         const app = new Application(config);
         expect(app.calculateHash()).to.equal(fixture.hash);
     });

@@ -4,7 +4,6 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 
@@ -15,17 +14,7 @@ interface Template extends TemplateSchemaMixin, NamedEntity {}
 
 export type DefaultTemplateConfig = PartialBy<TemplateSchema, "content" | "contextProviders">;
 
-class Template extends InMemoryEntity implements TemplateSchema {
-    constructor(data: DefaultTemplateConfig) {
-        const templateData: TemplateSchema = {
-            content: "",
-            contextProviders: [],
-            ...data,
-        };
-
-        super(templateData);
-    }
-
+class Template extends InMemoryEntity<TemplateSchema> implements TemplateSchema {
     static get jsonSchema(): JSONSchema {
         const schema = JSONSchemasInterface.getSchemaById("software/template");
         if (schema === undefined) {
@@ -33,8 +22,6 @@ class Template extends InMemoryEntity implements TemplateSchema {
         }
         return schema;
     }
-
-    declare toJSON: () => TemplateSchema & AnyObject;
 }
 
 namedEntityMixin(Template.prototype);

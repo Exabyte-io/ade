@@ -11,6 +11,7 @@ describe("Template", () => {
             executableName: "test_executable",
             applicationName: "test_application",
             applicationVersion: "test_version",
+            contextProviders: [],
         });
         const json = template.toJSON();
 

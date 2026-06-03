@@ -9,39 +9,33 @@ export function templateSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & TemplateSchemaMixin {
     // @ts-expect-error
-    const properties: InMemoryEntity & TemplateSchemaMixin = {
+    const properties: InMemoryEntity<TemplateSchemaMixin> & TemplateSchemaMixin = {
         get executableName() {
-            return this.requiredProp<TemplatePropertiesSchema["executableName"]>("executableName");
+            return this.requiredProp("executableName");
         },
         set executableName(value: TemplatePropertiesSchema["executableName"]) {
             this.setProp("executableName", value);
         },
         get applicationName() {
-            return this.requiredProp<TemplatePropertiesSchema["applicationName"]>(
-                "applicationName",
-            );
+            return this.requiredProp("applicationName");
         },
         set applicationName(value: TemplatePropertiesSchema["applicationName"]) {
             this.setProp("applicationName", value);
         },
         get applicationVersion() {
-            return this.requiredProp<TemplatePropertiesSchema["applicationVersion"]>(
-                "applicationVersion",
-            );
+            return this.requiredProp("applicationVersion");
         },
         set applicationVersion(value: TemplatePropertiesSchema["applicationVersion"]) {
             this.setProp("applicationVersion", value);
         },
         get contextProviders() {
-            return this.requiredProp<TemplatePropertiesSchema["contextProviders"]>(
-                "contextProviders",
-            );
+            return this.requiredProp("contextProviders");
         },
         set contextProviders(value: TemplatePropertiesSchema["contextProviders"]) {
             this.setProp("contextProviders", value);
         },
         get content() {
-            return this.requiredProp<TemplatePropertiesSchema["content"]>("content");
+            return this.requiredProp("content");
         },
         set content(value: TemplatePropertiesSchema["content"]) {
             this.setProp("content", value);

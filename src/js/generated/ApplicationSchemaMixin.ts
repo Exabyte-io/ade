@@ -9,47 +9,45 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & ApplicationSchemaMixin {
     // @ts-expect-error
-    const properties: InMemoryEntity & ApplicationSchemaMixin = {
+    const properties: InMemoryEntity<ApplicationSchemaMixin> & ApplicationSchemaMixin = {
         get shortName() {
-            return this.requiredProp<ApplicationPropertiesSchema["shortName"]>("shortName");
+            return this.requiredProp("shortName");
         },
         set shortName(value: ApplicationPropertiesSchema["shortName"]) {
             this.setProp("shortName", value);
         },
         get summary() {
-            return this.requiredProp<ApplicationPropertiesSchema["summary"]>("summary");
+            return this.requiredProp("summary");
         },
         set summary(value: ApplicationPropertiesSchema["summary"]) {
             this.setProp("summary", value);
         },
         get version() {
-            return this.requiredProp<ApplicationPropertiesSchema["version"]>("version");
+            return this.requiredProp("version");
         },
         set version(value: ApplicationPropertiesSchema["version"]) {
             this.setProp("version", value);
         },
         get build() {
-            return this.requiredProp<ApplicationPropertiesSchema["build"]>("build");
+            return this.requiredProp("build");
         },
         set build(value: ApplicationPropertiesSchema["build"]) {
             this.setProp("build", value);
         },
         get isDefault() {
-            return this.prop<ApplicationPropertiesSchema["isDefault"]>("isDefault");
+            return this.prop("isDefault");
         },
         set isDefault(value: ApplicationPropertiesSchema["isDefault"]) {
             this.setProp("isDefault", value);
         },
         get isDefaultVersion() {
-            return this.prop<ApplicationPropertiesSchema["isDefaultVersion"]>("isDefaultVersion");
+            return this.prop("isDefaultVersion");
         },
         set isDefaultVersion(value: ApplicationPropertiesSchema["isDefaultVersion"]) {
             this.setProp("isDefaultVersion", value);
         },
         get hasAdvancedComputeOptions() {
-            return this.prop<ApplicationPropertiesSchema["hasAdvancedComputeOptions"]>(
-                "hasAdvancedComputeOptions",
-            );
+            return this.prop("hasAdvancedComputeOptions");
         },
         set hasAdvancedComputeOptions(
             value: ApplicationPropertiesSchema["hasAdvancedComputeOptions"],
@@ -57,19 +55,22 @@ export function applicationSchemaMixin<T extends InMemoryEntity>(
             this.setProp("hasAdvancedComputeOptions", value);
         },
         get isLicensed() {
-            return this.prop<ApplicationPropertiesSchema["isLicensed"]>("isLicensed");
+            return this.prop("isLicensed");
         },
         set isLicensed(value: ApplicationPropertiesSchema["isLicensed"]) {
             this.setProp("isLicensed", value);
         },
         get isUsingMaterial() {
-            return this.prop<ApplicationPropertiesSchema["isUsingMaterial"]>(
-                "isUsingMaterial",
-                false,
-            );
+            return this.prop("isUsingMaterial");
         },
         set isUsingMaterial(value: ApplicationPropertiesSchema["isUsingMaterial"]) {
             this.setProp("isUsingMaterial", value);
+        },
+        get runConfig() {
+            return this.prop("runConfig");
+        },
+        set runConfig(value: ApplicationPropertiesSchema["runConfig"]) {
+            this.setProp("runConfig", value);
         },
     };
 

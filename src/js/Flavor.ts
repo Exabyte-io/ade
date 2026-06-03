@@ -8,27 +8,28 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import { runtimeItemsMixin } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
-import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
+import type { RuntimeItemsSchemaMixin } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 
 import { type FlavorSchemaMixin, flavorSchemaMixin } from "./generated/FlavorSchemaMixin";
+import type { PartialBy } from "./typeUtils";
 
-interface Flavor extends FlavorSchemaMixin, RuntimeItemsInMemoryEntity, NamedEntity, Defaultable {}
+interface Flavor extends FlavorSchemaMixin, RuntimeItemsSchemaMixin, NamedEntity, Defaultable {}
 
-class Flavor extends InMemoryEntity implements FlavorSchema {
-    constructor(data: Partial<FlavorSchema> = {}) {
+type ConstructorData = PartialBy<
+    FlavorSchema,
+    "monitors" | "results" | "postProcessors" | "preProcessors"
+>;
+
+class Flavor extends InMemoryEntity<FlavorSchema> implements FlavorSchema {
+    constructor(data: ConstructorData) {
         super({
             monitors: [],
             results: [],
             postProcessors: [],
             preProcessors: [],
-            input: [],
-            executableId: "",
-            executableName: "",
-            applicationName: "",
             ...data,
         });
     }
@@ -42,8 +43,6 @@ class Flavor extends InMemoryEntity implements FlavorSchema {
     }
 
     declare static createDefault: () => Flavor;
-
-    declare toJSON: () => FlavorSchema & AnyObject;
 }
 
 namedEntityMixin(Flavor.prototype);

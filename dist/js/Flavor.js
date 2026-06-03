@@ -10,16 +10,12 @@ const RuntimeItemsMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeI
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
 const FlavorSchemaMixin_1 = require("./generated/FlavorSchemaMixin");
 class Flavor extends entity_1.InMemoryEntity {
-    constructor(data = {}) {
+    constructor(data) {
         super({
             monitors: [],
             results: [],
             postProcessors: [],
             preProcessors: [],
-            input: [],
-            executableId: "",
-            executableName: "",
-            applicationName: "",
             ...data,
         });
     }

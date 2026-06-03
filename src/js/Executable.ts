@@ -8,9 +8,8 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import { runtimeItemsMixin } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
-import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
+import type { RuntimeItemsSchemaMixin } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
@@ -28,11 +27,11 @@ export type ExecutableConstructorData = PartialBy<
 
 interface Executable
     extends ExecutableSchemaMixin,
-        RuntimeItemsInMemoryEntity,
+        RuntimeItemsSchemaMixin,
         NamedEntity,
         Defaultable {}
 
-class Executable extends InMemoryEntity implements ExecutableSchema {
+class Executable extends InMemoryEntity<ExecutableSchema> implements ExecutableSchema {
     constructor(data: ExecutableConstructorData) {
         super({
             ...data,
@@ -52,8 +51,6 @@ class Executable extends InMemoryEntity implements ExecutableSchema {
     }
 
     declare static createDefault: () => Executable;
-
-    declare toJSON: () => ExecutableSchema & AnyObject;
 }
 
 namedEntityMixin(Executable.prototype);
