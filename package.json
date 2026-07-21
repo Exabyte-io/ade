@@ -48,10 +48,11 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.28.6",
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/e5f03b02102f51a5792e0b8c4fedac3860aaf7ed.tar.gz",
+        "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/ef877b55067afef34e492b8c2b317a1bb2cb8298.tar.gz",
         "@mat3ra/esse": "https://github.com/Exabyte-io/esse/archive/55306425f1d697aa150ee5ed8cf5cbca3cfa5b5e.tar.gz",
         "@mat3ra/standata": "2026.5.28-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
+        "@types/node": "^22.20.1",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "chai": "^4.5.0",

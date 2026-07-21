@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 import { ApplicationRegistry } from "@mat3ra/standata";
 import StandataDriver from "@mat3ra/standata/dist/js/StandataDriver";
 import { expect } from "chai";
@@ -74,5 +75,32 @@ describe("Application", () => {
         }
         const app = new Application(config);
         expect(app.calculateHash()).to.equal(fixture.hash);
+    });
+
+    describe("generic schema wrapper", () => {
+        type WiderApplicationSchema = ApplicationSchema & { webappOnly?: string };
+
+        class WiderApplication extends Application<WiderApplicationSchema> {}
+
+        it("allows subclasses to widen _json typing and storage", () => {
+            const app = new WiderApplication({
+                name: "wider_app",
+                shortName: "Wider",
+                summary: "Wider summary",
+                version: "1.0.0",
+                build: "1",
+            });
+
+            app._json.webappOnly = "webapp-value";
+            expect(app._json.webappOnly).to.equal("webapp-value");
+
+            // toJSON cleans against esse schema (strips unknown keys); _json retains them.
+            // Web-app Core* override jsonSchema so widened fields survive toJSON.
+            expect(app.toJSON().name).to.equal("wider_app");
+            expect(app._json.webappOnly).to.equal("webapp-value");
+
+            app._json.webappOnly = "updated";
+            expect(app._json.webappOnly).to.equal("updated");
+        });
     });
 });

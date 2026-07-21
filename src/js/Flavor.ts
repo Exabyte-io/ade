@@ -16,22 +16,26 @@ import type { FlavorSchema } from "@mat3ra/esse/dist/js/types";
 import { type FlavorSchemaMixin, flavorSchemaMixin } from "./generated/FlavorSchemaMixin";
 import type { PartialBy } from "./typeUtils";
 
+type Schema = FlavorSchema;
+
 interface Flavor extends FlavorSchemaMixin, RuntimeItemsSchemaMixin, NamedEntity, Defaultable {}
 
-type ConstructorData = PartialBy<
-    FlavorSchema,
+/** Input for {@link Flavor}: runtime item lists default to empty when omitted. */
+export type FlavorConstructorData<S extends Schema = Schema> = PartialBy<
+    S,
     "monitors" | "results" | "postProcessors" | "preProcessors"
 >;
 
-class Flavor extends InMemoryEntity<FlavorSchema> implements FlavorSchema {
-    constructor(data: ConstructorData) {
+class Flavor<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
+    // NoInfer: keep default S (or an explicit type arg) instead of inferring S from the data literal.
+    constructor(data: NoInfer<FlavorConstructorData<S>>) {
         super({
-            monitors: [],
-            results: [],
-            postProcessors: [],
-            preProcessors: [],
             ...data,
-        });
+            monitors: data.monitors ?? [],
+            results: data.results ?? [],
+            postProcessors: data.postProcessors ?? [],
+            preProcessors: data.preProcessors ?? [],
+        } as S);
     }
 
     static get jsonSchema(): JSONSchema {

@@ -10,11 +10,13 @@ import type { TemplateSchema } from "@mat3ra/esse/dist/js/types";
 import { type TemplateSchemaMixin, templateSchemaMixin } from "./generated/TemplateSchemaMixin";
 import type { PartialBy } from "./typeUtils";
 
+type Schema = TemplateSchema;
+
 interface Template extends TemplateSchemaMixin, NamedEntity {}
 
-export type DefaultTemplateConfig = PartialBy<TemplateSchema, "content" | "contextProviders">;
+export type DefaultTemplateConfig = PartialBy<Schema, "content" | "contextProviders">;
 
-class Template extends InMemoryEntity<TemplateSchema> implements TemplateSchema {
+class Template<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
     static get jsonSchema(): JSONSchema {
         const schema = JSONSchemasInterface.getSchemaById("software/template");
         if (schema === undefined) {

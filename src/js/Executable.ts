@@ -19,9 +19,11 @@ import {
 } from "./generated/ExecutableSchemaMixin";
 import type { PartialBy } from "./typeUtils";
 
+type Schema = ExecutableSchema;
+
 /** Input for {@link Executable}: runtime item lists default to empty when omitted. */
-export type ExecutableConstructorData = PartialBy<
-    ExecutableSchema,
+export type ExecutableConstructorData<S extends Schema = Schema> = PartialBy<
+    S,
     "monitors" | "results" | "postProcessors" | "preProcessors"
 >;
 
@@ -31,15 +33,16 @@ interface Executable
         NamedEntity,
         Defaultable {}
 
-class Executable extends InMemoryEntity<ExecutableSchema> implements ExecutableSchema {
-    constructor(data: ExecutableConstructorData) {
+class Executable<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
+    // NoInfer: keep default S (or an explicit type arg) instead of inferring S from the data literal.
+    constructor(data: NoInfer<ExecutableConstructorData<S>>) {
         super({
             ...data,
             monitors: data.monitors ?? [],
             results: data.results ?? [],
             postProcessors: data.postProcessors ?? [],
             preProcessors: data.preProcessors ?? [],
-        });
+        } as S);
     }
 
     static get jsonSchema(): JSONSchema {

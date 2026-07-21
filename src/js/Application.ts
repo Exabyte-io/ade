@@ -20,14 +20,16 @@ import {
     applicationSchemaMixin,
 } from "./generated/ApplicationSchemaMixin";
 
+type Schema = ApplicationSchema;
+
 export type DefaultApplicationConfig = Pick<
-    ApplicationSchema,
+    Schema,
     "name" | "shortName" | "version" | "summary" | "build"
 >;
 
 interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable, HashedEntity {}
 
-class Application extends InMemoryEntity<ApplicationSchema> implements ApplicationSchema {
+class Application<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
     static get jsonSchema(): JSONSchema {
         const schema = JSONSchemasInterface.getSchemaById("software/application");
         if (schema === undefined) {
