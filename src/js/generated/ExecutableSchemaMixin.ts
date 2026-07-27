@@ -3,8 +3,6 @@ import type { ExecutablePropertiesSchema } from "@mat3ra/esse/dist/js/types";
 
 export type ExecutableSchemaMixin = ExecutablePropertiesSchema;
 
-export type ExecutableInMemoryEntity = InMemoryEntity & ExecutableSchemaMixin;
-
 export function executableSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & ExecutableSchemaMixin {

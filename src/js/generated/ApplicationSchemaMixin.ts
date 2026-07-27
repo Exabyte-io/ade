@@ -3,8 +3,6 @@ import type { ApplicationPropertiesSchema } from "@mat3ra/esse/dist/js/types";
 
 export type ApplicationSchemaMixin = ApplicationPropertiesSchema;
 
-export type ApplicationInMemoryEntity = InMemoryEntity & ApplicationSchemaMixin;
-
 export function applicationSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & ApplicationSchemaMixin {

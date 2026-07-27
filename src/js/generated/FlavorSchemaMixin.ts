@@ -3,8 +3,6 @@ import type { FlavorPropertiesSchema } from "@mat3ra/esse/dist/js/types";
 
 export type FlavorSchemaMixin = FlavorPropertiesSchema;
 
-export type FlavorInMemoryEntity = InMemoryEntity & FlavorSchemaMixin;
-
 export function flavorSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & FlavorSchemaMixin {

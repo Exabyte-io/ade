@@ -3,8 +3,6 @@ import type { TemplatePropertiesSchema } from "@mat3ra/esse/dist/js/types";
 
 export type TemplateSchemaMixin = TemplatePropertiesSchema;
 
-export type TemplateInMemoryEntity = InMemoryEntity & TemplateSchemaMixin;
-
 export function templateSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
 ): asserts item is T & TemplateSchemaMixin {
