@@ -1,7 +1,12 @@
 import type { InMemoryEntity } from "@mat3ra/code/dist/js/entity";
-import type { TemplatePropertiesSchema } from "@mat3ra/esse/dist/js/types";
+import type {
+    BaseInMemoryEntitySchema,
+    TemplatePropertiesSchema,
+} from "@mat3ra/esse/dist/js/types";
 
 export type TemplateSchemaMixin = TemplatePropertiesSchema;
+
+export type TemplateInMemoryEntity = InMemoryEntity<BaseInMemoryEntitySchema & TemplateSchemaMixin>;
 
 export function templateSchemaMixin<T extends InMemoryEntity>(
     item: InMemoryEntity,
