@@ -4,16 +4,14 @@ import { expect } from "chai";
 import { Flavor } from "../../src/js";
 
 describe("Flavor", () => {
-    it("constructs with built-in defaults when no argument is passed", () => {
-        const flavor = new Flavor();
-        expect(flavor).to.be.instanceOf(Flavor);
-        expect(flavor.monitors).to.deep.equal([]);
-        expect(flavor.results).to.deep.equal([]);
-        expect(flavor.executableName).to.equal("");
-    });
-
     it("merges partial data over defaults", () => {
-        const flavor = new Flavor({ name: "custom", executableName: "pw.x" });
+        const flavor = new Flavor({
+            name: "custom",
+            executableName: "pw.x",
+            applicationName: "Quantum ESPRESSO",
+            applicationVersion: "7.0",
+            input: [],
+        });
         expect(flavor.name).to.equal("custom");
         expect(flavor.executableName).to.equal("pw.x");
     });

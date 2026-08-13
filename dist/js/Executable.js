@@ -10,6 +10,7 @@ const RuntimeItemsMixin_1 = require("@mat3ra/code/dist/js/entity/mixins/RuntimeI
 const JSONSchemasInterface_1 = __importDefault(require("@mat3ra/esse/dist/js/esse/JSONSchemasInterface"));
 const ExecutableSchemaMixin_1 = require("./generated/ExecutableSchemaMixin");
 class Executable extends entity_1.InMemoryEntity {
+    // NoInfer: keep default S (or an explicit type arg) instead of inferring S from the data literal.
     constructor(data) {
         var _a, _b, _c, _d;
         super({

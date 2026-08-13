@@ -12,7 +12,6 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ApplicationSchema } from "@mat3ra/esse/dist/js/types";
 
@@ -21,20 +20,16 @@ import {
     applicationSchemaMixin,
 } from "./generated/ApplicationSchemaMixin";
 
+type Schema = ApplicationSchema;
+
 export type DefaultApplicationConfig = Pick<
-    ApplicationSchema,
+    Schema,
     "name" | "shortName" | "version" | "summary" | "build"
 >;
 
 interface Application extends ApplicationSchemaMixin, NamedEntity, Defaultable, HashedEntity {}
 
-class Application extends InMemoryEntity implements ApplicationSchema {
-    constructor(data: Partial<ApplicationSchema> = {}) {
-        super({
-            ...data,
-        });
-    }
-
+class Application<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
     static get jsonSchema(): JSONSchema {
         const schema = JSONSchemasInterface.getSchemaById("software/application");
         if (schema === undefined) {
@@ -44,8 +39,6 @@ class Application extends InMemoryEntity implements ApplicationSchema {
     }
 
     declare static createDefault: () => Application;
-
-    declare toJSON: () => ApplicationSchema & AnyObject;
 
     getHashObject() {
         return {

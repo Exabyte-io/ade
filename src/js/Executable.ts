@@ -8,9 +8,8 @@ import {
     namedEntityMixin,
 } from "@mat3ra/code/dist/js/entity/mixins/NamedEntityMixin";
 import { runtimeItemsMixin } from "@mat3ra/code/dist/js/entity/mixins/RuntimeItemsMixin";
-import type { RuntimeItemsInMemoryEntity } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
+import type { RuntimeItemsSchemaMixin } from "@mat3ra/code/dist/js/generated/RuntimeItemsSchemaMixin";
 import JSONSchemasInterface from "@mat3ra/esse/dist/js/esse/JSONSchemasInterface";
-import type { AnyObject } from "@mat3ra/esse/dist/js/esse/types";
 import type { JSONSchema } from "@mat3ra/esse/dist/js/esse/utils";
 import type { ExecutableSchema } from "@mat3ra/esse/dist/js/types";
 
@@ -20,27 +19,30 @@ import {
 } from "./generated/ExecutableSchemaMixin";
 import type { PartialBy } from "./typeUtils";
 
+type Schema = ExecutableSchema;
+
 /** Input for {@link Executable}: runtime item lists default to empty when omitted. */
-export type ExecutableConstructorData = PartialBy<
-    ExecutableSchema,
+export type ExecutableConstructorData<S extends Schema = Schema> = PartialBy<
+    S,
     "monitors" | "results" | "postProcessors" | "preProcessors"
 >;
 
 interface Executable
     extends ExecutableSchemaMixin,
-        RuntimeItemsInMemoryEntity,
+        RuntimeItemsSchemaMixin,
         NamedEntity,
         Defaultable {}
 
-class Executable extends InMemoryEntity implements ExecutableSchema {
-    constructor(data: ExecutableConstructorData) {
+class Executable<S extends Schema = Schema> extends InMemoryEntity<S> implements Schema {
+    // NoInfer: keep default S (or an explicit type arg) instead of inferring S from the data literal.
+    constructor(data: NoInfer<ExecutableConstructorData<S>>) {
         super({
             ...data,
             monitors: data.monitors ?? [],
             results: data.results ?? [],
             postProcessors: data.postProcessors ?? [],
             preProcessors: data.preProcessors ?? [],
-        });
+        } as S);
     }
 
     static get jsonSchema(): JSONSchema {
@@ -52,8 +54,6 @@ class Executable extends InMemoryEntity implements ExecutableSchema {
     }
 
     declare static createDefault: () => Executable;
-
-    declare toJSON: () => ExecutableSchema & AnyObject;
 }
 
 namedEntityMixin(Executable.prototype);
