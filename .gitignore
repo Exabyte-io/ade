@@ -1,3 +1,5 @@
+# Built by `npm run transpile` (references:install / publish / local).
+dist/
 build/
 node_modules/
 .eslintcache

@@ -13,7 +13,10 @@
         "transpile": "tsc -p tsconfig.json",
         "prettier": "prettier --check src/js tests/js",
         "prepare": "husky install",
-        "generate-mixins": "ts-node scripts/generate-mixins.ts"
+        "generate-mixins": "ts-node scripts/generate-mixins.ts",
+        "references:sync": "node ../../scripts/manageReferencePackages.mjs sync",
+        "references:install": "node ../../scripts/manageReferencePackages.mjs install",
+        "prepublishOnly": "npm run transpile"
     },
     "repository": {
         "type": "git",
@@ -48,8 +51,8 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.28.6",
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/code": "https://github.com/Exabyte-io/code/archive/2129fee93545bd774623a50b2a8e42618d85ac93.tar.gz",
-        "@mat3ra/esse": "https://github.com/Exabyte-io/esse/archive/de8538cf2bd31bdcc240c209f78ab42811add289.tar.gz",
+        "@mat3ra/code": "2026.5.27-0",
+        "@mat3ra/esse": "2026.7.21-0",
         "@mat3ra/standata": "2026.5.28-0",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/node": "^22.20.1",
