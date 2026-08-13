@@ -125,7 +125,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           package-directory: root/reference/ade
-          npm-options: "--legacy-peer-deps"
           post-npm-install: |
             npm run references:sync
             npm run references:install
