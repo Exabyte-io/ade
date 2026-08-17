@@ -48,9 +48,9 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.28.6",
         "@exabyte-io/eslint-config": "2025.5.13-0",
-        "@mat3ra/code": "2026.8.13-0",
-        "@mat3ra/esse": "2026.8.13-0",
-        "@mat3ra/standata": "2026.5.28-0",
+        "@mat3ra/code": "https://github.com/mat3ra/code/releases/download/wip-c893e27/code.tgz",
+        "@mat3ra/esse": "https://github.com/mat3ra/esse/releases/download/wip-b8494e3c7/esse.tgz",
+        "@mat3ra/standata": "https://github.com/mat3ra/standata/releases/download/wip-c5ba9be/standata.tgz",
         "@mat3ra/tsconfig": "2024.6.3-0",
         "@types/node": "^22.20.1",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
